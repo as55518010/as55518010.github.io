@@ -4,7 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 /* Layout */
-import Layout from '@/layout'
+// import Layout from '@/layout'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -32,143 +32,122 @@ import Layout from '@/layout'
  */
 export const constantRoutes = [
   {
-    path: '/login',
-    component: () => import('@/views/login/index'),
-    hidden: true
+    path: '/',
+    redirect: '/article'
   },
-
+  {
+    path: '/article',
+    name: 'article',
+    component: () => import('@/views/Web/Article.vue')
+  },
+  {
+    path: '/detail/:id',
+    name: 'detail',
+    component: () => import('@/components/ArticleComponents/detail.vue')
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/Web/Login.vue')
+  },
+  {
+    path: '/logined',
+    name: 'logined',
+    component: () => import('@/components/LoginComponents/Logined.vue')
+  },
+  {
+    path: '/photos',
+    name: 'photos',
+    component: () => import('@/views/Web/Photos.vue')
+  },
+  {
+    path: '/photoDetail/:id',
+    name: 'photoDetail',
+    component: () => import('@/components/PhotoComponents/detail.vue')
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: () => import('@/views/Web/Profile.vue')
+  },
+  {
+    path: '/message',
+    name: 'message',
+    component: () => import('@/views/Web/LeaveMessage.vue')
+  },
+  {
+    path: '/demo',
+    name: 'demo',
+    component: () => import('@/views/Web/Demo.vue')
+  },
+  {
+    path: '/category',
+    name: 'category',
+    component: () => import('@/views/Web/Category.vue')
+  },
+  {
+    path: '/admin',
+    redirect: '/admin/login'
+  },
+  {
+    path: '/admin/login',
+    name: 'adminlogin',
+    component: () => import('@/views/Admin/adminLogin.vue')
+  },
+  {
+    path: '/admin/article',
+    name: 'admin',
+    component: () => import('@/views/Admin/articleEditor.vue'),
+    redirect: '/admin/article/upload/articleManage',
+    children: [
+      {
+        path: '/admin/article/upload/demo',
+        name: 'sendDemo',
+        component: () => import('@/views/Admin/sendDemo.vue')
+      },
+      {
+        path: '/admin/article/upload/photos',
+        name: 'uploadphoto',
+        component: () => import('@/views/Admin/sendcontent.vue')
+      },
+      {
+        path: '/admin/article/upload/images',
+        name: 'images',
+        component: () => import('@/views/Admin/ImageUpload.vue')
+      },
+      {
+        path: '/admin/article/upload/articlePublish',
+        name: 'articlePublish',
+        component: () => import('@/views/Admin/articlePublish.vue')
+      },
+      {
+        path: '/admin/article/upload/articleManage',
+        name: 'articleManage',
+        component: () => import('@/views/Admin/articleManage.vue')
+      },
+      {
+        path: '/admin/article/upload/users',
+        name: 'UserManage',
+        component: () => import('@/views/Admin/UserManage.vue')
+      }
+    ]
+  },
   {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
   },
 
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
-    }]
-  },
-
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
-  },
-
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/nested',
-    component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
-    meta: {
-      title: 'Nested',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
-      },
-      {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        name: 'Menu2',
-        meta: { title: 'menu2' }
-      }
-    ]
-  },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
-  },
-
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
 
-const createRouter = () => new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
-})
+const createRouter = () =>
+  new Router({
+    // mode: 'history', // require service support
+    scrollBehavior: () => ({ y: 0 }),
+    routes: constantRoutes
+  })
 
 const router = createRouter()
 
