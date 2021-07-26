@@ -2,44 +2,44 @@
   <div id="Header" class="shadow">
     <el-row class="row">
       <el-col :xs="24" :sm="24" :md="24" :lg="5">
-        <LogoContent/>
+        <LogoContent />
       </el-col>
       <el-col :xs="0" :sm="0" :md="0" :lg="22">
-        <TabbarLink v-if="showSome"/>
+        <TabbarLink v-if="showSome" />
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-import LogoContent from './HeaderComponents/LogoContent'
-import TabbarLink from './HeaderComponents/TabbarLink'
+import LogoContent from '@/components/HeaderComponents/LogoContent'
+import TabbarLink from '@/components/HeaderComponents/TabbarLink'
 export default {
-    name: 'Header',
-    props: {
-      showSome:{
-        type: Boolean,
-        default: true
-      }
-    },
-    data() {
-        return {
-            
-        }
-    },
-    computed: {
-        
-    },
-    methods: {
-        
-    },
-    mounted() {
-        
-    },
-    components: {
-      LogoContent,
-      TabbarLink
+  name: 'Header',
+  components: {
+    LogoContent,
+    TabbarLink
+  },
+  props: {
+    showSome: {
+      type: Boolean,
+      default: true
     }
+  },
+  data() {
+    return {
+
+    }
+  },
+  computed: {
+
+  },
+  mounted() {
+
+  },
+  methods: {
+
+  }
 }
 </script>
 

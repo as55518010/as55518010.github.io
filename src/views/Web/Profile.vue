@@ -1,12 +1,12 @@
 <template>
   <div id="Info">
     <div v-if="!token" style="text-align:center;padding-top:8rem;" :style="{color: Color}">
-      糟糕，您还没有登陆检测不到信息! ~§(*￣▽￣*)§~
-      <p>如果已登录，刷新页面即可看到个人信息~</p>
+      糟糕，您還沒有登陸檢測不到信息! ~§(*￣▽￣*)§~
+      <!-- <p>如果已登錄，刷新頁面即可看到個人信息~</p> -->
     </div>
     <div v-if="token" class="SuccessInfo">
-      <h4 style="color:orange;margin-bottom:1rem;" :style="{color: Color}">下面这些就是您的个人信息啦(●ˇ∀ˇ●)~</h4>
-      <img :src="MyInfo.avatar" alt="这是头像啦啦啦~">
+      <h4 style="color:orange;margin-bottom:1rem;" :style="{color: Color}">下面這些就是您的個人信息啦(●ˇ∀ˇ●)~</h4>
+      <img :src="userInfo.detail.avatar.url" alt="這是頭像啦啦啦~">
       <el-upload
         v-show="flag"
         class="avatar-uploader"
@@ -17,26 +17,37 @@
         <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
         <i class="el-icon-plus avatar-uploader-icon" />
       </el-upload>
-      <el-button type="primary" class="back_out" @click="open">退出登录</el-button>
-      <p><span>昵称:</span><input v-model="MyInfo.name" :class="{active:!flag}" :disabled="!flag" class="name" type="text"></p>
-      <p><span>介绍:</span><input v-model="MyInfo.introduction" :class="{active:!flag}" :disabled="!flag" class="info" type="text"></p>
+      <el-button type="primary" class="back_out" @click="open">退出登錄</el-button>
+      <p><span>昵稱:</span><input
+        v-model="userInfo.name"
+        :class="{active:!flag}"
+        :disabled="!flag"
+        class="name"
+        type="text"
+      ></p>
+      <p><span>介紹:</span><input
+        v-model="userInfo.detail.description"
+        :class="{active:!flag}"
+        :disabled="!flag"
+        class="info"
+        type="text"
+      ></p>
       <p>
-        <el-button class="editor_Info" type="default" @click="updateInfo">编辑信息</el-button>
+        <el-button class="editor_Info" type="default" @click="updateInfo">編輯信息</el-button>
         <el-button v-show="flag" class="primary" type="primary" @click="submit">提交</el-button>
       </p>
-      <p :style="{color: Color}">温馨提示:如果点错了,再次点击编辑信息可以取消编辑哦(。・∀・)ノ</p>
+      <p :style="{color: Color}">溫馨提示:如果點錯了,再次點擊編輯信息可以取消編輯哦(。・∀・)ノ</p>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'Profile',
   props: {},
   data() {
     return {
-      token: '',
-      MyInfo: {},
       flag: false,
       modal1: false,
       imageUrl: ''
@@ -48,65 +59,42 @@ export default {
     },
     Color() {
       return this.$store.state.Color
-    }
-  },
-  mounted() {
-    // location.reload();
-    if (!localStorage.getItem('token')) {
-      this.$router.push('/login')
-    } else {
-      this.token = localStorage.getItem('token')
-    }
-    this.getInfo()
+    },
+    ...mapGetters({
+      userInfo: 'user/userInfo',
+      token: 'user/accessToken'
+    })
   },
   methods: {
-    // 获取用户信息
-    async getInfo() {
-      this.token = localStorage.getItem('token')
-      if (this.token) {
-        const res = await this.$api.getInfo(this.token)
-        // console.log(res);
-        if (res.code === 200) {
-          this.MyInfo = res.Info
-        } else if (res.code === 401) {
-          this.$message.error('对不起，您的登录信息已过期，请重新登陆。')
-          localStorage.clear()
-          setTimeout(() => {
-            location.reload()
-          })
-        } else {
-          this.$message.error(res.msg)
-        }
-      }
-    },
-    // 确认是否退出登录
+    // 確認是否`退出`登錄
     open() {
-      this.$confirm('确定要退出登陆吗？(✿◕‿◕✿)', '退出登录提示', {
-        confirmButtonText: '确定',
+      this.$confirm('確定要退出登陸嗎？(✿◕‿◕✿)', '退出登錄提示', {
+        confirmButtonText: '確定',
         cancelButtonText: '取消'
-      }).then(() => {
-        localStorage.clear()
-        this.MyInfo = {}
-        location.reload()
-        this.$message({
-          type: 'success',
-          message: '退出成功!'
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'success',
-          message: '不想退出可以多看看噢！(●ˇ∀ˇ●)'
-        })
       })
+        .then(() => {
+          this.$store.dispatch('user/logout', this.ruleForm).then(() => {
+            const routerPath = '/'
+            this.$router.push(routerPath).catch(() => {})
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'success',
+            message: '不想退出可以多看看噢！(●ˇ∀ˇ●)'
+          })
+        })
     },
-    // 打开编辑框
+    // 打開編輯框
     updateInfo() {
       this.flag = !this.flag
     },
     // 提交
     async submit() {
-      /* 更改长度不能大于12 */
-      if (this.MyInfo.name.length > 12) return this.$message.error('昵称长度不能大于12')
+      /* 更改長度不能大於12 */
+      if (this.MyInfo.name.length > 12) {
+        return this.$message.error('昵稱長度不能大於12')
+      }
       const res = await this.$api.updateInfo({
         token: this.token,
         introduction: this.MyInfo.introduction,
@@ -133,10 +121,10 @@ export default {
             const isLt2M = file.size / 1024 / 1024 < 2;
 
             if (!isJPG) {
-            this.$message.error('上传头像图片只能是 JPG 格式!');
+            this.$message.error('上傳頭像圖片只能是 JPG 格式!');
             }
             if (!isLt2M) {
-            this.$message.error('上传头像图片大小不能超过 2MB!');
+            this.$message.error('上傳頭像圖片大小不能超過 2MB!');
             }
             return isJPG && isLt2M;
         } */
@@ -145,95 +133,96 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-#Info{
-    height: 100%;
-    width: 96%;
-    margin: 0 auto;
-    margin-top: 12px;
-    position: relative;
-    // z-index: 5;
-    display: flex;
-    justify-content: center;
-    // align-items: center;
-    // background-color: rgba($color: #f2f2f2, $alpha: 0.6);
-    .SuccessInfo {
-        padding-top: 150px;
-        padding-left: 20px;
-        min-height: 700px;
-        img {
-              width: 128px;
-              height: 128px;
-              border-radius: 50%;
-              box-shadow: 0 0 5px #ccc;
-              margin: 16px 0 0 16px;
-              position: relative;
-              z-index: 3;
-        }
-        p{
-            text-align: left;
-            font-size: 19.2px;
-            margin:8px;
-            font-weight: bold;
-            span {
-            color: lightblue;
-            font-weight: bold;
-            }
-        }
-        .name,
-        .info {
-            font-size: 14px;
-            border: 0;
-            outline: none;
-            padding: 3.2px;
-            transition: all .5s;
-            font-weight: bold;
-            border-radius: 3.2px;
-            margin-left: 3.2px;
-            margin-bottom: 6px;
-            height: 48px;
-            background: #f2f2f2;
-            padding-left: 16px;
-        }
-        .info {
-            width:80%;
-        }
-        .active {
-            background: transparent!important;
-        }
-        .editor_Info,
-        .primary,
-        .back_out {
-            margin:16px;
-            position: relative;
-            z-index: 3;
-        }
-        .back_out {
-            font-size:8px;margin:0 0 24px 32px;
-        }
+#Info {
+  height: 100%;
+  width: 96%;
+  margin: 0 auto;
+  margin-top: 12px;
+  position: relative;
+  // z-index: 5;
+  display: flex;
+  justify-content: center;
+  // align-items: center;
+  // background-color: rgba($color: #f2f2f2, $alpha: 0.6);
+  .SuccessInfo {
+    padding-top: 150px;
+    padding-left: 20px;
+    min-height: 700px;
+    img {
+      width: 128px;
+      height: 128px;
+      border-radius: 50%;
+      box-shadow: 0 0 5px #ccc;
+      margin: 16px 0 0 16px;
+      position: relative;
+      z-index: 3;
     }
+    p {
+      text-align: left;
+      font-size: 19.2px;
+      margin: 8px;
+      font-weight: bold;
+      span {
+        color: lightblue;
+        font-weight: bold;
+      }
+    }
+    .name,
+    .info {
+      font-size: 14px;
+      border: 0;
+      outline: none;
+      padding: 3.2px;
+      transition: all 0.5s;
+      font-weight: bold;
+      border-radius: 3.2px;
+      margin-left: 3.2px;
+      margin-bottom: 6px;
+      height: 48px;
+      background: #f2f2f2;
+      padding-left: 16px;
+    }
+    .info {
+      width: 80%;
+    }
+    .active {
+      background: transparent !important;
+    }
+    .editor_Info,
+    .primary,
+    .back_out {
+      margin: 16px;
+      position: relative;
+      z-index: 3;
+    }
+    .back_out {
+      font-size: 8px;
+      margin: 0 0 24px 32px;
+    }
+  }
 }
 .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
 .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
+  border-color: #409eff;
 }
 .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
 }
 .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-    // cursor: pointer;
+  width: 178px;
+  height: 178px;
+  display: block;
+  // cursor: pointer;
 }
 </style>

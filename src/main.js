@@ -13,7 +13,11 @@ import store from './store'
 import router from './router'
 
 import '@/icons' // icon
-import '@/permission' // permission control
+// import '@/config/permission' // permission control
+
+import Vab from '@/utils/vab'
+
+Vue.use(Vab)
 
 /**
  * If you don't want to use mock-server

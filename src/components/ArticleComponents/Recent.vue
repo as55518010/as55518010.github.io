@@ -1,75 +1,75 @@
 <template>
-<el-card class="box-card">
-  <div slot="header" class="clearfix">
-    <span><i class="iconfont icon-wenzhang"></i> 最近文章</span>
+  <el-card class="box-card">
+    <div slot="header" class="clearfix">
+      <span><i class="iconfont icon-wenzhang" /> 最近文章</span>
     <!-- <el-button style="float: right; padding: 3px 0" type="text" @click="more">more</el-button> -->
-  </div>
-  <div
-    class="ItemList"
-    v-for="(item, index) in recentList"
-    @click="handleToDetail(item.article_id)"
-    :key="index"
-    :title="item.title"
-  >
-    <span class="left">
-      {{item.title}}
-    </span>
-    <span>
-      <!-- <Icon type="ios-clock-outline" /> -->
-      {{item.create_time | formateDate}}
-    </span>
-  </div>
-</el-card>
+    </div>
+    <div
+      v-for="(item, index) in recentList"
+      :key="index"
+      class="ItemList"
+      :title="item.title"
+      @click="handleToDetail(item.article_id)"
+    >
+      <span class="left">
+        {{ item.title }}
+      </span>
+      <span>
+        <!-- <Icon type="ios-clock-outline" /> -->
+        {{ item.create_time | formateDate }}
+      </span>
+    </div>
+  </el-card>
 </template>
 
 <script>
 export default {
-    name: 'Recent',
-    // props: {
-    //   recentList: {
-    //     type: Array,
-    //     default() {
-    //       return []
-    //     }
-    //   }
-    // },
-    data() {
-      return {
-        recentList: [],
-        showList: []
-      }
-    },
-    mounted() {
-      this.getRecent()
-      // setTimeout(()=>{
-      //   this.some()
-      // },200)
-    },
-    methods: {
-      // 获取最近文章
-      async getRecent() {
-          try {
-          const res = await this.$api.getRecentArticle()
-          // console.log(res)
-          this.recentList = res.data
-          } catch (error) {
-          this.$message.error(error)
-          }
-      },
-      // 截取部分文章
-      // some() {
-      //   // console.log(this.recentList)
-      //   var storeList = [...this.recentList];
-      //   this.showList = storeList.splice(0,6)
-      // },
-      // more() {
-      //   this.showList = this.recentList
-      // },
-      // 跳转详情页
-      handleToDetail(article_id) {
-        this.$router.push(`/detail/${article_id}`)
-      }
+  name: 'Recent',
+  // props: {
+  //   recentList: {
+  //     type: Array,
+  //     default() {
+  //       return []
+  //     }
+  //   }
+  // },
+  data() {
+    return {
+      recentList: [],
+      showList: []
     }
+  },
+  mounted() {
+    this.getRecent()
+    // setTimeout(()=>{
+    //   this.some()
+    // },200)
+  },
+  methods: {
+    // 获取最近文章
+    async getRecent() {
+      try {
+        const res = await this.$api.getRecentArticle()
+        // console.log(res)
+        this.recentList = res.data
+      } catch (error) {
+        this.$message.error(error)
+      }
+    },
+    // 截取部分文章
+    // some() {
+    //   // console.log(this.recentList)
+    //   var storeList = [...this.recentList];
+    //   this.showList = storeList.splice(0,6)
+    // },
+    // more() {
+    //   this.showList = this.recentList
+    // },
+    // 跳转详情页
+    handleToDetail(article_id) {
+      this.$router.push(`/detail/${article_id}`)
+    }
+  }
 }
 </script>
 

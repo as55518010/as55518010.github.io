@@ -1,102 +1,102 @@
 <template>
   <div id="music" ref="music">
-      <div class="img" ref="img" @click="showControl">
-          <img :src="musicInfo.img" alt="图片" ref="img1" :class="playing?'rotate':''">
+    <div ref="img" class="img" @click="showControl">
+      <img ref="img1" :src="musicInfo.img" alt="图片" :class="playing?'rotate':''">
+    </div>
+    <div class="main">
+      <div class="text">
+        <span class="name">{{ musicInfo.name }}</span>
+        <span class="artist">- {{ musicInfo.artist }}</span>
       </div>
-      <div class="main">
-          <div class="text">
-              <span class="name">{{musicInfo.name}}</span>
-              <span class="artist">- {{musicInfo.artist}}</span>
-          </div>
-          <div class="font">
-              <i @click="lastSong" class="iconfont icon-shangyishou"></i>
-              <i v-if="playing" @click="changeState" class="el-icon-video-pause"></i>
-              <i v-else @click="changeState" class="el-icon-video-play"></i>
-              <i @click="nextSong" class="iconfont icon-xiayishou"></i>
-          </div>
+      <div class="font">
+        <i class="iconfont icon-shangyishou" @click="lastSong" />
+        <i v-if="playing" class="el-icon-video-pause" @click="changeState" />
+        <i v-else class="el-icon-video-play" @click="changeState" />
+        <i class="iconfont icon-xiayishou" @click="nextSong" />
       </div>
-      <audio 
+    </div>
+    <audio
+      ref="audio"
       :src="musicInfo.url"
-        ref="audio"
-        @ended="audioEnd"
-        ></audio>
+      @ended="audioEnd"
+    />
   </div>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
-    data() {
-        return {
-            // isPlaying: false,
-            count: 0,
-            id: 1,
-            musicInfo: {},
-            // 控制显示
-            isShow: false
-        }
-    },
-    watch:{
-        playing(isPlaying) {
-            this.$nextTick(() => {
-                const audio = this.$refs.audio;
-                if (audio) {
-                    isPlaying ? audio.play() : audio.pause()
-                }
-            })
-        }
-    },
-    computed: {
-        ...mapGetters(['playing'])
-    },
-    async mounted() {
-        await this.getMusic();
-    },
-    methods: {
-        async getMusic(){
-            const res = await this.$api.getMusic(this.id);
-            // console.log(res);
-            if(res.code == 200) {
-                this.count = res.data.count;
-                this.musicInfo = res.data.data;
-            }
-        },
-        async nextSong() {
-            this.id+=1;
-            if (this.id > this.count) {
-                this.id = 1;
-            }
-            await this.getMusic();
-            this.$refs.audio.play()
-            this.$store.commit("setPlaying", true);
-        },
-        async lastSong() {
-            this.id-=1;
-            if (this.id <= 0) {
-                this.id = this.count;
-            }
-            await this.getMusic();
-            this.$store.commit("setPlaying", true);
-            this.$refs.audio.play()
-        },
-        changeState() {
-            // this.isPlaying = !this.isPlaying;
-            this.$store.commit("setPlaying", !this.playing);
-        },
-        // 歌曲播放完成回调
-        audioEnd() {
-            this.nextSong()
-        },
-        showControl() {
-            this.isShow = !this.isShow;
-            if(this.isShow){
-                this.$refs.music.style.right = '0';
-            } else {
-                this.$refs.music.style.right = '-150px'
-            }
-        }
+  data() {
+    return {
+      // isPlaying: false,
+      count: 0,
+      id: 1,
+      musicInfo: {},
+      // 控制显示
+      isShow: false
     }
-    
+  },
+  watch: {
+    playing(isPlaying) {
+      this.$nextTick(() => {
+        const audio = this.$refs.audio
+        if (audio) {
+          isPlaying ? audio.play() : audio.pause()
+        }
+      })
+    }
+  },
+  computed: {
+    ...mapGetters(['playing'])
+  },
+  async mounted() {
+    await this.getMusic()
+  },
+  methods: {
+    async getMusic() {
+      const res = await this.$api.getMusic(this.id)
+      // console.log(res);
+      if (res.code == 200) {
+        this.count = res.data.count
+        this.musicInfo = res.data.data
+      }
+    },
+    async nextSong() {
+      this.id += 1
+      if (this.id > this.count) {
+        this.id = 1
+      }
+      await this.getMusic()
+      this.$refs.audio.play()
+      this.$store.commit('setPlaying', true)
+    },
+    async lastSong() {
+      this.id -= 1
+      if (this.id <= 0) {
+        this.id = this.count
+      }
+      await this.getMusic()
+      this.$store.commit('setPlaying', true)
+      this.$refs.audio.play()
+    },
+    changeState() {
+      // this.isPlaying = !this.isPlaying;
+      this.$store.commit('setPlaying', !this.playing)
+    },
+    // 歌曲播放完成回调
+    audioEnd() {
+      this.nextSong()
+    },
+    showControl() {
+      this.isShow = !this.isShow
+      if (this.isShow) {
+        this.$refs.music.style.right = '0'
+      } else {
+        this.$refs.music.style.right = '-150px'
+      }
+    }
+  }
+
 }
 </script>
 

@@ -4,22 +4,22 @@
       {{item.name}}
     </a> -->
     <Search />
-    <Music />
-    <!-- 用户信息 -->
+    <!-- <Music /> -->
+    <!-- 用戶信息 -->
     <div class="userbox">
-      <div v-if="loginStatus" class="is-login">
-        <el-avatar class="avatar" :src="user.avatar" />
-        <span>{{ user.name }}</span>
+      <div v-if="userInfo" class="is-login">
+        <el-avatar class="avatar" :src="userInfo.detail.avatar.url" />
+        <span>{{ userInfo.name }}</span>
       </div>
       <div v-else class="no-login" @click="handleLogin">
-        登录
+        登錄
       </div>
     </div>
   </div>
 </template>
 <script>
-import Search from '../ArticleComponents/Search'
-import Music from './Music'
+import Search from '@/components/ArticleComponents/Search'
+import Music from '@/components/HeaderComponents/Music'
 import { mapGetters } from 'vuex'
 export default {
   name: 'Tablink',
@@ -27,27 +27,19 @@ export default {
     Search,
     Music
   },
-  data() {
-    return {
-      userInfo: {}
-    }
-  },
   computed: {
-    ...mapGetters(['user', 'loginStatus'])
-  },
-  mounted() {
-    if (localStorage.getItem('user')) {
-      this.userInfo = JSON.parse(localStorage.getItem('user'))
-    }
+    ...mapGetters({
+      userInfo: 'user/userInfo'
+    })
   },
   methods: {
-    // 点击登录跳转
+    // 點擊登錄跳轉
     handleLogin() {
       this.$router.push('/login')
     },
-    // 下拉框点击事件
+    // 下拉框點擊事件
     handleCommand(command) {
-      if (command == 'profile') {
+      if (command === 'profile') {
         this.$router.push('/profile')
       } else {
         localStorage.clear()
@@ -99,7 +91,7 @@ export default {
     }
   }
   a {
-    font-family: '微软雅黑';
+    font-family: '微軟雅黑';
     color: #d4d4d4;
     margin: 0 1rem;
     padding: .3rem;

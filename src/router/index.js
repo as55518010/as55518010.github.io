@@ -1,35 +1,13 @@
+/**
+ * @description router全局配置，如有必要可分文件抽離，其中asyncRoutes只有在intelligence模式下才會用到，vip文檔中已提供路由的基礎圖標與小清新圖標的配置方案，請仔細閱讀
+ */
+
 import Vue from 'vue'
-import Router from 'vue-router'
+import VueRouter from 'vue-router'
+import { publicPath, routerMode } from '@/config'
+import store from '@/store/index'
 
-Vue.use(Router)
-
-/* Layout */
-// import Layout from '@/layout'
-
-/**
- * Note: sub-menu only appear when route children.length >= 1
- * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
- *
- * hidden: true                   if set true, item will not show in the sidebar(default is false)
- * alwaysShow: true               if set true, will always show the root menu
- *                                if not set alwaysShow, when item has more than one children route,
- *                                it will becomes nested mode, otherwise not show the root menu
- * redirect: noRedirect           if set noRedirect will no redirect in the breadcrumb
- * name:'router-name'             the name is used by <keep-alive> (must set!!!)
- * meta : {
-    roles: ['admin','editor']    control the page roles (you can set multiple roles)
-    title: 'title'               the name show in sidebar and breadcrumb (recommend set)
-    icon: 'svg-name'/'el-icon-x' the icon show in the sidebar
-    breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
-    activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
-  }
- */
-
-/**
- * constantRoutes
- * a base page that does not have permission requirements
- * all roles can be accessed
- */
+Vue.use(VueRouter)
 export const constantRoutes = [
   {
     path: '/',
@@ -142,19 +120,178 @@ export const constantRoutes = [
   { path: '*', redirect: '/404', hidden: true }
 ]
 
-const createRouter = () =>
-  new Router({
-    // mode: 'history', // require service support
-    scrollBehavior: () => ({ y: 0 }),
-    routes: constantRoutes
-  })
+// export const asyncRoutes = [
+//   {
+//     path: '/',
+//     redirect: '/article',
+//     meta: {
+//       title: '首页',
+//       icon: 'home',
+//       affix: true
+//     }
+//   },
+//   {
+//     path: '/article',
+//     name: 'article',
+//     component: () => import('@/views/Web/Article.vue'),
+//     meta: {
+//       title: '首页',
+//       icon: 'home',
+//       affix: true
+//     }
+//   },
+//   {
+//     path: '/detail/:id',
+//     name: 'detail',
+//     component: () => import('@/components/ArticleComponents/detail.vue')
+//   },
+//   {
+//     path: '/login',
+//     name: 'login',
+//     component: () => import('@/views/Web/Login.vue')
+//   },
+//   {
+//     path: '/logined',
+//     name: 'logined',
+//     component: () => import('@/components/LoginComponents/Logined.vue')
+//   },
+//   {
+//     path: '/photos',
+//     name: 'photos',
+//     component: () => import('@/views/Web/Photos.vue')
+//   },
+//   {
+//     path: '/photoDetail/:id',
+//     name: 'photoDetail',
+//     component: () => import('@/components/PhotoComponents/detail.vue')
+//   },
+//   {
+//     path: '/profile',
+//     name: 'profile',
+//     component: () => import('@/views/Web/Profile.vue')
+//   },
+//   {
+//     path: '/message',
+//     name: 'message',
+//     component: () => import('@/views/Web/LeaveMessage.vue')
+//   },
+//   {
+//     path: '/demo',
+//     name: 'demo',
+//     component: () => import('@/views/Web/Demo.vue')
+//   },
+//   {
+//     path: '/category',
+//     name: 'category',
+//     component: () => import('@/views/Web/Category.vue')
+//   },
+//   {
+//     path: '/admin',
+//     redirect: '/admin/login'
+//   },
+//   {
+//     path: '/admin/login',
+//     name: 'adminlogin',
+//     component: () => import('@/views/Admin/adminLogin.vue')
+//   },
+//   {
+//     path: '/admin/article',
+//     name: 'admin',
+//     component: () => import('@/views/Admin/articleEditor.vue'),
+//     redirect: '/admin/article/upload/articleManage',
+//     children: [
+//       {
+//         path: '/admin/article/upload/demo',
+//         name: 'sendDemo',
+//         component: () => import('@/views/Admin/sendDemo.vue')
+//       },
+//       {
+//         path: '/admin/article/upload/photos',
+//         name: 'uploadphoto',
+//         component: () => import('@/views/Admin/sendcontent.vue')
+//       },
+//       {
+//         path: '/admin/article/upload/images',
+//         name: 'images',
+//         component: () => import('@/views/Admin/ImageUpload.vue')
+//       },
+//       {
+//         path: '/admin/article/upload/articlePublish',
+//         name: 'articlePublish',
+//         component: () => import('@/views/Admin/articlePublish.vue')
+//       },
+//       {
+//         path: '/admin/article/upload/articleManage',
+//         name: 'articleManage',
+//         component: () => import('@/views/Admin/articleManage.vue')
+//       },
+//       {
+//         path: '/admin/article/upload/users',
+//         name: 'UserManage',
+//         component: () => import('@/views/Admin/UserManage.vue')
+//       }
+//     ]
+//   }
+// ]
 
-const router = createRouter()
+const router = new VueRouter({
+  base: publicPath,
+  mode: routerMode,
+  scrollBehavior: () => ({
+    y: 0
+  }),
+  routes: constantRoutes
+})
 
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
-  const newRouter = createRouter()
-  router.matcher = newRouter.matcher // reset router
+  location.reload()
 }
+/* 重定向不报错 */
+// const routerPush = VueRouter.prototype.push
+// VueRouter.prototype.push = function push(location) {
+//   return routerPush.call(this, location).catch(error => error)
+// }
 
+/* 全局导航守卫 */
+router.beforeEach((to, from, next) => {
+  if (to.path === '/login') {
+    if (localStorage.getItem('token')) {
+      router.replace({ name: 'logined' })
+    }
+  }
+  next()
+})
+/* 管理系统守卫 */
+router.beforeEach(async(to, from, next) => {
+  if (to.path.includes('/admin/article')) {
+    const accessToken = store.getters['user/accessToken']
+    if (accessToken) {
+      // console.log(next)
+      next()
+    } else {
+      router.push({ name: 'adminlogin' })
+    }
+  }
+  next()
+})
+// 以登陆状态
+router.beforeEach(async(to, from, next) => {
+  if (to.path.includes('/admin/login')) {
+    const accessToken = store.getters['user/accessToken']
+    if (accessToken) {
+      router.push({ name: 'articleEditor' })
+    } else {
+      router.push({ name: 'adminlogin' })
+    }
+    // getnotedetail('/user/adminIslogined').then(res => {
+    //   if (res.data.err === 0) {
+    //     router.push({ name: 'admin' })
+    //   } else {
+    //     router.push({ name: 'adminlogin' })
+    //   }
+    // })
+  }
+  next()
+})
 export default router
+

@@ -1,30 +1,30 @@
 <template>
   <div id="logocontent">
     <div class="logo_name">
-      <i class="menu iconfont icon-caidan" @click="showNav"></i>
+      <i class="menu iconfont icon-caidan" @click="showNav" />
       <!-- <img v-show="$route.name !== 'home'" src="../../assets/images/logo.jpg" alt /> -->
       <p v-show="$route.name !== 'home'">Heartless</p>
-      <i @click="$router.push('/category')" class="search iconfont icon-sousuo"></i>
+      <i class="search iconfont icon-sousuo" @click="$router.push('/category')" />
     </div>
   </div>
 </template>
 <script>
 import eventBus from '@/utils/eventBus'
 export default {
-  name: "logo",
+  name: 'Logo',
   data() {
     return {
       isShowNav: false
     }
   },
-  methods:{
+  methods: {
     showNav() {
       const that = this
       this.isShowNav = !this.isShowNav
       eventBus.$emit('eventFromHeader', that.isShowNav)
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 /* @font-face {

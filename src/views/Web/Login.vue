@@ -1,66 +1,37 @@
 <template>
   <div id="login">
-    <el-form
-      ref="ruleForm"
-      :model="ruleForm"
-      status-icon
-      :rules="rules"
-      class="demo-ruleForm"
-    >
+    <el-form ref="ruleForm" :model="ruleForm" status-icon :rules="rules" class="demo-ruleForm">
       <el-form-item>
-        <div class="logintitle" :style="{color: Color}">欢迎加入Heartless的小家庭！</div>
+        <div class="logintitle" :style="{color: Color}">歡迎加入Heartless的小家庭！</div>
       </el-form-item>
-      <el-form-item prop="username">
-        <el-input v-model="ruleForm.username">
+      <el-form-item prop="name">
+        <el-input v-model="ruleForm.name">
           <template slot="prepend"><i class="el-icon-user" /></template>
         </el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input
-          v-model="ruleForm.password"
-          type="password"
-          autocomplete="off"
-        >
+        <el-input v-model="ruleForm.password" type="password" autocomplete="off">
           <template slot="prepend"><i class="el-icon-lock" /></template>
         </el-input>
       </el-form-item>
       <el-form-item v-if="isShow" prop="email">
-        <el-input
-          v-model="ruleForm.email"
-          placeholder="Email"
-          style="margin-bottom: 10px"
-        >
+        <el-input v-model="ruleForm.email" placeholder="Email" style="margin-bottom: 10px">
           <template slot="append">@qq.com</template>
         </el-input>
-        <el-button
-          style="padding: 10px 20px"
-          :disabled="showBtn"
-          type="primary"
-          @click="sendMail"
-        >{{ btntext }}</el-button>
+        <el-button style="padding: 10px 20px" :disabled="showBtn" type="primary" @click="sendMail">{{ btntext }}
+        </el-button>
       </el-form-item>
       <el-form-item>
-        <el-input
-          v-if="isShow"
-          v-model="ruleForm.code"
-          placeholder="请输入验证码"
-        />
+        <el-input v-if="isShow" v-model="ruleForm.code" placeholder="請輸入驗證碼" />
       </el-form-item>
       <el-form-item>
-        <el-button
-          style="padding: 10px 20px"
-          type="primary"
-          @click="submitForm('ruleForm')"
-        >登录</el-button>
-        <el-button
-          style="padding: 10px 20px"
-          @click="register"
-        >我是新人</el-button>
+        <el-button style="padding: 10px 20px" type="primary" @click="submitForm('ruleForm')">登錄</el-button>
+        <el-button style="padding: 10px 20px" @click="register">我是新人</el-button>
       </el-form-item>
       <el-form-item>
         <p style="font-size: 1rem" :style="{color: Color}">
           提示:
-          没有账号可以点击我是新人进行注册,只需要验证邮箱就可以了,欢迎你的加入！
+          沒有賬號可以點擊我是新人進行註冊,只需要驗證郵箱就可以了,歡迎你的加入！
         </p>
       </el-form-item>
     </el-form>
@@ -72,33 +43,56 @@ export default {
   data() {
     return {
       ruleForm: {
-        password: '',
-        username: '',
+        password: 'as555180',
+        name: 'derrick',
         email: '',
         code: ''
       },
-      // 显示注册项
+      // 顯示註冊項
       isShow: false,
-      // 发送验证码按钮是否可选
+      // 發送驗證碼按鈕是否可選
       showBtn: false,
-      // 验证码倒计时
+      // 驗證碼倒計時
       count: 60,
-      // 发送验证码按钮文本
-      btntext: '发送验证码',
-      // 定时器
+      // 發送驗證碼按鈕文本
+      btntext: '發送驗證碼',
+      // 定時器
       timer: null,
+      // 重定向
+      redirect: undefined,
       rules: {
         password: [
-          { required: true, message: '请输入密码', trigger: 'blur' }
-          // { min: 3, max: 5, message:'密码长度最少为8位,最多16位哦,（＞人＜；）', trigger: 'blur' }
+          { required: true, message: '請輸入密碼', trigger: 'blur' },
+          {
+            min: 8,
+            max: 16,
+            message: '密碼長度最少為8位,最多16位哦,（＞人＜；）',
+            trigger: 'blur'
+          }
         ],
-        username: [{ required: true, message: '请输入用户名', trigger: 'blur' }]
+        name: [
+          { required: true, message: '請輸入用戶名', trigger: 'blur' },
+          {
+            required: true,
+            pattern: /^[\u4e00-\u9fa5_a-zA-Z0-9.·-]+$/,
+            message: '用戶名不支持特殊字符',
+            trigger: 'blur'
+          }
+        ]
       }
     }
   },
   computed: {
     Color() {
       return this.$store.state.Color
+    }
+  },
+  watch: {
+    $route: {
+      handler(route) {
+        this.redirect = (route.query && route.query.redirect) || '/'
+      },
+      immediate: true
     }
   },
   mounted() {
@@ -114,10 +108,10 @@ export default {
           localStorage.removeItem(
             'dlsjalkjdkljaslfjldjgltlfgdoeiroeiotgjfkdjk'
           )
-          this.btntext = '发送验证码'
+          this.btntext = '發送驗證碼'
           this.showBtn = false
         } else {
-          this.btntext = `${this.count}秒后重新发送`
+          this.btntext = `${this.count}秒後重新發送`
           localStorage.setItem(
             'dlsjalkjdkljaslfjldjgltlfgdoeiroeiotgjfkdjk',
             this.count
@@ -129,22 +123,22 @@ export default {
     }
   },
   methods: {
-    // 提交表单
+    // 提交表單
     submitForm(formName) {
-      this.$refs[formName].validate(async(valid) => {
+      this.$refs[formName].validate(async valid => {
         if (valid) {
-          /* 登录失败走注册模式 */
+          /* 註冊模式 */
           if (this.isShow) {
             /* this.$store.commit('LoadingTitle',{
                     isShow: true,
-                    title: '正在注册您的账号请稍等...'
+                    title: '正在註冊您的賬號請稍等...'
                 }) */
             try {
               const res = await this.$api.userLogin(this.ruleForm)
               //   console.log(res);
               if (res.code === 200) {
                 this.$message.success(
-                  '注册成功啦小主人,3秒后为您跳转到首页(❤ ω ❤)!'
+                  '註冊成功啦小主人,3秒後為您跳轉到首頁(❤ ω ❤)!'
                 )
                 /* 保存token */
                 this.$store.commit('isLogin', true)
@@ -170,57 +164,52 @@ export default {
               this.$message.error(error)
             }
           } else {
-            /* 默认走登录模式 */
-            /*             this.$store.commit("LoadingTitleChange", {
-              isShow: true,
-              title: "正在登录请稍等片刻...",
-            }); */
+            const loading = this.$loading({
+              lock: true,
+              text: '正在登錄請稍等片刻...',
+              spinner: 'el-icon-loading',
+              background: 'rgba(0, 0, 0, 0.7)'
+            })
             try {
-              const res = await this.$api.userLogin(this.ruleForm)
-              // console.log(res);
-              if (res.code === 200) {
-                this.$message.success('登录成功啦，马上带您去浏览我的小站！')
-                /* 保存token */
-                this.$store.commit('isLogin', true)
-                this.$store.commit('saveUser', res.data)
-                localStorage.setItem('loginStatus', true)
-                localStorage.setItem('user', JSON.stringify(res.data))
-                localStorage.setItem('token', res.token)
-                setTimeout(() => {
-                  this.$router.back()
-                }, 1000)
-              } else {
-                this.$message.error(res.msg)
-              }
+              this.$store
+                .dispatch('user/login', this.ruleForm)
+                .then(() => {
+                  const routerPath =
+                    this.redirect === '/404' || this.redirect === '/401'
+                      ? '/'
+                      : this.redirect
+                  this.$router.push(routerPath).catch(() => {})
+                })
             } catch (error) {
               this.$message.error(error)
             }
+            loading.close()
           }
         } else {
-          this.$message.error('请输入完整信息,o(*￣▽￣*)o!')
+          this.$message.error('請輸入完整信息,o(*￣▽￣*)o!')
         }
       })
     },
-    // 显示注册项
+    // 顯示註冊項
     register() {
       this.isShow = !this.isShow
     },
-    // 发送邮箱
+    // 發送郵箱
     async sendMail() {
-      /* 发送邮箱验证码 */
+      /* 發送郵箱驗證碼 */
       if (this.ruleForm.email !== '') {
-        /* 验证邮箱是正确的的 */
+        /* 驗證郵箱是正確的的 */
         var reg = /^\d{5,10}$/
         if (reg.test(this.ruleForm.email) === true) {
           try {
-            /* 发起验证码请求 */
+            /* 發起驗證碼請求 */
             const res = await this.$api.sendEmail({
               email: this.ruleForm.email + '@qq.com'
             })
             if (res.code === 200) {
-              /* 发送成功 */
-              this.$message.success('验证码已经发送到小主的邮箱了,(●ˇ∀ˇ●)')
-              /* 进行倒计时 设置定时一分钟后可访问 */
+              /* 發送成功 */
+              this.$message.success('驗證碼已經發送到小主的郵箱了,(●ˇ∀ˇ●)')
+              /* 進行倒計時 設置定時一分鐘後可訪問 */
               localStorage.setItem(
                 'dlsjalkjdkljaslfjldjgltlfgdoeiroeiotgjfkdjk',
                 60
@@ -234,10 +223,10 @@ export default {
                   localStorage.removeItem(
                     'dlsjalkjdkljaslfjldjgltlfgdoeiroeiotgjfkdjk'
                   )
-                  this.btntext = '发送验证码'
+                  this.btntext = '發送驗證碼'
                   this.showBtn = false
                 } else {
-                  this.btntext = `${this.count}秒后重新发送`
+                  this.btntext = `${this.count}秒後重新發送`
                   localStorage.setItem(
                     'dlsjalkjdkljaslfjldjgltlfgdoeiroeiotgjfkdjk',
                     this.count
@@ -251,10 +240,10 @@ export default {
             this.$message.error(error)
           }
         } else {
-          this.$message.error('输入正确的邮箱噢，太马虎啦！')
+          this.$message.error('輸入正確的郵箱噢，太馬虎啦！')
         }
       } else {
-        this.$message.error('邮箱不能空着呢！')
+        this.$message.error('郵箱不能空著呢！')
       }
     }
   }
@@ -279,7 +268,7 @@ export default {
     font-size: 2rem;
   }
 }
-@media screen and (max-width:992px) {
+@media screen and (max-width: 992px) {
   #login {
     width: 100%;
     .demo-ruleForm {

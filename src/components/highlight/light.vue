@@ -1,11 +1,11 @@
 <template>
   <div id="lampadario" @click="changebg">
-    <input type="radio" name="switch" value="on" />
-    <input type="radio" name="switch" value="off" checked="checked" />
-    <label  for="switch"></label>
-    <div id="filo"></div>
+    <input type="radio" name="switch" value="on">
+    <input type="radio" name="switch" value="off" checked="checked">
+    <label for="switch" />
+    <div id="filo" />
     <div id="lampadina">
-      <div  id="sorpresa">
+      <div id="sorpresa">
         <div id="footer">.</div>
       </div>
     </div>
@@ -13,8 +13,8 @@
 </template>
 <script>
 export default {
-  name:'light',
-  methods:{
+  name: 'Light',
+  methods: {
     changebg() {
       this.$emit('changeBackground')
     }

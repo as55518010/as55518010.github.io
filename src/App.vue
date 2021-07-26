@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <RIndex />
+    <Layout />
     <canvas id="Snow" />
   </div>
 </template>
 
 <script>
-import RIndex from '@/views/Web/RIndex'
+import Layout from '@/views/Web/Layout'
 export default {
   name: 'App',
   components: {
-    RIndex
+    Layout
   },
   data() {
     return {}

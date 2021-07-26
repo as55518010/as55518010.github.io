@@ -91,17 +91,17 @@
         <div v-if="showSome" class="right" :style="{backgroundColor: bgColor}">
           <div class="recent">
             <!-- <div class="title">最近文章</div> -->
-            <Recent />
+            <!-- <Recent /> -->
           </div>
           <div class="aboutBlog">
-            <Blog />
+            <!-- <Blog /> -->
           </div>
           <div class="contact">
-            <Contact />
+            <!-- <Contact /> -->
           </div>
         </div>
       </div>
-      <Music v-if="!showSome" />
+      <!-- <Music v-if="!showSome" /> -->
     </div>
     <div v-if="isAdmin">
       <div class="moon" />

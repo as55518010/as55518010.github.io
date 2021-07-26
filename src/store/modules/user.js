@@ -1,97 +1,106 @@
-import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+/**
+ * @description 登錄、獲取用戶信息、退出登錄、清除accessToken邏輯，不建議修改
+ */
+
+import Vue from 'vue'
+import { getInfo, login, logout } from '@/api/user'
+import {
+  getAccessToken,
+  removeAccessToken,
+  setAccessToken,
+  getUserInfo, setUserInfo, removeUserInfo
+} from '@/utils/user'
 import { resetRouter } from '@/router'
+import { title } from '@/config'
 
-const getDefaultState = () => {
-  return {
-    token: getToken(),
-    name: '',
-    avatar: ''
-  }
+const state = () => ({
+  accessToken: getAccessToken(),
+  userInfo: getUserInfo(),
+  permissions: []
+})
+const getters = {
+  accessToken: state =>
+    state.accessToken || getAccessToken(),
+  userInfo: state => state.userInfo || getUserInfo(),
+  permissions: state => state.permissions
 }
-
-const state = getDefaultState()
-
 const mutations = {
-  RESET_STATE: (state) => {
-    Object.assign(state, getDefaultState())
+  setAccessToken(state, accessToken) {
+    state.accessToken = accessToken
+    setAccessToken(accessToken)
   },
-  SET_TOKEN: (state, token) => {
-    state.token = token
+  setUserInfo(state, userInfo) {
+    state.userInfo = userInfo
+    setUserInfo(userInfo)
   },
-  SET_NAME: (state, name) => {
-    state.name = name
-  },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar
+  setPermissions(state, permissions) {
+    state.permissions = permissions
   }
 }
-
 const actions = {
-  // user login
-  login({ commit }, userInfo) {
-    const { username, password } = userInfo
-    return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
-    })
+  setPermissions({ commit }, permissions) {
+    commit('setPermissions', permissions)
   },
-
-  // get user info
-  getInfo({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
-
-        if (!data) {
-          return reject('Verification failed, please Login again.')
-        }
-
-        const { name, avatar } = data
-
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
-    })
+  async getAccessToken({ commit }, form) {
+    const { result } = await login(form)
+    const accessToken = result.token
+    if (accessToken) {
+      commit('setAccessToken', accessToken)
+    } else {
+      Vue.prototype.$baseMessage(`登錄接口異常，未正確返回token...`, 'error')
+    }
   },
-
-  // user logout
-  logout({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        removeToken() // must remove  token  first
-        resetRouter()
-        commit('RESET_STATE')
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
-    })
+  async getUserInfo({ commit, state }) {
+    const { result } = await getInfo()
+    if (!result) {
+      Vue.prototype.$baseMessage('驗證失敗，請重新登錄...', 'error')
+      return false
+    }
+    if (result) {
+      // commit('setPermissions', permissions)
+      commit('setUserInfo', result)
+      // return permissions
+    } else {
+      Vue.prototype.$baseMessage('用戶信息接口異常', 'error')
+      return false
+    }
   },
-
-  // remove token
-  resetToken({ commit }) {
-    return new Promise(resolve => {
-      removeToken() // must remove  token  first
-      commit('RESET_STATE')
-      resolve()
-    })
+  async logout({ dispatch }) {
+    await logout(state.accessToken)
+    await dispatch('resetAccessToken')
+    await resetRouter()
+    Vue.prototype.$baseNotify(
+      `退出登錄成功`,
+      `歡迎下次光臨(●ˇ∀ˇ●)`
+    )
+  },
+  resetAccessToken({ commit }) {
+    // commit('setPermissions', [])
+    commit('setAccessToken', '')
+    commit('setUserInfo', '')
+    removeAccessToken()
+    removeUserInfo()
+  },
+  async login({ dispatch, state }, form) {
+    await dispatch('getAccessToken', form)
+    if (state.accessToken) {
+      await dispatch('getUserInfo')
+      const hour = new Date().getHours()
+      const thisTime =
+        hour < 8
+          ? '早上好'
+          : hour <= 11
+            ? '上午好'
+            : hour <= 13
+              ? '中午好'
+              : hour < 18
+                ? '下午好'
+                : '晚上好'
+      Vue.prototype.$baseNotify(
+        `${thisTime}，馬上帶您去瀏覽我的小站！`,
+        `歡迎登錄${title}`
+      )
+    }
   }
 }
-
-export default {
-  namespaced: true,
-  state,
-  mutations,
-  actions
-}
-
+export default { state, getters, mutations, actions }

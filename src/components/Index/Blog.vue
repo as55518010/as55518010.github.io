@@ -1,54 +1,54 @@
 <template>
-<el-card class="box-card">
-  <div slot="header" class="clearfix">
-    <span><i class="el-icon-coffee"></i>博客信息</span>
-  </div>
-  <div class="ItemList">
-    <span class="left">
-      <i class="el-icon-coffee-cup"></i>
-      文章总数
-    </span>
-    <span>
-        {{this.count}}
-    </span>
-  </div>
-  <div class="ItemList">
-    <span class="left">
-      <i class="el-icon-goblet"></i>
-      运行天数
-    </span>
-    <span>
-        {{runDays}}天
-    </span>
-  </div>
-</el-card>
+  <el-card class="box-card">
+    <div slot="header" class="clearfix">
+      <span><i class="el-icon-coffee" />博客信息</span>
+    </div>
+    <div class="ItemList">
+      <span class="left">
+        <i class="el-icon-coffee-cup" />
+        文章总数
+      </span>
+      <span>
+        {{ this.count }}
+      </span>
+    </div>
+    <div class="ItemList">
+      <span class="left">
+        <i class="el-icon-goblet" />
+        运行天数
+      </span>
+      <span>
+        {{ runDays }}天
+      </span>
+    </div>
+  </el-card>
 </template>
 
 <script>
 export default {
-    name: 'Blog',
-    data() {
-      return {
-        count: 0,
-        runDays: 0
-      }
-    },
-    mounted() {
-      this.getCount()
-      let now = (new Date()).valueOf();
-      let nTime = now - 1617374874293;
-      this.runDays = Math.floor(nTime / 86400000);
-    },
-    methods: {
-      // 获取文章数量
-      async getCount() {
-        const res = await this.$api.getArticleCount();
-        // console.log(res)
-        if(res.code == 200){
-          this.count = res.count
-        }
+  name: 'Blog',
+  data() {
+    return {
+      count: 0,
+      runDays: 0
+    }
+  },
+  mounted() {
+    this.getCount()
+    const now = (new Date()).valueOf()
+    const nTime = now - 1617374874293
+    this.runDays = Math.floor(nTime / 86400000)
+  },
+  methods: {
+    // 获取文章数量
+    async getCount() {
+      const res = await this.$api.getArticleCount()
+      // console.log(res)
+      if (res.code == 200) {
+        this.count = res.count
       }
     }
+  }
 }
 </script>
 
