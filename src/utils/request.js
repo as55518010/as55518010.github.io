@@ -15,6 +15,7 @@ import store from '@/store'
 import qs from 'qs'
 import router from '@/router'
 import { isArray } from '@/utils/validate'
+import { jsonToHump, jsonToUnderline } from '@/utils/hump'
 
 let loadingInstance
 
@@ -67,6 +68,7 @@ instance.interceptors.request.use(
         config.data,
         Vue.prototype.$baseLodash.identity
       )
+      config.data = jsonToUnderline(config.data)
     }
     if (
       config.data &&
@@ -92,7 +94,7 @@ instance.interceptors.response.use(
       : [...[successCode]]
     // 是否操作正常
     if (codeVerificationArray.includes(status)) {
-      return data
+      return jsonToHump(data)
     } else {
       handleCode(status, msg)
       return Promise.reject(

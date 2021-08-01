@@ -10,26 +10,22 @@
           <img :src="item.thumb" alt="圖片" @click="detailPage(item.id)">
         </div>
         <div class="text">
-          <h2 class="title"><i class="iconfont icon-biezhen" /> {{ item.title }}</h2>
-          <p class="desc"><span style="font-size:16px;font-weight:bold">文章簡介：</span>{{ item.article_detil.description }}
+          <h2 class="title"><i class="iconfont icon-biezhen" /> <router-link :to="`/detail/${item.id}`">{{ item.title }}</router-link></h2>
+          <p class="desc"><span style="font-size:16px;font-weight:bold">文章簡介：</span>{{ item.articleDetil.description }}
           </p>
           <div class="text-bottom">
             <div class="creater">
               <div class="img">
-                <!-- <img
-                  :src="item.avatar"
-                  alt=""
-                > -->
                 <img src="http://blog.heartless.top:3000/public/images/photos/20210402/1617330367769.jpg" alt="">
               </div>
               <span class="name"><i class="el-icon-user" />{{ item.author }}</span>
-              <span class="time"><i class="el-icon-time" />{{ parseTime(item.created_at,'{y}-{m}-{d}') }}</span>
+              <span class="time"><i class="el-icon-time" />{{ parseTime(item.createdAt,'{y}-{m}-{d}') }}</span>
               <!-- <span @click="changeLike(item.like_Star, item.id, index)"><i class="iconfont icon-dianzan"></i>{{item.like_Star}}</span> -->
               <!-- <span><i class="iconfont icon-pinglun" />{{ item.replytotal }} 條評論</span> -->
-              <span><i class="el-icon-view" />{{ item.article_detil.view }}</span>
+              <span><i class="el-icon-view" />{{ item.articleDetil.view }}</span>
             </div>
             <div class="tag">
-              <el-tag><i class="iconfont icon-biaoqian" style="font-size:.8rem;margin-right:.5rem;" />{{ item.article_detil.tag }}
+              <el-tag><i class="iconfont icon-biaoqian" style="font-size:.8rem;margin-right:.5rem;" />{{ item.articleDetil.tag }}
               </el-tag>
             </div>
           </div>
@@ -53,9 +49,10 @@
 </template>
 
 <script>
-import eventBus from '@/utils/eventBus'
+
 import { getArticle } from '@/api/article'
-import { parseTime } from '@/utils/index'
+import { parseTime, checkNullObj } from '@/utils/index'
+
 export default {
   data() {
     return {
@@ -63,12 +60,15 @@ export default {
       total: 0,
       // 文章列表
       list: [],
+      // 分頁
       pagination: {
         // 每頁數量
         size: 3,
         // 頁數
         page: 1
       },
+      // 篩選條件
+      where: {},
       // 點贊數量數組
       likes: [],
       // 標識是否為Category組件傳來的
@@ -77,39 +77,42 @@ export default {
       isTag: false
     }
   },
-  mounted() {
-    this.PageChange(1)
+  created() {
+    if (checkNullObj(this.$route.params)) {
+      this.where = this.$route.params
+    }
+    this.PageChange()
+    this.baseEventBus()
   },
   beforeUpdate() {
-    // 這裡的this是項目vue實例，用that接受，與eventBus的vue區分
-    const that = this
-    eventBus.$on('eventFromCategory', function(val) {
+    this.$baseEventBus.$on('eventFromTag', val => {
       // console.log(val)
-      that.list = val.list || []
-      that.total = val.total
-      that.page = val.page
-      that.isCategory = true
-      that.isTag = false
-      // that.pageSize = val.length
+      this.list = val.list || []
+      this.total = val.total
+      this.page = val.page
+      this.isCategory = false
+      this.isTag = true
+      // this.pageSize = val.length
     })
-    eventBus.$on('eventFromTag', function(val) {
-      // console.log(val)
-      that.list = val.list || []
-      that.total = val.total
-      that.page = val.page
-      that.isCategory = false
-      that.isTag = true
-      // that.pageSize = val.length
-    })
-    eventBus.$on('eventFromSearch', function(val) {
-      that.list = val.list || []
-      that.total = val.total
+    this.$baseEventBus.$on('eventFromSearch', val => {
+      this.list = val.list || []
+      this.total = val.total
     })
   },
   methods: {
+    baseEventBus() {
+      this.$baseEventBus.$on('eventFromCategory', categorieId => {
+        if (categorieId) {
+          this.where = { categorieId }
+        } else {
+          this.where = {}
+        }
+        this.PageChange()
+      })
+    },
     // 跳轉詳情頁
-    detailPage(article_id) {
-      this.$router.push(`/detail/${article_id}`)
+    detailPage(articleId) {
+      this.$router.push(`/detail/${articleId}`)
     },
     // 換頁的回調
     handlePageChange(val) {
@@ -128,7 +131,9 @@ export default {
     // 獲取文章列表
     async PageChange() {
       try {
-        const res = await getArticle(this.pagination)
+        const params = { pagination: this.pagination, where: this.where }
+        const res = await getArticle(params)
+        console.log(res)
         this.list = res.list
         this.total = res.pagination.total
         // this.list.map((item) => {
@@ -174,14 +179,14 @@ export default {
     },
     // 傳頁數到分類組件
     async emitToCategory(page, pageSize) {
-      eventBus.$emit('eventToCategory', {
+      this.$baseEventBus.$emit('eventToCategory', {
         page: this.page,
         pageSize: this.pageSize
       })
     },
     // 傳頁數到標籤組件
     async emitToTag(page, pageSize) {
-      eventBus.$emit('eventToTag', {
+      this.$baseEventBus.$emit('eventToTag', {
         page: this.page,
         pageSize: this.pageSize
       })
@@ -233,6 +238,10 @@ export default {
         width: 32rem;
         min-height: 14rem;
         position: relative;
+        a{
+          color: #337ab7;
+          text-decoration: none;
+        }
         .title {
           display: block;
           margin-bottom: 1.25rem;

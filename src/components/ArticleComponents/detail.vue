@@ -1,22 +1,18 @@
 <template>
   <div id="detail">
-    <!-- 标题 -->
+    <!-- 標題 -->
     <header class="detail_header" :style="{color: Color}">
       <h1 style="font-size:1.6rem">
         <i class="iconfont icon-lianjie" />
         {{ detail.title }}
       </h1>
-      <!-- 时间 -->
+      <!-- 時間 -->
       <h3 style="padding-top:1rem;">
-        <p>作者：{{ detail.name }} {{ detail.create_time | formateDateDetail }}发布</p>
-        <p>于{{ detail.update_time | formateDateDetail }}更新</p>
+        <p>作者：{{ detail.author }} {{ parseTime(detail.createdAt,'{y}-{m}-{d} {h}:{i}') }}發布</p>
+        <p>於{{ parseTime(detail.updatedAt,'{y}-{m}-{d} {h}:{i}') }}更新</p>
       </h3>
-      <!-- 标签 -->
-      <div class="tags">
-        <!-- <Tag :color="bgColor[index]" v-for="(item,index) in lablesList" :key="index">{{item}}</Tag> -->
-      </div>
     </header>
-    <!-- 内容区 -->
+    <!-- 內容區 -->
     <div class="content">
       <markdown ref="md" :toolbars-flag="false" :subfield="false" :default-open="'preview'" />
       <replyOrpublish
@@ -31,6 +27,8 @@
 <script>
 import markdown from '@/views/Admin/markdownEdit'
 import replyOrpublish from '../ReplyOrPublish/ReplyOrPublish'
+import { getArticleDetail } from '@/api/article'
+import { parseTime } from '@/utils/index'
 export default {
   name: 'Detail',
   components: {
@@ -39,19 +37,18 @@ export default {
   },
   data() {
     return {
-      // 文章对象
+      // 文章對象
       detail: {},
-      // 留言回复
+      // 留言回覆
       messageList: [],
-      // 页数
+      // 頁數
       page: 1,
-      // 每页数量
+      // 每頁數量
       pageSize: 5,
-      // 总数量
+      // 總數量
       count: 0,
-      title: '',
       bgColor: ['magenta', 'blue', 'red', 'cyan', 'volcano', 'yellow'],
-      // 转化后的html代码
+      // 轉化後的html代碼
       html: ''
     }
   },
@@ -68,25 +65,24 @@ export default {
     }
   },
   mounted() {
-    this.getDetail()
-    this.getArticleMessage()
+    // console.log(this.$route.params)
+    if (this.$route.params.id) {
+      this.getDetail()
+    }
+    // this.getArticleMessage()
   },
   methods: {
-    /* 获取文章详情 */
+    /* 獲取文章詳情 */
     async getDetail() {
-      const res = await this.$api.getDetail(this.$route.params.id)
-      // console.log(res)
-      if (res.code === 200) {
-        this.detail = res.data
-        // this.messageList = res.message.data
-        this.title = this.detail.title
-        this.$refs.md.content = this.detail.content
-      }
+      const { data } = await getArticleDetail(this.$route.params.id)
+      this.detail = data
+      // this.messageList = res.message.data
+      this.$refs.md.content = this.detail.content
     },
-    /* 获取文章留言 */
+    /* 獲取文章留言 */
     async getArticleMessage() {
       const res = await this.$api.getArticleMessage({
-        article_id: this.$route.params.id,
+        articleId: this.$route.params.id,
         page: this.page,
         pageSize: this.pageSize
       })
@@ -96,6 +92,9 @@ export default {
         // this.$message.error(res);
       }
       // console.log(res)
+    },
+    parseTime(time, cFormat) {
+      return parseTime(time, cFormat)
     }
   }
 }

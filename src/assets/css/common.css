@@ -37,15 +37,15 @@
     border-right: none;
 }
 
-/* ::-webkit-scrollbar { 
+/* ::-webkit-scrollbar {
     width:10px;
-    background:#ccc; 
+    background:#ccc;
     border-radius:10px;
 }
 
-::-webkit-scrollbar-thumb{ 
-    display:block; 
-    width:6px; 
-    margin:0 auto; border-radius: 10px; 
+::-webkit-scrollbar-thumb{
+    display:block;
+    width:6px;
+    margin:0 auto; border-radius: 10px;
     background:#ccc;
 } */

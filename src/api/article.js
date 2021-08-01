@@ -7,3 +7,9 @@ export function getArticle(params) {
     params
   })
 }
+export function getArticleDetail(id) {
+  return request({
+    url: `/article/${id}`,
+    method: 'get'
+  })
+}

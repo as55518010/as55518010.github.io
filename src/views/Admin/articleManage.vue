@@ -1,108 +1,113 @@
 <template>
   <div id="articleManage">
-      <h2>文章管理</h2>
-      <el-table
-        :data="tableData"
-        style="width: 100%"
-        border
-        >
-        <el-table-column
+    <h2>文章管理</h2>
+    <el-table
+      :data="tableData"
+      style="width: 100%"
+      border
+    >
+      <el-table-column
         label="文章标题"
-        style="width: 30%">
+        style="width: 30%"
+      >
         <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ scope.row.title }}</span>
+          <span style="margin-left: 10px">{{ scope.row.title }}</span>
         </template>
-        </el-table-column>
-        <el-table-column
+      </el-table-column>
+      <el-table-column
         label="文章简介"
-        style="width: 30%">
+        style="width: 30%"
+      >
         <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ scope.row.brief }}</span>
+          <span style="margin-left: 10px">{{ scope.row.brief }}</span>
         </template>
-        </el-table-column>
-        <el-table-column
+      </el-table-column>
+      <el-table-column
         label="文章分类"
-        style="width: 30%">
+        style="width: 30%"
+      >
         <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ scope.row.category }}</span>
+          <span style="margin-left: 10px">{{ scope.row.category }}</span>
         </template>
-        </el-table-column>
-        <el-table-column 
+      </el-table-column>
+      <el-table-column
         label="操作"
         style="width: 10%"
         width="180"
-        >
+      >
         <template slot-scope="scope">
-            <el-button
+          <el-button
             size="mini"
-            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button
+            @click="handleEdit(scope.$index, scope.row)"
+          >编辑</el-button>
+          <el-button
             size="mini"
             type="danger"
-            @click="handleDelete(scope.row.article_id)">删除</el-button>
+            @click="handleDelete(scope.row.articleId)"
+          >删除</el-button>
         </template>
-        </el-table-column>
-      </el-table>
-      <div class="pagination" style="margin-top:2rem">
-          <el-pagination
-            background
-            :page-size='3'
-            layout="prev, pager, next"
-            @current-change='PageChange'
-            :total="count">
-          </el-pagination>
-      </div>
+      </el-table-column>
+    </el-table>
+    <div class="pagination" style="margin-top:2rem">
+      <el-pagination
+        background
+        :page-size="3"
+        layout="prev, pager, next"
+        :total="count"
+        @current-change="PageChange"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-    data() {
-      return {
-        tableData: [],
-        count: 0,
-        page: 1,
-        pageSize: 3
+  data() {
+    return {
+      tableData: [],
+      count: 0,
+      page: 1,
+      pageSize: 3
+    }
+  },
+  mounted() {
+    this.getPage(1)
+  },
+  methods: {
+    handleEdit(index, row) {
+      // console.log(index, row);
+      this.$router.push({
+        name: 'articlePublish',
+        query: {
+          articleId: row.articleId
+        }
+      })
+    },
+    async handleDelete(articleId) {
+      const res = await this.$api.deleteArticle(articleId)
+      if (res.code == 200) {
+        this.$message.success(res.msg)
+        location.reload()
+      } else {
+        this.$message.error(res.msg)
       }
     },
-    mounted() {
-        this.getPage(1)
+    // 换页
+    PageChange(page) {
+      this.page = page
+      this.getPage(page)
     },
-    methods: {
-      handleEdit(index, row) {
-        // console.log(index, row);
-        this.$router.push({
-          name: 'articlePublish',
-          query: {
-            article_id: row.article_id
-          }
-        })
-      },
-      async handleDelete(article_id) {
-        const res = await this.$api.deleteArticle(article_id);
-        if(res.code == 200) {
-          this.$message.success(res.msg)
-          location.reload();
-        } else {
-          this.$message.error(res.msg)
-        }
-      },
-      //换页
-      PageChange(page) {
-          this.page = page
-          this.getPage(page)
-      },
-      // 获取文章
-      async getPage(page) {
-          const res = await this.$api.getArticle(page, this.pageSize)
-          if (res.code === 200) {
-              this.tableData = res.data.data
-              this.count = res.data.count
-          } else {
-              this.$message.error(res.msg)
-          }
+    // 获取文章
+    async getPage(page) {
+      const res = await this.$api.getArticle(page, this.pageSize)
+      if (res.code === 200) {
+        this.tableData = res.data.data
+        this.count = res.data.count
+      } else {
+        this.$message.error(res.msg)
       }
     }
+  }
 }
 </script>
 

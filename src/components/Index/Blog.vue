@@ -42,11 +42,11 @@ export default {
   methods: {
     // 获取文章数量
     async getCount() {
-      const res = await this.$api.getArticleCount()
+      // const res = await this.$api.getArticleCount()
       // console.log(res)
-      if (res.code == 200) {
-        this.count = res.count
-      }
+      // if (res.code == 200) {
+      //   this.count = res.count
+      // }
     }
   }
 }

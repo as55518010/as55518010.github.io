@@ -26,11 +26,11 @@
                     active-text-color="#fff"
                   >
                     <div class="navTitle">
-                      <span>导航</span>
+                      <span>導航</span>
                     </div>
-                    <el-menu-item index="1" @click="$router.push('/article')">
+                    <el-menu-item index="1" @click="articleAll">
                       <i class="el-icon-menu" />
-                      <span slot="title">首页</span>
+                      <span slot="title">首頁</span>
                     </el-menu-item>
                     <el-menu-item index="2" @click="$router.push('/demo')">
                       <i class="el-icon-video-camera" />
@@ -38,7 +38,7 @@
                     </el-menu-item>
                     <el-menu-item index="3" @click="$router.push('/photos')">
                       <i class="el-icon-picture-outline" />
-                      <span slot="title">云相册</span>
+                      <span slot="title">雲相冊</span>
                     </el-menu-item>
                     <el-menu-item index="4" @click="$router.push('/message')">
                       <i class="el-icon-chat-dot-round" />
@@ -46,22 +46,15 @@
                     </el-menu-item>
                     <el-menu-item index="5" @click="$router.push('/profile')">
                       <i class="el-icon-user" />
-                      <span slot="title">个人信息</span>
+                      <span slot="title">個人信息</span>
                     </el-menu-item>
                     <div class="navTitle">
                       <span>其他</span>
                     </div>
-                    <!-- <el-submenu index="4">
-                                <template slot="title">
-                                <i class="el-icon-menu"></i>
-                                    <span slot="title">文章分类</span>
-                                </template>
-                                <el-menu-item @click.native="$router.push('/admin/article/upload/users')" index="2-1">用户列表管理</el-menu-item>
-                            </el-submenu> -->
                     <Category />
                     <el-menu-item v-if="showSome" index="7" @click="goAdmin">
                       <i class="el-icon-setting" />
-                      <span slot="title">后台管理</span>
+                      <span slot="title">後台管理</span>
                     </el-menu-item>
                     <el-menu-item index="7" @click="goGithub">
                       <i class="iconfont icon-github" style="padding: 5px;padding-right:8px" />
@@ -73,35 +66,35 @@
             </div>
           </div>
           <!-- <div class="bottom">
-                    <i class="el-icon-setting"></i>管理后台
+                    <i class="el-icon-setting"></i>管理後台
                 </div> -->
         </div>
         <div ref="main" class="main" :style="{backgroundColor: bgColor}">
           <!-- <div class="header">
                     <h1>Heartless</h1>
-                    <h3>迷失的人迷失了，相逢的人会再相逢</h3>
+                    <h3>迷失的人迷失了，相逢的人會再相逢</h3>
                 </div> -->
           <keep-alive>
             <router-view class="router" :style="{backgroundColor: bgColor}" />
           </keep-alive>
           <div class="foot">
-            粤ICP备2021032727号
+            粵ICP備2021032727號
           </div>
         </div>
         <div v-if="showSome" class="right" :style="{backgroundColor: bgColor}">
           <div class="recent">
-            <!-- <div class="title">最近文章</div> -->
-            <!-- <Recent /> -->
+            <div class="title">最近文章</div>
+            <Recent />
           </div>
           <div class="aboutBlog">
-            <!-- <Blog /> -->
+            <Blog />
           </div>
           <div class="contact">
-            <!-- <Contact /> -->
+            <Contact />
           </div>
         </div>
       </div>
-      <!-- <Music v-if="!showSome" /> -->
+      <Music v-if="!showSome" />
     </div>
     <div v-if="isAdmin">
       <div class="moon" />
@@ -113,7 +106,7 @@
 </template>
 
 <script>
-import eventBus from '@/utils/eventBus'
+
 import Header from '@/components/Header'
 import Light from '@/components/highlight/light'
 import Category from '@/components/ArticleComponents/Category'
@@ -133,7 +126,7 @@ export default {
   },
   data() {
     return {
-      screenWidth: document.documentElement.clientWidth, // 屏幕宽度
+      screenWidth: document.documentElement.clientWidth, // 屏幕寬度
       showSome: true,
       isAdmin: false
     }
@@ -189,9 +182,9 @@ export default {
     } else {
       this.isAdmin = true
     }
-    // 接受Header的控制参数
+    // 接受Header的控制參數
     const that = this
-    eventBus.$on('eventFromHeader', function(val) {
+    this.$baseEventBus.$on('eventFromHeader', function(val) {
       if (val) {
         that.$refs.left.style.left = '0'
         that.$refs.main.style.marginLeft = '232px'
@@ -204,17 +197,18 @@ export default {
   methods: {
     changeBG() {
       this.$store.commit('updatefont', !this.$store.state.fontColor)
-      // console.log(this.$store.state.backgroundColor)
-      // console.log(this.$store.state.bgColor)
       this.$store.commit('updateBgColor', !this.$store.state.backgroundColor)
     },
-    // 跳转到github
+    // 跳轉到github
     goGithub() {
       window.open = 'https://github.com/Chen-12138'
     },
-    // 跳转到后台管理
+    // 跳轉到後台管理
     goAdmin() {
       this.$router.push('/admin')
+    },
+    articleAll() {
+      this.$baseEventBus.$emit('eventFromCategory')
     }
   }
 }

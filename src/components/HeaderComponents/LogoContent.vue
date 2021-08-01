@@ -9,7 +9,7 @@
   </div>
 </template>
 <script>
-import eventBus from '@/utils/eventBus'
+
 export default {
   name: 'Logo',
   data() {
@@ -21,7 +21,7 @@ export default {
     showNav() {
       const that = this
       this.isShowNav = !this.isShowNav
-      eventBus.$emit('eventFromHeader', that.isShowNav)
+      this.$baseEventBus.$emit('eventFromHeader', that.isShowNav)
     }
   }
 }

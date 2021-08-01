@@ -117,12 +117,12 @@ export default {
         if (this.value) {
           const token = localStorage.getItem('token')
           /* detail start */
-          const article_id = this.$route.params.id
+          const articleId = this.$route.params.id
           // let that = this
           if (this.publishURL == '/article/leaveMessage') {
             this.obj = {
               token: token,
-              article_id: article_id,
+              articleId: articleId,
               content: this.value
             }
           }

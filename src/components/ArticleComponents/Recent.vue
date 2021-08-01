@@ -2,72 +2,75 @@
   <el-card class="box-card">
     <div slot="header" class="clearfix">
       <span><i class="iconfont icon-wenzhang" /> 最近文章</span>
-    <!-- <el-button style="float: right; padding: 3px 0" type="text" @click="more">more</el-button> -->
+      <!-- <el-button style="float: right; padding: 3px 0" type="text" @click="more">more</el-button> -->
     </div>
     <div
-      v-for="(item, index) in recentList"
+      v-for="(item, index) in list"
       :key="index"
       class="ItemList"
       :title="item.title"
-      @click="handleToDetail(item.article_id)"
+      @click="handleToDetail(item.id)"
     >
       <span class="left">
         {{ item.title }}
       </span>
       <span>
-        <!-- <Icon type="ios-clock-outline" /> -->
-        {{ item.create_time | formateDate }}
+        {{ parseTime(item.createdAt,'{y}-{m}-{d}') }}
       </span>
     </div>
   </el-card>
 </template>
 
 <script>
+import { getArticle } from '@/api/article'
+import { parseTime } from '@/utils/index'
 export default {
   name: 'Recent',
-  // props: {
-  //   recentList: {
-  //     type: Array,
-  //     default() {
-  //       return []
-  //     }
-  //   }
-  // },
   data() {
     return {
-      recentList: [],
-      showList: []
+      // 總文章數
+      total: 0,
+      // 文章列表
+      list: [],
+      // 分頁
+      pagination: {
+        // 每頁數量
+        size: 3,
+        // 頁數
+        page: 1
+      },
+      // 排序
+      order: {
+        updatedAt: 'desc'
+      },
+      url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
     }
   },
-  mounted() {
+  created() {
     this.getRecent()
-    // setTimeout(()=>{
-    //   this.some()
-    // },200)
   },
   methods: {
     // 获取最近文章
     async getRecent() {
       try {
-        const res = await this.$api.getRecentArticle()
-        // console.log(res)
-        this.recentList = res.data
+        const params = { pagination: this.pagination, order: this.order }
+        const res = await getArticle(params)
+        this.list = res.list
       } catch (error) {
         this.$message.error(error)
       }
     },
-    // 截取部分文章
-    // some() {
-    //   // console.log(this.recentList)
-    //   var storeList = [...this.recentList];
-    //   this.showList = storeList.splice(0,6)
-    // },
+    // 查看更多
     // more() {
+
     //   this.showList = this.recentList
     // },
     // 跳转详情页
-    handleToDetail(article_id) {
-      this.$router.push(`/detail/${article_id}`)
+    handleToDetail(articleId) {
+      this.$router.push(`/detail/${articleId}`)
+    },
+    parseTime(time, cFormat) {
+      return parseTime(time, cFormat)
     }
   }
 }

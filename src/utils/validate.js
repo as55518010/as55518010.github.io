@@ -1,5 +1,5 @@
 /**
- * @description 判读是否为外链
+ * @description 判讀是否為外鏈
  * @param path
  * @returns {boolean}
  */
@@ -8,7 +8,7 @@ export function isExternal(path) {
 }
 
 /**
- * @description 校验密码是否小于6位
+ * @description 校驗密碼是否小於6位
  * @param str
  * @returns {boolean}
  */
@@ -17,7 +17,7 @@ export function isPassword(str) {
 }
 
 /**
- * @description 判断是否为数字
+ * @description 判斷是否為數字
  * @param value
  * @returns {boolean}
  */
@@ -27,7 +27,7 @@ export function isNumber(value) {
 }
 
 /**
- * @description 判断是否是名称
+ * @description 判斷是否是名稱
  * @param value
  * @returns {boolean}
  */
@@ -37,7 +37,7 @@ export function isName(value) {
 }
 
 /**
- * @description 判断是否为IP
+ * @description 判斷是否為IP
  * @param ip
  * @returns {boolean}
  */
@@ -48,7 +48,7 @@ export function isIP(ip) {
 }
 
 /**
- * @description 判断是否是传统网站
+ * @description 判斷是否是傳統網站
  * @param url
  * @returns {boolean}
  */
@@ -59,7 +59,7 @@ export function isUrl(url) {
 }
 
 /**
- * @description 判断是否是小写字母
+ * @description 判斷是否是小寫字母
  * @param str
  * @returns {boolean}
  */
@@ -69,7 +69,7 @@ export function isLowerCase(str) {
 }
 
 /**
- * @description 判断是否是大写字母
+ * @description 判斷是否是大寫字母
  * @param str
  * @returns {boolean}
  */
@@ -79,7 +79,7 @@ export function isUpperCase(str) {
 }
 
 /**
- * @description 判断是否是大写字母开头
+ * @description 判斷是否是大寫字母開頭
  * @param str
  * @returns {boolean}
  */
@@ -89,7 +89,7 @@ export function isAlphabets(str) {
 }
 
 /**
- * @description 判断是否是字符串
+ * @description 判斷是否是字符串
  * @param str
  * @returns {boolean}
  */
@@ -98,7 +98,7 @@ export function isString(str) {
 }
 
 /**
- * @description 判断是否是数组
+ * @description 判斷是否是數組
  * @param arg
  * @returns {arg is any[]|boolean}
  */
@@ -110,7 +110,7 @@ export function isArray(arg) {
 }
 
 /**
- * @description 判断是否是端口号
+ * @description 判斷是否是端口號
  * @param str
  * @returns {boolean}
  */
@@ -121,7 +121,7 @@ export function isPort(str) {
 }
 
 /**
- * @description 判断是否是手机号
+ * @description 判斷是否是手機號
  * @param str
  * @returns {boolean}
  */
@@ -131,7 +131,7 @@ export function isPhone(str) {
 }
 
 /**
- * @description 判断是否是身份证号(第二代)
+ * @description 判斷是否是身份證號(第二代)
  * @param str
  * @returns {boolean}
  */
@@ -142,7 +142,7 @@ export function isIdCard(str) {
 }
 
 /**
- * @description 判断是否是邮箱
+ * @description 判斷是否是郵箱
  * @param str
  * @returns {boolean}
  */
@@ -152,7 +152,7 @@ export function isEmail(str) {
 }
 
 /**
- * @description 判断是否中文
+ * @description 判斷是否中文
  * @param str
  * @returns {boolean}
  */
@@ -162,7 +162,7 @@ export function isChina(str) {
 }
 
 /**
- * @description 判断是否为空
+ * @description 判斷是否為空
  * @param str
  * @returns {boolean}
  */
@@ -177,18 +177,18 @@ export function isBlank(str) {
 }
 
 /**
- * @description 判断是否为固话
+ * @description 判斷是否為固話
  * @param str
  * @returns {boolean}
  */
 export function isTel(str) {
   const reg =
-    /^(400|800)([0-9\\-]{7,10})|(([0-9]{4}|[0-9]{3})(-| )?)?([0-9]{7,8})((-| |转)*([0-9]{1,4}))?$/
+    /^(400|800)([0-9\\-]{7,10})|(([0-9]{4}|[0-9]{3})(-| )?)?([0-9]{7,8})((-| |轉)*([0-9]{1,4}))?$/
   return reg.test(str)
 }
 
 /**
- * @description 判断是否为数字且最多两位小数
+ * @description 判斷是否為數字且最多兩位小數
  * @param str
  * @returns {boolean}
  */

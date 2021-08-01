@@ -10637,6 +10637,13 @@ vue-eslint-parser@^7.0.0:
     lodash "^4.17.21"
     semver "^6.3.0"
 
+vue-happy-bus@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/vue-happy-bus/-/vue-happy-bus-1.0.2.tgz#856bcb424e9154829a2832b61cad05a647d0c52f"
+  integrity sha512-VsOReoTTOvEqYj2yQqFjLUaOExOJmPMdKHkdYUynGbB+buS8IjbgZTuUCCMzWVK9fEVt5N6fjFQoBkHvP9qbZQ==
+  dependencies:
+    vue "^2.0.0"
+
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"
@@ -10700,6 +10707,11 @@ vue@2.6.10:
   version "2.6.10"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
   integrity sha512-ImThpeNU9HbdZL3utgMCq0oiMzAkt1mcgy3/E6zWC/G6AaQoeuFdsl9nDhTDU3X1R6FK7nsIUuRACVcjI+A2GQ==
+
+vue@^2.0.0:
+  version "2.6.14"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.14.tgz#e51aa5250250d569a3fbad3a8a5a687d6036e235"
+  integrity sha512-x2284lgYvjOMj3Za7kqzRcUSxBboHqtgRE2zlos1qWaOye5yUmHn42LB1250NJBLRwEcdrB0JRwyPTEPhfQjiQ==
 
 vuex@3.1.0:
   version "3.1.0"

@@ -116,3 +116,10 @@ export function param2Obj(url) {
   })
   return obj
 }
+/**
+ * @param {string} url
+ * @returns {boolean}
+ */
+export function checkNullObj(obj) {
+  return Object.keys(obj).length !== 0
+}

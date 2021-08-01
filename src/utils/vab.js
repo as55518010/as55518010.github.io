@@ -3,6 +3,7 @@ import * as lodash from 'lodash'
 import { Loading, Message, MessageBox, Notification } from 'element-ui'
 import store from '@/store'
 import { getAccessToken } from '@/utils/user'
+import BusFactory from 'vue-happy-bus'
 
 const accessToken = store.getters['user/accessToken']
 const layout = store.getters['settings/layout']
@@ -12,11 +13,11 @@ const install = (Vue, opts = {}) => {
   Vue.prototype.$baseAccessToken = () => {
     return accessToken || getAccessToken()
   }
-  /* 全局标题 */
+  /* 全局標題 */
   Vue.prototype.$baseTitle = (() => {
     return title
   })()
-  /* 全局加载层 */
+  /* 全局加載層 */
   Vue.prototype.$baseLoading = (index, text) => {
     let loading
     if (!index) {
@@ -35,7 +36,7 @@ const install = (Vue, opts = {}) => {
     }
     return loading
   }
-  /* 全局多彩加载层 */
+  /* 全局多彩加載層 */
   Vue.prototype.$baseColorfullLoading = (index, text) => {
     let loading
     if (!index) {
@@ -83,8 +84,8 @@ const install = (Vue, opts = {}) => {
 
   /* 全局Alert */
   Vue.prototype.$baseAlert = (content, title, callback) => {
-    MessageBox.alert(content, title || '温馨提示', {
-      confirmButtonText: '确定',
+    MessageBox.alert(content, title || '溫馨提示', {
+      confirmButtonText: '確定',
       dangerouslyUseHTMLString: true,
       callback: (action) => {
         if (callback) {
@@ -96,8 +97,8 @@ const install = (Vue, opts = {}) => {
 
   /* 全局Confirm */
   Vue.prototype.$baseConfirm = (content, title, callback1, callback2) => {
-    MessageBox.confirm(content, title || '温馨提示', {
-      confirmButtonText: '确定',
+    MessageBox.confirm(content, title || '溫馨提示', {
+      confirmButtonText: '確定',
       cancelButtonText: '取消',
       closeOnClickModal: false,
       type: 'warning'
@@ -145,7 +146,7 @@ const install = (Vue, opts = {}) => {
 
   /* 全局lodash */
   Vue.prototype.$baseLodash = lodash
-  /* 全局事件总线 */
+  /* 全局事件總線 */
   Vue.prototype.$baseEventBus = new Vue()
 }
 

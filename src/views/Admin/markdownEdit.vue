@@ -1,99 +1,99 @@
 <template>
-    <div>
-        <mavon-editor 
-            v-model="content"
-            ref="md" 
-            @change="change"
-            @imgAdd="$imgAdd"
-            :toolbarsFlag="toolbarsFlag"
-            :subfield="subfield"
-            :defaultOpen="defaultOpen"
-            :ishljs="true"
-            codeStyle="rainbow"
-            previewBackground="background-color: rgba($color: #fff, $alpha: 0.6);"
-            style="min-height: 600px;"
-        />
-        <!-- <button @click="submit">提交</button> -->
-    </div>
+  <div>
+    <mavon-editor
+      ref="md"
+      v-model="content"
+      :toolbars-flag="toolbarsFlag"
+      :subfield="subfield"
+      :default-open="defaultOpen"
+      :ishljs="true"
+      code-style="rainbow"
+      preview-background="background-color: rgba($color: #fff, $alpha: 0.6);"
+      style="min-height: 600px;"
+      @change="change"
+      @imgAdd="$imgAdd"
+    />
+    <!-- <button @click="submit">提交</button> -->
+  </div>
 </template>
 
 <script>
 import axios from 'axios'
-// 导入组件 及 组件样式
+// 導入組件 及 組件樣式
 import { mavonEditor } from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 export default {
-    props: {
-        subfield: {
-            type: Boolean,
-            default: false
-        },
-        defaultOpen: {
-            type: String,
-            default: 'edit'
-        },
-        toolbarsFlag: {
-            type: Boolean,
-            default: true
-        },
-        previewBackground: {
-            type: String,
-            default: '#fbfbfb'
-        },
+  // 註冊
+  components: {
+    mavonEditor
+  },
+  props: {
+    subfield: {
+      type: Boolean,
+      default: false
     },
-    // 注册
-    components: {
-        mavonEditor,
+    defaultOpen: {
+      type: String,
+      default: 'edit'
     },
-    data() {
-        return {
-            content: '', // 输入的markdown
-            html:'',    // 及时转的html
-        }
+    toolbarsFlag: {
+      type: Boolean,
+      default: true
     },
-    computed: {
-        articleImageUpload() {
-            return `${this.$store.state.baseURL}/admin/uploadCover`
-        }
-    },
-    methods: {
-        // 上传文件回调
-        async $imgAdd (pos, $file) {
-            // 第一步，将图片上传到服务器
-            let formdata = new FormData();
-            formdata.append('file', $file);
-            // console.log($file, formdata)
-            axios({
-                url: `${this.$store.state.baseURL}/admin/uploadCover`,
-                method: 'post',
-                data: formdata,
-                headers: {'Content-Type': 'multipart/form-data'},
-            }).then((data) => {
-                // 第二部，将返回的url替换到文本原位置![...](0) -> ![...](url)
-                /**
-                 * $vm 指为mavonEditor实例，可以通过如下两种方式获取
-                 * 1. 通过引入对象获取: `import {mavonEditor} from ...` 等方式引入后，`$vm`为`mavonEditor`
-                 * 2. 通过$refs获取: html声明ref : `<mavon-editor ref=md ></mavon-editor>，`$vm`为 `this.$refs.md`
-                 */
-                // console.log(pos)
-                this.$refs.md.$img2Url(pos, data.data.file.url)
-            })
-        },
-        // 所有操作都会被解析重新渲染
-        change(value, render){
-            // render 为 markdown 解析后的结果[html]
-            // console.log(value, render)
-            this.html = render;
-        },
-        // 提交
-        submit(){
-            // console.log(this.content);
-            // console.log(this.html);
-        }
-    },
-    mounted() {
-
+    previewBackground: {
+      type: String,
+      default: '#fbfbfb'
     }
+  },
+  data() {
+    return {
+      content: '', // 輸入的markdown
+      html: '' // 及時轉的html
+    }
+  },
+  computed: {
+    articleImageUpload() {
+      return `${this.$store.state.baseURL}/admin/uploadCover`
+    }
+  },
+  mounted() {
+
+  },
+  methods: {
+    // 上傳文件回調
+    async $imgAdd(pos, $file) {
+      // 第一步，將圖片上傳到服務器
+      const formdata = new FormData()
+      formdata.append('file', $file)
+      // console.log($file, formdata)
+      axios({
+        url: `${this.$store.state.baseURL}/admin/uploadCover`,
+        method: 'post',
+        data: formdata,
+        headers: { 'Content-Type': 'multipart/form-data' }
+      }).then((data) => {
+        // 第二部，將返回的url替換到文本原位置![...](0) -> ![...](url)
+        /**
+                 * $vm 指為mavonEditor實例，可以通過如下兩種方式獲取
+                 * 1. 通過引入對象獲取: `import {mavonEditor} from ...` 等方式引入後，`$vm`為`mavonEditor`
+                 * 2. 通過$refs獲取: html聲明ref : `<mavon-editor ref=md ></mavon-editor>，`$vm`為 `this.$refs.md`
+                 */
+        // console.log(pos)
+        this.$refs.md.$img2Url(pos, data.data.file.url)
+      })
+    },
+    // 所有操作都會被解析重新渲染
+    change(value, render) {
+      // render 為 markdown 解析後的結果[html]
+      // console.log(value, render)
+      this.html = render
+    },
+    // 提交
+    submit() {
+      // console.log(this.content);
+      // console.log(this.html);
+    }
+  }
 }
 </script>
 

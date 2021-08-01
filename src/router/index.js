@@ -19,6 +19,11 @@ export const constantRoutes = [
     component: () => import('@/views/Web/Article.vue')
   },
   {
+    path: '/article/:categorieId',
+    name: 'article',
+    component: () => import('@/views/Web/Article.vue')
+  },
+  {
     path: '/detail/:id',
     name: 'detail',
     component: () => import('@/components/ArticleComponents/detail.vue')
