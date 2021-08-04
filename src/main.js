@@ -15,6 +15,10 @@ import '@/icons' // icon
 
 import Vab from '@/utils/vab'
 
+import './assets/icon/iconfont.css'
+import './assets/css/reset.css'
+import '@/directive'
+
 Vue.use(Vab)
 
 /**
