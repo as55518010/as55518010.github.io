@@ -2,28 +2,28 @@
   <div id="article_desc">
     <div class="article-page-body-wrap">
       <div class="inner-body-wrap">
-        <div ref="articleBody" v-highlight v-html="articleObj.body" />
-        <div class="body-wrap-bottom"><span class="icon iconfont ios-shijian" /> 最后修改时间：{{ articleObj.time }}</div>
+        <div ref="articleBody" v-highlight v-html="article.content" />
+        <div class="body-wrap-bottom"><span class="icon iconfont ios-shijian" /> 最後修改時間：{{ parseTime(article.updatedAt, '{y}-{m}-{d} {h}:{i}' ) }}</div>
       </div>
       <div class="post-body-bottom">
         <span class="post-bottom-item" @click="diggAction()">
           <span class="icon iconfont zan" />
-          <span v-show="!isDigg">已推荐</span>
-          <span v-show="isDigg">点击推荐</span>
+          <span v-show="!isDigg">已推薦</span>
+          <span v-show="isDigg">點擊推薦</span>
         </span>
         <span class="post-bottom-item" @click="fucusAction()">
           <span class="icon iconfont heart" />
-          <span v-show="!isFucus">已关注</span>
-          <span v-show="isFucus">点击关注</span>
+          <span v-show="!isFucus">已關注</span>
+          <span v-show="isFucus">點擊關注</span>
         </span>
         <span class="post-bottom-item" @click="addToWz()">
-          <span class="icon iconfont star" />收藏该文
+          <span class="icon iconfont star" />收藏該文
         </span>
       </div>
       <div class="post-article-right">
         <div @click="openEdit">
           <span class="icon iconfont pen" />
-          <span>编辑</span>
+          <span>編輯</span>
         </div>
       </div>
     </div>
@@ -34,9 +34,18 @@
 import blogApi from '@/utils/BlogApi'
 import blogUtils from '@/utils/BlogUtils'
 import blogKit from '@/utils/BlogKit'
+import { parseTime } from '@/utils/index'
+
 export default {
   name: 'ArticleDesc',
-  props: ['articleObj'],
+  props: {
+    article: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
+  },
   data: () => {
     return {
       isFucus: '',
@@ -44,31 +53,31 @@ export default {
     }
   },
   watch: {
-    articleObj() {
+    article() {
       this.initPageList()
     }
   },
-  mounted: function() {
-    this.initPageList()
-  },
+  // mounted: function() {
+  //   this.initPageList()
+  // },
   beforeDestroy: function() {
-    this.BlogHeadBar.emit('articleDestroy', true)
+    this.$baseEventBus.$emit('articleDestroy', true)
   },
   methods: {
     openEdit: function() {
-      window.open(this.articleObj.editUrl)
+      window.open(this.article.editUrl)
     },
-    initPageList: function() {
+    initPageList() {
       this.$nextTick(() => {
-        this.articleObj.pageId ? blogApi.loadBlogPostInfo(this.articleObj.pageId).then((data) => {
-          this.isDigg = data.digg
-          this.isFucus = data.fucus
-          this.BlogHeadBar.emit('articleInited', this.$refs.articleBody)
-        }) : ''
+        this.$baseEventBus.$emit('articleInited', this.$refs.articleBody)
+        // this.article.pageId ? blogApi.loadBlogPostInfo(this.article.pageId).then((data) => {
+        //   this.isDigg = data.digg
+        //   this.isFucus = data.fucus
+        // }) : ''
       })
     },
     diggAction: function() {
-      blogApi.voteBlogPost(this.articleObj.pageId, false).then((data) => {
+      blogApi.voteBlogPost(this.article.pageId, false).then((data) => {
         blogUtils.showInfoMsg(data.message)
       })
     },
@@ -78,7 +87,10 @@ export default {
       })
     },
     addToWz: function() {
-      return blogKit.addToWz(this.articleObj.pageId)
+      return blogKit.addToWz(this.article.pageId)
+    },
+    parseTime(time, cFormat) {
+      return parseTime(time, cFormat)
     }
   }
 

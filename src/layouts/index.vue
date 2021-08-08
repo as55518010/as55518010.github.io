@@ -9,7 +9,7 @@
       <LoadingBody ref="loadingBody" class="loading-body-clz" />
       <div ref="routerView" class="route-body none-base-scroll" @scroll="panelScrollEvent">
         <div id="panel_top_target" />
-        <router-view ref="routeViewWrap" class="router-view-wrap" :style="{'min-Height':this.routeMinHeight+'px'}" />
+        <router-view ref="routeViewWrap" class="router-view-wrap" :style="{'min-Height':routeMinHeight+'px'}" />
         <BlogBottom />
         <div id="panel_bottom_target" />
       </div>
@@ -41,19 +41,19 @@ export default {
   created: function() {
   },
   mounted: function() {
-    /* 监控滑到顶部事件*/
+    /* 監控滑到頂部事件*/
     this.$baseEventBus.$on('panelToTop', () => {
       document.getElementById('panel_top_target').scrollIntoView({ behavior: 'smooth' })
     })
-    /* 监控滑到底部事件*/
+    /* 監控滑到底部事件*/
     this.$baseEventBus.$on('panelToBottom', () => {
       document.getElementById('panel_bottom_target').scrollIntoView({ behavior: 'smooth' })
     })
-    /* 小屏切换顶部设置界面*/
+    /* 小屏切換頂部設置界面*/
     this.$baseEventBus.$on('switchPanelAside', () => {
       this.asideIsShow = !this.asideIsShow
     })
-    /* 全屏加载开启*/
+    /* 全屏加載開啟*/
     this.$baseEventBus.$on('fullLoadingOpen', (next) => {
       this.$nextTick(() => {
         this.$refs.loadingBody ? this.$refs.loadingBody.openLoading(() => {
@@ -62,19 +62,19 @@ export default {
         }) : ''
       })
     })
-    /* 全屏加载关闭*/
+    /* 全屏加載關閉*/
     this.$baseEventBus.$on('fullLoadingClose', () => {
       this.$nextTick(() => {
         this.$refs.loadingBody ? this.$refs.loadingBody.closeLoading() : ''
       })
     })
-    /* 条加载开启*/
+    /* 條加載開啟*/
     this.$baseEventBus.$on('barLoadingOpen', () => {
       this.$nextTick(() => {
         this.$refs.loadingBar ? this.$refs.loadingBar.openLoadingBar() : ''
       })
     })
-    /* 条加载关闭*/
+    /* 條加載關閉*/
     this.$baseEventBus.$on('barLoadingClose', () => {
       this.$nextTick(() => {
         this.$refs.loadingBar ? this.$refs.loadingBar.closeLoadingBar() : ''
@@ -83,12 +83,10 @@ export default {
     this.routeMinHeight = (this.$refs.routerView.clientHeight - 40)
   },
   methods: {
-    panelScrollEvent: function(e) {
-      this.$bus.emit('panelScrollEven', e)
+    // 觸發文章目錄
+    panelScrollEvent(e) {
+      this.$baseEventBus.$emit('panelScrollEven', e)
     }
-  },
-  beforeRouteUpdate: function(to, from, next) {
-    this.$bus.emit('fullLoadingOpen', next)
   }
 }
 </script>

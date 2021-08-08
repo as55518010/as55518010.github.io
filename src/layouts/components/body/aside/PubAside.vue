@@ -14,9 +14,9 @@
     <div class="pub-body">
       <div v-show="selectItem==1" class="pub-body-view-posts">
         <div>
-          <div class="pub-body-title">热门文章</div>
+          <div class="pub-body-title">熱門文章</div>
           <div>
-            <div v-for="(item,id) in viewPosts" class="pub-item" @click="clickOpenArticle(item.url)">
+            <div v-for="(item,key) in viewPosts" :key="key" class="pub-item" @click="clickOpenArticle(item.url)">
               <div
                 class="pub-face panel-right-img-style"
                 :style="rightImg(id)"
@@ -31,15 +31,15 @@
             </div>
           </div>
         </div>
-        <aside-info-page />
-        <blog-cloud-page />
+        <!-- <AsideInfoPage />
+        <BlogCloudPage /> -->
 
       </div>
       <div v-show="selectItem==2" class="pub-body-comment">
         <div>
-          <div class="pub-body-title">最新评论</div>
+          <div class="pub-body-title">最新評論</div>
           <div>
-            <div v-for="(item,id) in catListComment" class="pub-item" @click="clickOpenArticle(item.url)">
+            <div v-for="(item,key) in catListComment" :key="key" class="pub-item" @click="clickOpenArticle(item.url)">
               <img class="pub-face panel-right-img-style" :src="item.img">
               <div class="pub-item-wrap">
                 <div class="item-title sing-ellipsis" :title="item.title">{{ item.title }}</div>
@@ -48,13 +48,13 @@
               </div>
             </div>
           </div>
-          <aside-info-page />
-          <blog-cloud-page />
+          <!-- <AsideInfoPage />
+          <BlogCloudPage /> -->
         </div>
       </div>
       <div v-show="selectItem==3" class="pub-body-menulist">
-        <blog-cloud-ad />
-        <blog-navicat-page />
+        <BlogCloudAd />
+        <BlogNavicatPage />
       </div>
     </div>
   </div>
@@ -76,25 +76,25 @@ export default {
   data: () => {
     return {
       selectItem: 1,
-      viewPosts: [],
-      catListComment: []
+      viewPosts: [], // 熱門文章
+      catListComment: [] // 最新評論
     }
   },
   created: function() {
-    blogApi.loadTopLists().then((data) => {
-      blogKit.convertSubjectUrls(data.topViewPostsBlock)
-      this.viewPosts = data.topViewPostsBlock
-    })
-    blogApi.loadSideColumn().then((data) => {
-      blogKit.convertSubjectUrls(data.catListComment)
-      data.catListComment.map((v) => {
-        v.body = emoji.parseText(v.body)
-        this.catListComment.push(v)
-        blogApi.loadCommitterFaceUrl(v.url, v.committer).then((picUrl) => {
-          v.img = picUrl
-        })
-      })
-    })
+    // blogApi.loadTopLists().then((data) => {
+    //   blogKit.convertSubjectUrls(data.topViewPostsBlock)
+    //   this.viewPosts = data.topViewPostsBlock
+    // })
+    // blogApi.loadSideColumn().then((data) => {
+    //   blogKit.convertSubjectUrls(data.catListComment)
+    //   data.catListComment.map((v) => {
+    //     v.body = emoji.parseText(v.body)
+    //     this.catListComment.push(v)
+    //     blogApi.loadCommitterFaceUrl(v.url, v.committer).then((picUrl) => {
+    //       v.img = picUrl
+    //     })
+    //   })
+    // })
     this.$baseEventBus.$on('articleInited', function(dom) {
       this.selectItem = 1
     })

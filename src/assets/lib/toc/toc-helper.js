@@ -14,7 +14,7 @@ const doc = document,
   scrollEvent = 'scroll',
 
   scrollDir = {
-    V: 'vertical',   //竖
+    V: 'vertical',   //豎
     H: 'horizontal'  // 水平
   },
   isHTMLElement = function (el) {
@@ -47,7 +47,7 @@ const doc = document,
     return dir === scrollDir.V ? el.scrollHeight > el.clientHeight : (dir === scrollDir.H ? el.scrollWidth > el.clientWidth : false)
   }
 
-// 窗口可视高度
+// 窗口可視高度
 let viewHeight = doc.documentElement.clientHeight
 
 
@@ -76,7 +76,7 @@ const defaultOptions = {
     marginLeft6: 'ml-6'
   },
   hightlight: true,
-  brand: '目录',
+  brand: '目錄',
   shadow: 'shadow',
   idPrefix: 'toc-heading-',
   offsetBody: body,
@@ -85,18 +85,16 @@ const defaultOptions = {
     left: 0
   },
   maxDepth: 6,
-  autoScroll: true    //自动添加滚动条
+  autoScroll: true    //自動添加滾動條
 }
 
 const TocHelper = function (selector, options = defaultOptions) {
-
   if (isString(selector) || isHTMLElement(selector)) {
     options.dom = selector
   } else if (isObject(selector)) {
     options = selector
   }
   this.options = Object.assign({}, defaultOptions, options)
-
   this.megre()
 
   this.winEvents()
@@ -135,7 +133,6 @@ TocHelper.prototype = {
     } else {
       this.options.offsetBody = body
     }
-
     this.toc = $(this.options.dom.dataset.toc) || $(`.${this.options.classNames.toc}`)
     const tocClassList = this.toc && this.toc.classList
     tocClassList && !tocClassList.contains(this.options.classNames.toc) && tocClassList.add(this.options.classNames.toc)
@@ -158,23 +155,23 @@ TocHelper.prototype = {
     this.events = [this.offsetBodyScrollEvent.bind(this)]
 
     this.offsetBodyScrollDebounce()
-    // 默认激活
+    // 默認激活
     this.activeToc()
-    // 滚动条位置同步
+    // 滾動條位置同步
     this.syncTocScroll()
 
-    // 自动生成滚动条
+    // 自動生成滾動條
     this.setTocScroll()
   },
   winEvents: function () {
     const _this = this
     win.addEventListener(resize, function () {
-      // 设备大小变化后重新设置高度
+      // 設備大小變化後重新設置高度
       viewHeight = doc.documentElement.clientHeight
       _this.debounce(_this.setTocScroll, 200).call(_this)
-    })
+    },true)
   },
-  // 设置navbar的滚动条样式
+  // 設置navbar的滾動條樣式
   setTocScroll: function () {
     this.resetTocScroll()
     const tocFixed = this.options.tocFixed,
@@ -185,28 +182,45 @@ TocHelper.prototype = {
       navbar.style.overflowY = 'auto'
     }
   },
-  // 重置样式
+  // 重置樣式
   resetTocScroll: function () {
     this.navbar.style.maxHeight = 'inherit'
     this.navbar.style.overflowY = 'inherit'
   },
-  // 若有滚动条计算滚动条的位置
+  // 若有滾動條計算滾動條的位置
   syncTocScroll: function () {
     const navbar = this.navbar, active = this.active
     if (!active || !hasScrollbar(navbar)) return
     const activeTop = active.offsetTop
     navbar.scrollTo(0, activeTop)
   },
-  // 内容/文章的滚动事件处理
-  offsetBodyScrollEvent: function () {
-    // 目录高亮显示
+  // 內容/文章的滾動事件處理
+  offsetBodyScrollEvent: function (Event) {
+    // 目錄高亮顯示
     this.activeToc()
-    // 目录滚动条同步
+    // 目錄滾動條同步
     this.syncTocScroll()
+  },
+  /**
+   * 判斷是否已到達底部
+   * @return {boolean}
+   */
+   isBottom: function () {
+    const offsetBody = this.options.offsetBody
+    let scrollTop =
+    offsetBody.scrollTop|| document.documentElement.scrollTop || document.body.scrollTop;
+    let offsetHeight =
+    offsetBody.offsetHeight||document.documentElement.clientHeight || document.body.clientHeight;
+    let scrollHeight =
+    offsetBody.scrollHeight||document.documentElement.scrollHeight || document.body.scrollHeight;
+    if (scrollTop + offsetHeight === scrollHeight) {
+      return true;
+    }
+    return false;
   },
   addOffsetBodyScrollEvent: function () {
     const el = this.options.offsetBody === body ? win : this.options.offsetBody
-    el.addEventListener(scrollEvent, this.events[0])
+    el.addEventListener(scrollEvent, this.events[0],true)
   },
   removeOffsetBodyScrollEvent: function () {
     const el = this.options.offsetBody === body ? win : this.options.offsetBody
@@ -214,7 +228,7 @@ TocHelper.prototype = {
   },
   offsetBodyScrollDebounce: function () {
     this.removeOffsetBodyScrollEvent()
-    // 防止抖动
+    // 防止抖動
     this.debounce(this.addOffsetBodyScrollEvent, 200).call(this)
   },
   reset: function () {
@@ -226,7 +240,7 @@ TocHelper.prototype = {
       targets = elements.targets,
       levels = elements.levels
 
-    // 创建 brand = 目录
+    // 創建 brand = 目錄
     if (typeof this.options.brand === 'string') {
       const brand = doc.createElement('div')
       brand.classList.add(this.options.classNames.brand)
@@ -234,14 +248,14 @@ TocHelper.prototype = {
       frag.appendChild(brand)
     }
 
-    // 创建navbar
+    // 創建navbar
     const navbar = doc.createElement('div')
     navbar.classList.add(this.options.classNames.navbar)
     frag.appendChild(navbar)
 
     this.navbar = navbar
 
-    // 创建hightlight
+    // 創建hightlight
     if (this.options.hightlight === true) {
       const hightlight = doc.createElement('div')
       hightlight.classList.add(this.options.classNames.hightlight)
@@ -249,20 +263,20 @@ TocHelper.prototype = {
     }
 
     const navClassName = this.options.classNames.nav
-    // 将节点添加到文档中
+    // 將節點添加到文檔中
     let lastNavNode = null, lastLevel = 1;
     levels.forEach((level, index, thisArray) => {
       const target = targets[index]
       if (!target) return
 
       if (index === 0 || thisArray[index - 1] !== level) {
-        // 创建nav
+        // 創建nav
         const nav = doc.createElement('nav')
         nav.classList.add(navClassName)
         nav.appendChild(target)
 
         if (level === 1) {
-          // 层级为1
+          // 層級為1
           navbar.appendChild(nav)
         } else if (level >= lastLevel) {
           lastNavNode.appendChild(nav)
@@ -326,11 +340,9 @@ TocHelper.prototype = {
       offsets = elements.offsets,
       targets = elements.targets,
       top = _this.getOffsetBodyScrollTop(),
-      // 判断当前滚动条在那个区间
+      // 判斷當前滾動條在那個區間
       index = offsets.findIndex(el => Number(el) > top)
-
-    let tocLink = targets[index];
-
+    let tocLink = _this.isBottom()?targets[targets.length-1]:targets[index];
     tocLink && (this.setActive(tocLink))
   },
   getOffsetY: function (el, stopParent = body) {
@@ -341,11 +353,11 @@ TocHelper.prototype = {
     return y
   },
   /**
-   * 获取heading对应的信息
-   * @returns levels 所有元素的层级
+   * 獲取heading對應的信息
+   * @returns levels 所有元素的層級
    * @returns offsets heading元素的偏移量
    * @returns sources heading元素集合
-   * @returns targets heading元素对于的目录元素
+   * @returns targets heading元素對於的目錄元素
    */
   loadHeadings: function () {
     const _this = this, maxDepth = this.options.maxDepth,
@@ -354,55 +366,55 @@ TocHelper.prototype = {
       GID_GENERATE = this.GID()
 
     /**
-     * 元素退级处理
+     * 元素退級處理
      * @param {*} headings heading元素集合
-     * @param {*} curIndex 当前元素在headings集合中的下表
-     * @param {*} curOriginaLevel 当前元素原始的层级
+     * @param {*} curIndex 當前元素在headings集合中的下表
+     * @param {*} curOriginaLevel 當前元素原始的層級
      */
     const backLevel = function (headings, curIndex, curOriginaLevel) {
 
       // if (headings[curIndex].textContent.indexOf('Test') > -1) debugger
 
-      // 小于1 和当前为第一个heading的层级均为1
+      // 小於1 和當前為第一個heading的層級均為1
       if (curOriginaLevel <= rootLevel || curIndex === 0) return rootLevel
 
-      // 大于最大层级的heading层级均为maxDepth
+      // 大於最大層級的heading層級均為maxDepth
       if (curOriginaLevel > lastLevel) return lastLevel
 
-      // 将当前heading的层级和heading之前的层级对比，进行退级或保留层级操作
+      // 將當前heading的層級和heading之前的層級對比，進行退級或保留層級操作
       const _headings = headings.filter((head, i) => i < curIndex)
 
       for (let i = _headings.length - 1; i >= 0; i--) {
 
-        // 上一个heading的层级 - 经过退级操作的层级
+        // 上一個heading的層級 - 經過退級操作的層級
         const preLevel = _headings[i][1]
-        // 上一个heading
+        // 上一個heading
         const preHeading = _headings[i][3]
 
-        // 上一个heading的元素原始层级
+        // 上一個heading的元素原始層級
         const preOriginaLevel = +preHeading.nodeName[1]
 
         if (curOriginaLevel < preOriginaLevel) {
-          // 当前层级比上一层级小直接退级到上一层级 - 对比原始层级
+          // 當前層級比上一層級小直接退級到上一層級 - 對比原始層級
           if (curOriginaLevel > preLevel) {
-            // 当前层级比上一层级退级的大
+            // 當前層級比上一層級退級的大
             return preLevel
           }
           return curOriginaLevel//preLevel
         } else if (curOriginaLevel === preOriginaLevel) {
-          // 当前层级于上一层级相等直接等于上一层级 - 对比原始层级
+          // 當前層級於上一層級相等直接等於上一層級 - 對比原始層級
           return preLevel
         } else if (preOriginaLevel < curOriginaLevel) {
-          // 当前层级比上一层级大 ， 退级到上一层级+1 - 对比原始层级
-          // 此处对比原始层级无意义
+          // 當前層級比上一層級大 ， 退級到上一層級+1 - 對比原始層級
+          // 此處對比原始層級無意義
           return preLevel + 1
         }
-        // 继续 对比
+        // 繼續 對比
       }
     }
     /**
-     * 设置heading的id
-     * @param {*} heading 给没有ID或ID重复的heading设置Id
+     * 設置heading的id
+     * @param {*} heading 給沒有ID或ID重複的heading設置Id
      */
 
     const setId = function (heading) {
@@ -412,7 +424,7 @@ TocHelper.prototype = {
       return heading
     }
     /**
-     * 获取当前heading元素到offsetBody元素的距离
+     * 獲取當前heading元素到offsetBody元素的距離
      * @param {*} heading  heading元素
      */
     /* const getOffsetY = function (heading) {
@@ -423,7 +435,7 @@ TocHelper.prototype = {
         return y
     } */
     /**
-     * 获取toclink
+     * 獲取toclink
      * @param {*} heading
      * @param {*} level
      */
@@ -431,7 +443,7 @@ TocHelper.prototype = {
       if (!heading.textContent.replace(/\s/g, '')) return false
       let tocLink = _this.toc.querySelector(`a[href="#${heading.id}"]`)
       if (!tocLink) {
-        // 不存在就创建一个
+        // 不存在就創建一個
         tocLink = doc.createElement('a')
         tocLink.href = `#${heading.id}`
         tocLink.classList.add(_this.options.classNames.link)
@@ -444,24 +456,24 @@ TocHelper.prototype = {
     }
 
     headings.forEach((heading, i, thisArray) => {
-      // 获取层级
+      // 獲取層級
       const level = backLevel(thisArray, i, +heading.nodeName[1]),
-        // 获取当前heading元素距离父级的距离
+        // 獲取當前heading元素距離父級的距離
         y = _this.getOffsetY(heading, _this.options.offsetBody)
-      // 设置ID
+      // 設置ID
       setId(heading)
-      // 获取toc目录
+      // 獲取toc目錄
       const tocLink = loadTocLink(heading, level)
       /* if(tocLink === false){
           thisArray.splice(i, 1)
           i = i - 1
       }else{
       } */
-      /* * @returns 0 heading元素下标 */
-      /* * @returns 1 heading元素的层级 */
-      /* * @returns 2 heading到父级（offsetBody ）的距离*/
+      /* * @returns 0 heading元素下標 */
+      /* * @returns 1 heading元素的層級 */
+      /* * @returns 2 heading到父級（offsetBody ）的距離*/
       /* * @returns 3 heading元素本身 */
-      /* * @returns 4 heading元素对应的link元素 */
+      /* * @returns 4 heading元素對應的link元素 */
       // [0, level, offsetTop, element, tocLinkElement]
       thisArray.splice(i, 1, [i, level, y, heading, tocLink])
 
@@ -484,16 +496,16 @@ TocHelper.prototype = {
     const activeClassName = this.options.classNames.active,
       defaultActiveSelector = `.${this.options.classNames.link}.${this.options.classNames.active}`
 
-    // 移除激活状态
+    // 移除激活狀態
     active && classList.contains(activeClassName) && classList.remove(activeClassName)
 
     active = this.active = el && isHTMLElement(el) ? el : $(defaultActiveSelector)
     classList = active && (active.classList || [])
 
-    // 激活状态
+    // 激活狀態
     active && !classList.contains(activeClassName) && classList.add(activeClassName)
 
-    // 设置高亮
+    // 設置高亮
     this.setHightlight(active)
 
   },
@@ -514,7 +526,7 @@ TocHelper.prototype = {
     this.setActive(this.active)
   },
   __click: function (e) {
-    // 防止滚动条抖动
+    // 防止滾動條抖動
     this.offsetBodyScrollDebounce()
     this.setActive(e.target)
   },
@@ -524,16 +536,16 @@ TocHelper.prototype = {
 
     const _this = this
     Array.from($$(`.${this.options.classNames.toc} .${this.options.classNames.link}`) || []).forEach(a => {
-      // 悬停事件
-      a.addEventListener(enterEvent, _this.__enter.bind(_this))
-      // 离开事件
-      a.addEventListener(leaveEvent, _this.__leave.bind(_this))
-      // 点击事件
-      a.addEventListener(clickEvent, _this.__click.bind(_this))
+      // 懸停事件
+      a.addEventListener(enterEvent, _this.__enter.bind(_this),true)
+      // 離開事件
+      a.addEventListener(leaveEvent, _this.__leave.bind(_this),true)
+      // 點擊事件
+      a.addEventListener(clickEvent, _this.__click.bind(_this),true)
     })
 
   },
-  // 阴影
+  // 陰影
   shadow: function () {
     if (this.options.shadow === false) return
     const toc = this.toc, classList = toc && (toc.classList || []), shadow = this.options.shadow

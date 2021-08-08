@@ -36,7 +36,7 @@ import blogUtils from '@/utils/BlogUtils'
 import EmojiUtils from '@/utils/EmojiUtils'
 import blogApi from '@/utils/BlogApi'
 export default {
-  name: 'ArticleComment',
+  name: 'Comment',
   props: {
     articleId: {
       default: -1

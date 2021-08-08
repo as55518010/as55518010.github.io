@@ -38,7 +38,7 @@ export default {
     }
   },
   created: function() {
-    /* 监听打开全屏*/
+    /* 監聽打開全屏*/
     this.$baseEventBus.$on('openFullScreenEven', (data) => {
       const newBody = $(data.body)
       newBody.find('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]').each((i, e) => {
@@ -53,9 +53,9 @@ export default {
           $('#post_body_fiex_menu_anchor').empty()
           $('#post_body_content_fullscreen').attr('data-toc', '#post_body_fiex_menu_anchor')
           const tocHelper = new TocHelper({
-            /* 需要生成目录的内容*/
+            /* 需要生成目錄的內容*/
             dom: '#post_body_content_fullscreen',
-            /* 能过获得滚动事件的dom*/
+            /* 能過獲得滾動事件的dom*/
             offsetBody: document.querySelector('.post-body-content-fiex-wrap')
           })
           tocHelper.reset()
@@ -63,7 +63,7 @@ export default {
           blogUtils.registerAnchorFunc($('#post_body_fiex_menu_anchor'))
           const topBtnDom = $("<span class='icon iconfont top topBtn topBtnDown'></span>")
           $('#post_body_fiex_menu_anchor .toc-brand').append(topBtnDom)
-          /* 滑动到上文或下文*/
+          /* 滑動到上文或下文*/
           topBtnDom.click(() => {
             if (topBtnDom.hasClass('topBtnDown')) {
               document.getElementById('full_body_bottom_target').scrollIntoView({ behavior: 'smooth' })
@@ -71,7 +71,7 @@ export default {
               document.getElementById('full_body_top_target').scrollIntoView({ behavior: 'smooth' })
             }
           })
-          /* 滚动切换上下按钮*/
+          /* 滾動切換上下按鈕*/
           $('.post-body-content-fiex-wrap').scroll(function(e) {
             if ($('#full_body_top_target').offset().top < -80) {
               topBtnDom.removeClass('topBtnDown')

@@ -28,17 +28,17 @@ export default {
       $('#blog_cloud_ad').show()
       $('#toc_page').empty()
     })
-    /* 监听生成目录*/
+    /* 監聽生成目錄*/
     this.$baseEventBus.$on('articleInited', function(dom) {
       $('#blog_cloud_ad').hide()
       $(dom).attr('data-toc', '#toc_page')
-      if ($('#app div[data-toc]').length == 0) {
+      if ($('#app div[data-toc]').length === 0) {
         return
       }
       $('#toc_page').empty()
       const tocHelper = new TocHelper({
         dom: '#app div[data-toc]',
-        offsetBody: document.querySelector('#app .body-wrap')
+        offsetBody: document.querySelector('.route-body')
       })
       tocHelper.reset()
       const tocPage = $('#toc_page')
@@ -52,10 +52,10 @@ export default {
       topBtnDom.click(() => {
         if (topBtnDom.hasClass('topBtnDown')) {
           // Down
-          self.BlogHeadBar.emit('panelToBottom', {})
+          self.$baseEventBus.$emit('panelToBottom', {})
         } else {
           // Up
-          self.BlogHeadBar.emit('panelToTop', {})
+          self.$baseEventBus.$emit('panelToTop', {})
         }
       })
       $('#toc_page .toc-brand').append(topBtnDom)

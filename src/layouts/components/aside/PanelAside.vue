@@ -2,8 +2,16 @@
   <div id="panel_aside" class="panel-aside-back-color">
     <div class="panel-aside-wrap none-base-scroll">
       <AvatarArea />
-      <MenuItems menu-identify="1" menu-title="導航" :menu-list="mainExtNav" />
-      <MenuItems menu-identify="2" menu-title="組成" :menu-list="funcMenuNav" />
+      <MenuItems menu-title="導航" :menu-list="mainExtNav" />
+      <MenuItems
+        menu-title="组成"
+        :menu-list="funcMenuNav"
+        index-prefix="/subject/category/"
+        :router="true"
+        :default-active="$route.path"
+      />
+
+      <!-- <MenuItems :menu-list="funcMenuNav" index-prefix="category/" :router="true" /> -->
     </div>
     <div class="panel-aside-bottom">
       <div class="blog-menu-bar panel-aside-color">
@@ -25,50 +33,48 @@
 </template>
 
 <script>
-
+import { getCategorie } from '@/api/categorie'
 /* 面板側邊控件*/
 import AvatarArea from './AvatarArea'
 import MenuItems from './MenuItems'
 import BlogContext from '@/context/BlogContext'
-import blogApi from '@/utils/BlogApi'
-import blogKit from '@/utils/BlogKit'
-const friendList = Object.assign([{ title: 'C君博客', url: 'https://www.cnblogs.com/cjunn/' }], BlogContext.blogFriendList)
 export default {
   name: 'PanelAside',
   components: { MenuItems, AvatarArea },
   data: () => {
     return {
-      mainExtNav: BlogContext.mainExtNav,
+      mainExtNav: [
+        { name: '首页', url: '/subject/category/default.html', icon: 'home' },
+        {
+          name: '博客动态',
+          url: 'https://www.cnblogs.com/cjunn/',
+          icon: 'comment1'
+        },
+        {
+          name: '博主简历',
+          url: 'https://www.cnblogs.com/cjunn/',
+          icon: 'face2'
+        },
+        { name: '主题反馈', url: '/c/subject/p/12494785.html', icon: 'bug' },
+        { name: '赞赏博主', url: '/c/subject/p/12495086.html', icon: 'gift' }
+      ],
       funcMenuNav: []
-
     }
   },
   created: function() {
-    blogApi.loadSideColumn().then((data) => {
-      this.funcMenuNav.push({
-        title: '隨筆分類',
-        icon: 'menu',
-        children: blogKit.convertSubjectUrls(data.catListPostCategory)
-      }, {
-        title: '隨筆檔案',
-        icon: 'paper',
-        children: blogKit.convertSubjectUrls(data.catListPostArchive)
-      }, {
-        title: '隨筆標籤',
-        icon: 'label',
-        children: blogKit.convertSubjectUrls(data.catListTag)
-      }, {
-        title: '常用鏈接',
-        icon: 'pen',
-        children: data.catListLink
-      }, {
-        title: '友鏈',
-        icon: 'links',
-        children: friendList
-      })
-    })
+    this.getCategorys()
   },
   methods: {
+    // 獲取類別
+    async getCategorys() {
+      try {
+        const { result } = await getCategorie()
+        this.funcMenuNav = result
+        this.categoryList = result
+      } catch (error) {
+        this.$message.error(error)
+      }
+    },
     openManage: () => {
       window.open(BlogContext.manPage)
     },
@@ -79,44 +85,42 @@ export default {
       window.open(BlogContext.sendPage)
     }
   }
-
 }
 </script>
 
 <style lang="scss">
-  #panel_aside {
+#panel_aside {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  .panel-aside-wrap {
+    position: absolute;
+    top: 0;
+    bottom: $headHeight;
+    overflow-y: scroll;
     width: 100%;
-    height: 100%;
-    position: relative;
+  }
 
-    .panel-aside-wrap {
-      position: absolute;
-      top: 0;
-      bottom: $headHeight;
-      overflow-y: scroll;
-      width: 100%;
-    }
+  .panel-aside-bottom {
+    position: absolute;
+    bottom: 0px;
+    height: $headHeight;
+    width: 100%;
 
-    .panel-aside-bottom {
-
-      position: absolute;
-      bottom: 0px;
-      height: $headHeight;
-      width: 100%;
-
-      .blog-menu-bar {
-        padding-top: 5px;
-        display: flex;
-        font-size: 12px;
-        position: relative;
-        > div {
-          cursor: pointer;
-          margin-top: 6px;
-          display: inline-block;
-          flex: 1;
-          text-align: center;
-        }
+    .blog-menu-bar {
+      padding-top: 5px;
+      display: flex;
+      font-size: 12px;
+      position: relative;
+      > div {
+        cursor: pointer;
+        margin-top: 6px;
+        display: inline-block;
+        flex: 1;
+        text-align: center;
       }
     }
   }
+}
 </style>

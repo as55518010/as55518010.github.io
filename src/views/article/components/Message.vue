@@ -39,13 +39,13 @@
           </div>
         </div>
       </div>
-      <pagination
+      <!-- <pagination
         v-if="messageList&&messageList.length>0"
         :page-size="messageCount"
         :page-cur="messageCurrent"
         max-page="10"
         @clickPage="clickPage"
-      />
+      /> -->
     </div>
   </div>
 </template>
@@ -53,12 +53,12 @@
 <script>
 import emoji from '@/utils/EmojiUtils'
 import blogApi from '@/utils/BlogApi'
-import Pagination from '@/components/common/Pagination'
+// import Pagination from '@/components/common/Pagination'
 import utils from '@/utils/BlogUtils'
 
 export default {
-  name: 'ArticleMessage',
-  components: { Pagination },
+  name: 'Message',
+  // components: { Pagination },
   props: {
     articleId: {
       default: -1

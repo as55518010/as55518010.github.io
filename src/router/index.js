@@ -3,43 +3,44 @@ import VueRouter from 'vue-router'
 import { publicPath, routerMode } from '@/config'
 import store from '@/store/index'
 import Layout from '@/layouts'
-// import CategoryBody from '@/components/body/CategoryBody'
-// import ArticleBody from '@/components/body/article/ArticleBody'
-// import SubjectBody from '@/components/body/SubjectBody'
+import CategoryBody from '@/views/category/index.vue'
+import ArticleBody from '@/views/article/index.vue'
+import SubjectBody from '@/layouts/components/body/SubjectBody'
 // import BlogAuthorBody from '@/components/body/author/BlogAuthorBody'
 
 Vue.use(VueRouter)
 export const constantRoutes = [
   {
     path: '/',
-    component: Layout
-    // children: [
-    //   {
-    //     path: 'subject',
-    //     name: 'SubjectBody',
-    //     component: SubjectBody,
-    //     children: [
-    //       { path: 'category', component: CategoryBody }
-    //       // { path: 'archive/:archiveYear/:archiveMonth', component: CategoryBody },
-    //       // { path: 'tag/:tagId/', component: CategoryBody },
-    //       // { path: 'p/:articleId', component: ArticleBody }
-    //     ]
-    //   },
-    //   {
-    //     path: 'author',
-    //     name: 'AuthorBody',
-    //     component: BlogAuthorBody
-    //   }
-    // ]
+    component: Layout,
+    children: [
+      {
+        path: 'subject',
+        name: 'SubjectBody',
+        component: SubjectBody,
+        children: [
+          { path: 'category/:categorieId', component: CategoryBody },
+          { path: 'article/:articleId', component: ArticleBody }
+          // { path: 'archive/:archiveYear/:archiveMonth', component: CategoryBody },
+          // { path: 'tag/:tagId/', component: CategoryBody },
+          // { path: 'p/:articleId', component: ArticleBody }
+        ]
+      }
+      // {
+      //   path: 'author',
+      //   name: 'AuthorBody',
+      //   component: BlogAuthorBody
+      // }
+    ]
   },
   {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
-  },
+  }
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  // { path: '*', redirect: '/404', hidden: true }
 ]
 // export const constantRoutes = [
 //   {
