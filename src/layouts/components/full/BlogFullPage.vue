@@ -23,7 +23,7 @@
 
 <script>
 import blogUtils from '@/utils/BlogUtils'
-import TocHelper from '@/assets/lib/toc/toc-helper'
+import TocHelper from '@/utils/toc/toc-helper.js'
 import $ from 'jquery'
 
 export default {

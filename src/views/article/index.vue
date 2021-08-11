@@ -36,6 +36,9 @@ export default {
   created() {
     this.getArticle()
   },
+  beforeDestroy() {
+    this.$baseEventBus.$emit('articleInitedClose')
+  },
   methods: {
     openFullScreenEven() {
       this.$baseEventBus.$emit('openFullScreenEven', {

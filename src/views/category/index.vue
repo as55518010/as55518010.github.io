@@ -67,7 +67,6 @@
 import { getArticle } from '@/api/article'
 import { getCategorieDetail } from '@/api/categorie'
 import BlogContext from '@/context/BlogContext'
-// import PageLine from './components/PageLine.vue'
 import { parseTime, checkNullObj } from '@/utils/index'
 
 const imgList = Array.from(
@@ -79,7 +78,6 @@ const imgList = Array.from(
 
 export default {
   name: 'Category',
-  // components: { PageLine },
   data: () => {
     return {
       // 總文章數

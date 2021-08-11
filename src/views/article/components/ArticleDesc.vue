@@ -48,8 +48,8 @@ export default {
   },
   data: () => {
     return {
-      isFucus: '',
-      isDigg: ''
+      isFucus: true,
+      isDigg: true
     }
   },
   watch: {

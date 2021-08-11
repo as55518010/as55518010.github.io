@@ -7,7 +7,7 @@
       <span class="article-menu-item" :class="selectItem==2?'article-menu-bottom':''" @click="selectItem=2">
         <span class="icon iconfont talk" />
       </span>
-      <span class="article-menu-item" :class="selectItem==3?'article-menu-bottom':''" @click="selectItem=3">
+      <span v-show="isArticleInited" class="article-menu-item" :class="selectItem==3?'article-menu-bottom':''" @click="selectItem=3">
         <span class="icon iconfont menu" />
       </span>
     </div>
@@ -77,7 +77,8 @@ export default {
     return {
       selectItem: 1,
       viewPosts: [], // 熱門文章
-      catListComment: [] // 最新評論
+      catListComment: [], // 最新評論
+      isArticleInited: false
     }
   },
   created: function() {
@@ -95,8 +96,13 @@ export default {
     //     })
     //   })
     // })
-    this.$baseEventBus.$on('articleInited', function(dom) {
+    this.$baseEventBus.$on('articleInited', () => {
+      this.selectItem = 3
+      this.isArticleInited = true
+    })
+    this.$baseEventBus.$on('articleInitedClose', () => {
       this.selectItem = 1
+      this.isArticleInited = false
     })
   },
   methods: {

@@ -8,7 +8,7 @@
 
 <script>
 import $ from 'jquery'
-import TocHelper from '@/assets/lib/toc/toc-helper'
+import TocHelper from '@/utils/toc/toc-helper.js'
 import blogUtils from '@/utils/BlogUtils'
 
 export default {

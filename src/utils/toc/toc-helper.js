@@ -1,55 +1,53 @@
-import "./toc-helper.min.css";
+import './toc-helper.min.css'
 
-const doc = document,
-  win = window,
-  body = doc.body,
-  $ = doc.querySelector.bind(doc),
-  $$ = doc.querySelectorAll.bind(doc),
-  animate = win.requestAnimationFrame,
-  isMobile = (/Mobile|Android|iOS|iPhone|iPad|iPod|Windows Phone|KFAPWI/i.test(navigator.userAgent)),
-  enterEvent = isMobile ? 'touchstart' : 'mouseenter',
-  leaveEvent = isMobile ? 'touchend' : 'mouseleave',
-  clickEvent = isMobile ? 'touchend' : 'click',
-  resize = isMobile ? 'orientationchange' : 'resize',
-  scrollEvent = 'scroll',
+const doc = document
+const win = window
+const body = doc.body
+const $ = doc.querySelector.bind(doc)
+const $$ = doc.querySelectorAll.bind(doc)
+const isMobile = (/Mobile|Android|iOS|iPhone|iPad|iPod|Windows Phone|KFAPWI/i.test(navigator.userAgent))
+const enterEvent = isMobile ? 'touchstart' : 'mouseenter'
+const leaveEvent = isMobile ? 'touchend' : 'mouseleave'
+const clickEvent = isMobile ? 'touchend' : 'click'
+const resize = isMobile ? 'orientationchange' : 'resize'
+const scrollEvent = 'scroll'
 
-  scrollDir = {
-    V: 'vertical',   //豎
-    H: 'horizontal'  // 水平
-  },
-  isHTMLElement = function (el) {
-    return el instanceof HTMLElement
-  },
-  isString = function (o) {
-    return typeof o === 'string'
-  },
-  isObject = function (o) {
-    return Object.prototype.toString.call(o) === '[object Object]'
-  },
-  getDom = (selector) => {
-    try {
-      return $(selector)
-    } catch (error) {
-      return null
-    }
-  },
-  css = function (el, key, value) {
-    if (el && !value) {
-      return win.getComputedStyle(el).getPropertyValue(key)
-    }
-    el.style[key] = value
-  },
-  isPosition = function (el) {
-    const position = css(el, 'position')
-    return position && position !== 'static'
-  },
-  hasScrollbar = function (el, dir = scrollDir.V) { //horizontal 水平
-    return dir === scrollDir.V ? el.scrollHeight > el.clientHeight : (dir === scrollDir.H ? el.scrollWidth > el.clientWidth : false)
+const scrollDir = {
+  V: 'vertical', // 豎
+  H: 'horizontal' // 水平
+}
+const isHTMLElement = function(el) {
+  return el instanceof HTMLElement
+}
+const isString = function(o) {
+  return typeof o === 'string'
+}
+const isObject = function(o) {
+  return Object.prototype.toString.call(o) === '[object Object]'
+}
+const getDom = (selector) => {
+  try {
+    return $(selector)
+  } catch (error) {
+    return null
   }
+}
+const css = function(el, key, value) {
+  if (el && !value) {
+    return win.getComputedStyle(el).getPropertyValue(key)
+  }
+  el.style[key] = value
+}
+const isPosition = function(el) {
+  const position = css(el, 'position')
+  return position && position !== 'static'
+}
+const hasScrollbar = function(el, dir = scrollDir.V) { // horizontal 水平
+  return dir === scrollDir.V ? el.scrollHeight > el.clientHeight : (dir === scrollDir.H ? el.scrollWidth > el.clientWidth : false)
+}
 
 // 窗口可視高度
 let viewHeight = doc.documentElement.clientHeight
-
 
 const CLASS_NAMES = {
   TOC: 'toc'
@@ -85,10 +83,10 @@ const defaultOptions = {
     left: 0
   },
   maxDepth: 6,
-  autoScroll: true    //自動添加滾動條
+  autoScroll: true // 自動添加滾動條
 }
 
-const TocHelper = function (selector, options = defaultOptions) {
+const TocHelper = function(selector, options = defaultOptions) {
   if (isString(selector) || isHTMLElement(selector)) {
     options.dom = selector
   } else if (isObject(selector)) {
@@ -100,11 +98,11 @@ const TocHelper = function (selector, options = defaultOptions) {
   this.winEvents()
 
   return this
-
 }
 
 TocHelper.prototype = {
-  megre: function (newOptions = {}) {
+  clickUse: false,
+  megre: function(newOptions = {}) {
     if (!isObject(newOptions)) return
     this.options = Object.assign({}, this.options, newOptions)
 
@@ -118,7 +116,7 @@ TocHelper.prototype = {
     let maxDepth = null
     this.options.maxDepth = (maxDepth = parseInt(this.options.maxDepth || 6), maxDepth >= 1 && maxDepth <= 6 ? maxDepth : 6)
 
-    let offsetBody = this.options.offsetBody
+    const offsetBody = this.options.offsetBody
     if (!offsetBody || offsetBody === body) {
       this.options.offsetBody = body
     } else if (isHTMLElement(offsetBody)) {
@@ -139,8 +137,7 @@ TocHelper.prototype = {
 
     return this
   },
-  reload: function () {
-
+  reload: function() {
     this.hightlight = this.options.hightlight === true ? $(`.${this.options.classNames.hightlight}`) : null
 
     this.navbar = this.navbar || $(`.${this.options.classNames.navbar}`)
@@ -151,7 +148,7 @@ TocHelper.prototype = {
 
     this.shadow()
 
-    !this.elements && (this.elements = this.loadHeadings());
+    !this.elements && (this.elements = this.loadHeadings())
     this.events = [this.offsetBodyScrollEvent.bind(this)]
 
     this.offsetBodyScrollDebounce()
@@ -163,19 +160,19 @@ TocHelper.prototype = {
     // 自動生成滾動條
     this.setTocScroll()
   },
-  winEvents: function () {
+  winEvents: function() {
     const _this = this
-    win.addEventListener(resize, function () {
+    win.addEventListener(resize, function() {
       // 設備大小變化後重新設置高度
       viewHeight = doc.documentElement.clientHeight
       _this.debounce(_this.setTocScroll, 200).call(_this)
-    },true)
+    }, true)
   },
   // 設置navbar的滾動條樣式
-  setTocScroll: function () {
+  setTocScroll: function() {
     this.resetTocScroll()
-    const tocFixed = this.options.tocFixed,
-      navbar = this.navbar
+    const tocFixed = this.options.tocFixed
+    const navbar = this.navbar
     if (this.options.autoScroll && tocFixed && this.toc.offsetHeight + (tocFixed.top || 0) > viewHeight) {
       const maxHeight = (viewHeight - this.getOffsetY(navbar) - (tocFixed.top || 0))
       navbar.style.maxHeight = maxHeight + 'px'
@@ -183,62 +180,62 @@ TocHelper.prototype = {
     }
   },
   // 重置樣式
-  resetTocScroll: function () {
+  resetTocScroll: function() {
     this.navbar.style.maxHeight = 'inherit'
     this.navbar.style.overflowY = 'inherit'
   },
   // 若有滾動條計算滾動條的位置
-  syncTocScroll: function () {
-    const navbar = this.navbar, active = this.active
+  syncTocScroll: function() {
+    const navbar = this.navbar; const active = this.active
     if (!active || !hasScrollbar(navbar)) return
     const activeTop = active.offsetTop
     navbar.scrollTo(0, activeTop)
   },
   // 內容/文章的滾動事件處理
-  offsetBodyScrollEvent: function (Event) {
-    // 目錄高亮顯示
-    this.activeToc()
-    // 目錄滾動條同步
-    this.syncTocScroll()
+  offsetBodyScrollEvent: function() {
+    if (!this.clickUse) {
+      // 目錄高亮顯示
+      this.activeToc()
+      // 目錄滾動條同步
+      this.syncTocScroll()
+    }
   },
   /**
    * 判斷是否已到達底部
    * @return {boolean}
    */
-   isBottom: function () {
+  isBottom: function() {
     const offsetBody = this.options.offsetBody
-    let scrollTop =
-    offsetBody.scrollTop|| document.documentElement.scrollTop || document.body.scrollTop;
-    let offsetHeight =
-    offsetBody.offsetHeight||document.documentElement.clientHeight || document.body.clientHeight;
-    let scrollHeight =
-    offsetBody.scrollHeight||document.documentElement.scrollHeight || document.body.scrollHeight;
+    const scrollTop =
+    offsetBody.scrollTop || document.documentElement.scrollTop || document.body.scrollTop
+    const offsetHeight =
+    offsetBody.offsetHeight || document.documentElement.clientHeight || document.body.clientHeight
+    const scrollHeight =
+    offsetBody.scrollHeight || document.documentElement.scrollHeight || document.body.scrollHeight
     if (scrollTop + offsetHeight === scrollHeight) {
-      return true;
+      return true
     }
-    return false;
+    return false
   },
-  addOffsetBodyScrollEvent: function () {
+  addOffsetBodyScrollEvent: function() {
     const el = this.options.offsetBody === body ? win : this.options.offsetBody
-    el.addEventListener(scrollEvent, this.events[0],true)
+    el.addEventListener(scrollEvent, this.events[0], true)
   },
-  removeOffsetBodyScrollEvent: function () {
+  removeOffsetBodyScrollEvent: function() {
     const el = this.options.offsetBody === body ? win : this.options.offsetBody
     el.removeEventListener(scrollEvent, this.events[0])
   },
-  offsetBodyScrollDebounce: function () {
+  offsetBodyScrollDebounce: function() {
     this.removeOffsetBodyScrollEvent()
     // 防止抖動
     this.debounce(this.addOffsetBodyScrollEvent, 200).call(this)
   },
-  reset: function () {
-
+  reset: function() {
     this.clear()
-
     const frag = doc.createDocumentFragment()
-    const elements = this.elements = this.loadHeadings(),
-      targets = elements.targets,
-      levels = elements.levels
+    const elements = this.elements = this.loadHeadings()
+    const targets = elements.targets
+    const levels = elements.levels
 
     // 創建 brand = 目錄
     if (typeof this.options.brand === 'string') {
@@ -264,7 +261,7 @@ TocHelper.prototype = {
 
     const navClassName = this.options.classNames.nav
     // 將節點添加到文檔中
-    let lastNavNode = null, lastLevel = 1;
+    let lastNavNode = null; let lastLevel = 1
     levels.forEach((level, index, thisArray) => {
       const target = targets[index]
       if (!target) return
@@ -289,7 +286,6 @@ TocHelper.prototype = {
         }
         lastNavNode = nav
         lastLevel = level
-
       } else {
         lastNavNode.appendChild(target)
       }
@@ -299,53 +295,53 @@ TocHelper.prototype = {
 
     this.reload()
   },
-  getOffsetBodyScrollTop: function () {
+  getOffsetBodyScrollTop: function() {
     const offsetBody = this.options.offsetBody
     return offsetBody === win ? offsetBody.pageYOffset : offsetBody === body ? doc.documentElement.scrollTop || body.scrollTop : offsetBody.scrollTop
   },
   // __GID().next().value
-  GID: function () {
-    let current_id = 0, idPrefix = this.options.idPrefix
+  GID: function() {
+    let current_id = 0; const idPrefix = this.options.idPrefix
     return {
-      next: function () {
-        current_id++;
+      next: function() {
+        current_id++
         const value = `${idPrefix}${current_id}`
-        return {value}
+        return { value }
       }
     }
   },
-  debounce: function (fn, delay) {
-    return function () {
-      var _this = this, args = arguments
+  debounce: function(fn, delay) {
+    return function() {
+      var _this = this; var args = arguments
       fn.timer && clearTimeout(fn.timer)
       fn.timer = setTimeout(() => {
         fn.apply(_this, args)
       }, delay)
     }
   },
-  empty: function (parent) {
+  empty: function(parent) {
     if (!parent || !isHTMLElement(parent)) return
     while (parent.lastChild) {
       parent.removeChild(parent.lastChild)
     }
   },
-  clear: function () {
+  clear: function() {
     this.empty(this.toc)
     this.elements = null
   },
 
-  activeToc: function () {
-    const _this = this,
-      elements = _this.elements,
-      offsets = elements.offsets,
-      targets = elements.targets,
-      top = _this.getOffsetBodyScrollTop(),
-      // 判斷當前滾動條在那個區間
-      index = offsets.findIndex(el => Number(el) > top)
-    let tocLink = _this.isBottom()?targets[targets.length-1]:targets[index];
+  activeToc: function() {
+    const _this = this
+    const elements = _this.elements
+    const offsets = elements.offsets
+    const targets = elements.targets
+    const top = _this.getOffsetBodyScrollTop()
+    // 判斷當前滾動條在那個區間
+    const index = offsets.findIndex(el => Number(el) > top)
+    const tocLink = _this.isBottom() ? targets[targets.length - 1] : targets[index]
     tocLink && (this.setActive(tocLink))
   },
-  getOffsetY: function (el, stopParent = body) {
+  getOffsetY: function(el, stopParent = body) {
     let y = el.offsetTop
     if (el.offsetParent && el.offsetParent !== stopParent) {
       y += this.getOffsetY(el.offsetParent)
@@ -359,11 +355,11 @@ TocHelper.prototype = {
    * @returns sources heading元素集合
    * @returns targets heading元素對於的目錄元素
    */
-  loadHeadings: function () {
-    const _this = this, maxDepth = this.options.maxDepth,
-      rootLevel = 1, lastLevel = maxDepth,
-      headings = Array.from(this.options.dom.querySelectorAll(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].slice(0, maxDepth).join(',')) || []),
-      GID_GENERATE = this.GID()
+  loadHeadings: function() {
+    const _this = this; const maxDepth = this.options.maxDepth
+    const rootLevel = 1; const lastLevel = maxDepth
+    const headings = Array.from(this.options.dom.querySelectorAll(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].slice(0, maxDepth).join(',')) || [])
+    const GID_GENERATE = this.GID()
 
     /**
      * 元素退級處理
@@ -371,8 +367,7 @@ TocHelper.prototype = {
      * @param {*} curIndex 當前元素在headings集合中的下表
      * @param {*} curOriginaLevel 當前元素原始的層級
      */
-    const backLevel = function (headings, curIndex, curOriginaLevel) {
-
+    const backLevel = function(headings, curIndex, curOriginaLevel) {
       // if (headings[curIndex].textContent.indexOf('Test') > -1) debugger
 
       // 小於1 和當前為第一個heading的層級均為1
@@ -385,7 +380,6 @@ TocHelper.prototype = {
       const _headings = headings.filter((head, i) => i < curIndex)
 
       for (let i = _headings.length - 1; i >= 0; i--) {
-
         // 上一個heading的層級 - 經過退級操作的層級
         const preLevel = _headings[i][1]
         // 上一個heading
@@ -400,7 +394,7 @@ TocHelper.prototype = {
             // 當前層級比上一層級退級的大
             return preLevel
           }
-          return curOriginaLevel//preLevel
+          return curOriginaLevel// preLevel
         } else if (curOriginaLevel === preOriginaLevel) {
           // 當前層級於上一層級相等直接等於上一層級 - 對比原始層級
           return preLevel
@@ -417,7 +411,7 @@ TocHelper.prototype = {
      * @param {*} heading 給沒有ID或ID重複的heading設置Id
      */
 
-    const setId = function (heading) {
+    const setId = function(heading) {
       if (!heading.id || $$(`#${heading.id}`).length !== 1) {
         heading.id = GID_GENERATE.next().value
       }
@@ -439,7 +433,7 @@ TocHelper.prototype = {
      * @param {*} heading
      * @param {*} level
      */
-    const loadTocLink = function (heading, level) {
+    const loadTocLink = function(heading, level) {
       if (!heading.textContent.replace(/\s/g, '')) return false
       let tocLink = _this.toc.querySelector(`a[href="#${heading.id}"]`)
       if (!tocLink) {
@@ -457,9 +451,9 @@ TocHelper.prototype = {
 
     headings.forEach((heading, i, thisArray) => {
       // 獲取層級
-      const level = backLevel(thisArray, i, +heading.nodeName[1]),
-        // 獲取當前heading元素距離父級的距離
-        y = _this.getOffsetY(heading, _this.options.offsetBody)
+      const level = backLevel(thisArray, i, +heading.nodeName[1])
+      // 獲取當前heading元素距離父級的距離
+      const y = _this.getOffsetY(heading, _this.options.offsetBody)
       // 設置ID
       setId(heading)
       // 獲取toc目錄
@@ -476,10 +470,9 @@ TocHelper.prototype = {
       /* * @returns 4 heading元素對應的link元素 */
       // [0, level, offsetTop, element, tocLinkElement]
       thisArray.splice(i, 1, [i, level, y, heading, tocLink])
-
     })
 
-    const elements = {levels: [], offsets: [], sources: [], targets: []}
+    const elements = { levels: [], offsets: [], sources: [], targets: [] }
     headings.forEach((headingItem, i) => {
       elements.levels[i] = headingItem[1]
       elements.offsets[i] = headingItem[2]
@@ -488,13 +481,12 @@ TocHelper.prototype = {
     })
     return elements
   },
-  setActive: function (el) {
+  setActive: function(el) {
+    let active = this.active
+    let classList = active ? active.classList : []
 
-    let active = this.active,
-      classList = active ? active.classList : []
-
-    const activeClassName = this.options.classNames.active,
-      defaultActiveSelector = `.${this.options.classNames.link}.${this.options.classNames.active}`
+    const activeClassName = this.options.classNames.active
+    const defaultActiveSelector = `.${this.options.classNames.link}.${this.options.classNames.active}`
 
     // 移除激活狀態
     active && classList.contains(activeClassName) && classList.remove(activeClassName)
@@ -507,9 +499,9 @@ TocHelper.prototype = {
 
     // 設置高亮
     this.setHightlight(active)
-
+    this.clickUse = false
   },
-  setHightlight: function (active) {
+  setHightlight: function(active) {
     if (!this.hightlight) return
     if (!active) {
       this.hightlight.style.top = 0
@@ -519,42 +511,42 @@ TocHelper.prototype = {
       this.hightlight.style.height = active.offsetHeight + 'px'
     }
   },
-  __enter: function (e) {
+  __enter: function(e) {
     this.setHightlight(e.target)
   },
-  __leave: function () {
+  __leave: function() {
     this.setActive(this.active)
   },
-  __click: function (e) {
+  __click: function(e) {
+    this.clickUse = true
     // 防止滾動條抖動
     this.offsetBodyScrollDebounce()
     this.setActive(e.target)
   },
   // toc 事件
-  tocEvent: function () {
+  tocEvent: function() {
     if (!this.hightlight) return
 
     const _this = this
     Array.from($$(`.${this.options.classNames.toc} .${this.options.classNames.link}`) || []).forEach(a => {
       // 懸停事件
-      a.addEventListener(enterEvent, _this.__enter.bind(_this),true)
+      a.addEventListener(enterEvent, _this.__enter.bind(_this), true)
       // 離開事件
-      a.addEventListener(leaveEvent, _this.__leave.bind(_this),true)
+      a.addEventListener(leaveEvent, _this.__leave.bind(_this), true)
       // 點擊事件
-      a.addEventListener(clickEvent, _this.__click.bind(_this),true)
+      a.addEventListener(clickEvent, _this.__click.bind(_this), true)
     })
-
   },
   // 陰影
-  shadow: function () {
+  shadow: function() {
     if (this.options.shadow === false) return
-    const toc = this.toc, classList = toc && (toc.classList || []), shadow = this.options.shadow
+    const toc = this.toc; const classList = toc && (toc.classList || []); const shadow = this.options.shadow
     !classList.contains(shadow) && classList.add(shadow)
   },
   // fixed
-  fixed: function () {
+  fixed: function() {
     const toc = this.toc
-    let tocFixed = this.options.tocFixed
+    const tocFixed = this.options.tocFixed
     if (!toc) return
     const tocFixedClassName = this.options.classNames.fxied
     const classList = toc.classList
@@ -569,4 +561,4 @@ TocHelper.prototype = {
     }
   }
 }
-export default TocHelper;
+export default TocHelper

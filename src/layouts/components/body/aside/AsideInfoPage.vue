@@ -7,44 +7,44 @@
       <div class="menu_blog_info_wrap_clz">
         <div class="menu-body-info">
           <div class="info-item">
-              <span class="info-item-left">
-                <span class="icon iconfont paper"></span>
-                <span>昵称</span>
+            <span class="info-item-left">
+              <span class="icon iconfont paper" />
+              <span>昵称</span>
+            </span>
+            <span class="info-item-right">
+              <span class="info-item-bg"><span>{{ info.username }}</span></span>
+            </span>
+          </div>
+          <div class="info-item">
+            <span class="info-item-left">
+              <span class="icon iconfont comment" />
+              <span>园龄</span>
+            </span>
+            <span class="info-item-right">
+              <span class="info-item-bg"><span>{{ info.age }}</span></span>
+            </span>
+          </div>
+          <div class="info-item">
+            <span class="info-item-left">
+              <span class="icon iconfont equalizer" />
+              <span>粉丝</span>
+            </span>
+            <span class="info-item-right">
+              <span class="info-item-bg">
+                <span>{{ info.follow }}</span>
               </span>
+            </span>
+          </div>
+          <div class="info-item">
+            <span class="info-item-left">
+              <span class="icon iconfont refresh" />
+              <span>关注</span>
+            </span>
             <span class="info-item-right">
-                 <span class="info-item-bg"><span>{{info.username}}</span></span>
+              <span class="info-item-bg">
+                <span>{{ info.focus }}</span>
               </span>
-          </div>
-          <div class="info-item">
-                <span class="info-item-left">
-                     <span class="icon iconfont comment"></span>
-                     <span>园龄</span>
-                </span>
-            <span class="info-item-right">
-                     <span class="info-item-bg"><span>{{info.age}}</span></span>
-                </span>
-          </div>
-          <div class="info-item">
-               <span class="info-item-left">
-                     <span class="icon iconfont equalizer"></span>
-                     <span>粉丝</span>
-               </span>
-            <span class="info-item-right">
-               <span class="info-item-bg">
-                     <span>{{info.follow}}</span>
-               </span>
-          </span>
-          </div>
-          <div class="info-item">
-               <span class="info-item-left">
-                     <span class="icon iconfont refresh"></span>
-                     <span>关注</span>
-               </span>
-            <span class="info-item-right">
-                     <span class="info-item-bg">
-                       <span>{{info.focus}}</span>
-                     </span>
-               </span>
+            </span>
           </div>
         </div>
       </div>
@@ -53,20 +53,20 @@
 </template>
 
 <script>
-  import blogApi from "@/utils/BlogApi";
-  export default {
-    name: "BlogInfoPage",
-    created: function () {
-      blogApi.loadAuthorBlogInfo().then((data) => {
-          this.info=data;
-      })
-    },
-    data: () => {
-      return {
-        info: {}
-      }
+import blogApi from '@/utils/BlogApi'
+export default {
+  name: 'BlogInfoPage',
+  data: () => {
+    return {
+      info: {}
     }
+  },
+  created: function() {
+    blogApi.loadAuthorBlogInfo().then((data) => {
+      this.info = data
+    })
   }
+}
 </script>
 
 <style lang="scss">
@@ -112,7 +112,6 @@
           .info-item-right {
             float: right;
           }
-
 
         }
       }

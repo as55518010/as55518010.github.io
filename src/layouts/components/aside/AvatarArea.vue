@@ -28,7 +28,7 @@ export default {
     return {
       avatarSign: BlogContext.avatarSign,
       avatarName: BlogContext.blogName,
-      avatarObj: { face: '', avatar: '' }
+      avatarObj: { face: '', avatar: 'https://www.lingmx.com/image/avatar.jpg' }
     }
   },
   created: function() {
