@@ -25,12 +25,10 @@ export default {
   created: function() {
     const self = this
     this.$baseEventBus.$on('articleDestroy', (dom) => {
-      $('#blog_cloud_ad').show()
       $('#toc_page').empty()
     })
     /* 監聽生成目錄*/
     this.$baseEventBus.$on('articleInited', function(dom) {
-      $('#blog_cloud_ad').hide()
       $(dom).attr('data-toc', '#toc_page')
       if ($('#app div[data-toc]').length === 0) {
         return

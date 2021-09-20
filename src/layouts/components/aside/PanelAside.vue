@@ -5,10 +5,16 @@
       <MenuItems menu-title="導航" :menu-list="mainExtNav" />
       <MenuItems
         menu-title="組成"
-        :menu-list="funcMenuNav"
+        :menu-list="categoryMenuNav"
         index-prefix="/subject/category/"
         :router="true"
-        :default-active="$route.path"
+        :default-active="routeActive"
+      />
+      <MenuItems
+        :menu-list="seriesMenuNav"
+        index-prefix="/subject/series/"
+        :router="true"
+        :default-active="routeActive"
       />
 
       <!-- <MenuItems :menu-list="funcMenuNav" index-prefix="category/" :router="true" /> -->
@@ -33,16 +39,17 @@
 </template>
 
 <script>
-import { getCategorie } from '@/api/categorie'
 /* 面板側邊控件*/
 import AvatarArea from './AvatarArea'
 import MenuItems from './MenuItems'
 import BlogContext from '@/context/BlogContext'
+
 export default {
   name: 'PanelAside',
   components: { MenuItems, AvatarArea },
   data: () => {
     return {
+      routeActive: '',
       mainExtNav: [
         { name: '首頁', url: '/subject/category/default.html', icon: 'home' },
         {
@@ -50,23 +57,35 @@ export default {
           url: 'https://www.cnblogs.com/cjunn/',
           icon: 'face2'
         }
-      ],
-      funcMenuNav: []
+      ]
+    }
+  },
+  computed: {
+    categoryMenuNav() {
+      return this.$store.getters['category/getCategoryMenuNav']
+    },
+    seriesMenuNav() {
+      return this.$store.getters['series/getSeriesMenuNav']
     }
   },
   created: function() {
     this.getCategorys()
+    this.getSeries()
+    this.eventBus()
   },
   methods: {
+    eventBus() {
+      this.$baseEventBus.$on('onRouteActive', routeActive => {
+        this.routeActive = routeActive
+      })
+    },
     // 獲取類別
     async getCategorys() {
-      try {
-        const { result } = await getCategorie()
-        this.funcMenuNav = result
-        this.categoryList = result
-      } catch (error) {
-        this.$message.error(error)
-      }
+      this.$store.dispatch('category/setCategorys')
+    },
+    // 獲取系列
+    async getSeries() {
+      this.$store.dispatch('series/setSeries')
     },
     openManage: () => {
       window.open(BlogContext.manPage)

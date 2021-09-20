@@ -6,9 +6,10 @@ export function getCategorie() {
     method: 'get'
   })
 }
-export function getCategorieDetail(id) {
+export function getCategorieDetail(id, params) {
   return request({
     url: `/categorie/${id}`,
-    method: 'get'
+    method: 'get',
+    params
   })
 }

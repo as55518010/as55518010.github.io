@@ -1,15 +1,15 @@
 import request from '@/utils/request'
 
-export function getArticle(params) {
+export function getSeries(params) {
   return request({
-    url: '/article',
+    url: '/serie',
     method: 'get',
     params
   })
 }
-export function getArticleDetail(id, params) {
+export function getSeriesDetail(id, params) {
   return request({
-    url: `/article/${id}`,
+    url: `/serie/${id}`,
     method: 'get',
     params
   })

@@ -23,7 +23,7 @@ export default {
     },
     bgImg: () => {
       return {
-        background: 'url(' + BlogContext.bigBackImg + ') 0% 0% / 100% 100% rgb(248, 248, 255)'
+        // background: 'url(' + BlogContext.bigBackImg + ') 0% 0% / 100% 100% rgb(248, 248, 255)'
       }
     }
   }

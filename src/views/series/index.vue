@@ -4,62 +4,33 @@
       <div class="head-title">
         <div class="title-font">{{ title }}</div>
       </div>
-      <el-tabs v-model="tabsValue" type="card">
-        <el-tab-pane label="文章列表" name="article">
-          <ArticleList
-            :list="article.list"
-            :pagination="article.pagination"
-            :total="article.total"
-            :category-id="categoryId"
-            @handlePageChange="articleHandlePageChange"
-            @routerLinkTo="routerLinkTo"
-          />
-        </el-tab-pane>
-        <el-tab-pane label="系列管理" name="series">
-          <SeriesList
-            :list="serie.list"
-            :pagination="serie.pagination"
-            :total="serie.total"
-            :category-id="categoryId"
-            @handlePageChange="seriesHandlePageChange"
-          />
-        </el-tab-pane>
-      </el-tabs>
+      <SeriesCard :data="serieData" :show-more="false" :show-title="false" />
+      <ArticleList
+        :list="article.list"
+        :pagination="article.pagination"
+        :total="article.total"
+        @handlePageChange="handlePageChange"
+      />
     </div>
   </div>
 </template>
 <script>
-import { getCategorieDetail } from '@/api/categorie'
+import { getSeriesDetail } from '@/api/series'
 import ArticleList from '@/components/ArticleList'
-import SeriesList from './components/SeriesList.vue'
+import SeriesCard from '@/components/SeriesCard'
+import VditorPreview from 'vditor/dist/method.min'
 
 export default {
   name: 'Category',
   components: {
     ArticleList,
-    SeriesList
+    SeriesCard
   },
   data: () => {
     return {
       title: '',
-      tabsValue: 'article',
-      categoryData: {},
+      serieData: {},
       article: {
-        // 總文章數
-        total: 0,
-        // 文章列表
-        list: [],
-        // 分頁
-        pagination: {
-          // 每頁數量
-          size: 5,
-          // 頁數
-          page: 1
-        },
-        // 篩選條件
-        where: {}
-      },
-      serie: {
         // 總文章數
         total: 0,
         // 文章列表
@@ -77,14 +48,14 @@ export default {
     }
   },
   computed: {
-    categoryId() {
-      return Number(this.$route.params.categorieId)
+    serieId() {
+      return Number(this.$route.params.serieId)
     }
   },
   watch: {
     $route: {
       handler: function() {
-        this.categorieInit()
+        this.seriesDetail()
         this.eventBus()
       },
       immediate: true
@@ -92,47 +63,29 @@ export default {
   },
   methods: {
     eventBus() {
-      this.$baseEventBus.$emit('onRouteActive', `/subject/category/${this.categoryId}`)
+      this.$baseEventBus.$emit('onRouteActive', `/subject/series/${this.serieId}`)
     },
-    articleHandlePageChange(page) {
+    handlePageChange(page) {
       this.article.pagination.page = page
-      this.categorieInit()
-    },
-    seriesHandlePageChange(page) {
-      this.serie.pagination.page = page
-      this.categorieInit()
+      this.seriesDetail()
     },
     // 獲取單個類別區塊
-    async categorieInit() {
+    async seriesDetail() {
       const params = {
-        article: {
-          pagination: this.article.pagination,
-          where: this.article.where
-        },
-        serie: {
-          pagination: this.serie.pagination,
-          where: this.serie.where
-        }
+        pagination: this.article.pagination,
+        where: this.article.where
       }
-      const { categoryData, article, serie } = await getCategorieDetail(
-        this.categoryId,
+      const { article, serieData } = await getSeriesDetail(
+        this.serieId,
         params
       )
-      this.categoryData = categoryData
-      this.title = `文章分類 - ${categoryData.name}`
-      this.articleRes(article)
-      this.serieRes(serie)
-    },
-    articleRes(res) {
-      this.article.list = res.list
-      this.article.total = res.pagination.total
-    },
-    serieRes(res) {
-      this.serie.list = res.list
-      this.serie.total = res.pagination.total
-    },
-    routerLinkTo(id) {
-      this.$router.push(`/subject/category/${this.categoryId}/article/${id}`)
+      this.serieData = serieData
+      this.article.list = article.list
+      this.article.total = article.pagination.total
+      this.serieData.description = await VditorPreview.md2html(
+        serieData.description
+      )
+      this.title = `系列分類 - ${serieData.name}`
     }
   }
 }

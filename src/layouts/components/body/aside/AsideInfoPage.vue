@@ -9,7 +9,7 @@
           <div class="info-item">
             <span class="info-item-left">
               <span class="icon iconfont paper" />
-              <span>昵称</span>
+              <span>昵稱</span>
             </span>
             <span class="info-item-right">
               <span class="info-item-bg"><span>{{ info.username }}</span></span>
@@ -18,7 +18,7 @@
           <div class="info-item">
             <span class="info-item-left">
               <span class="icon iconfont comment" />
-              <span>园龄</span>
+              <span>園齡</span>
             </span>
             <span class="info-item-right">
               <span class="info-item-bg"><span>{{ info.age }}</span></span>
@@ -27,7 +27,7 @@
           <div class="info-item">
             <span class="info-item-left">
               <span class="icon iconfont equalizer" />
-              <span>粉丝</span>
+              <span>粉絲</span>
             </span>
             <span class="info-item-right">
               <span class="info-item-bg">
@@ -38,7 +38,7 @@
           <div class="info-item">
             <span class="info-item-left">
               <span class="icon iconfont refresh" />
-              <span>关注</span>
+              <span>關注</span>
             </span>
             <span class="info-item-right">
               <span class="info-item-bg">

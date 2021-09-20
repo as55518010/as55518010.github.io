@@ -5,6 +5,7 @@ const win = window
 const body = doc.body
 const $ = doc.querySelector.bind(doc)
 const $$ = doc.querySelectorAll.bind(doc)
+const animate = win.requestAnimationFrame
 const isMobile = (/Mobile|Android|iOS|iPhone|iPad|iPod|Windows Phone|KFAPWI/i.test(navigator.userAgent))
 const enterEvent = isMobile ? 'touchstart' : 'mouseenter'
 const leaveEvent = isMobile ? 'touchend' : 'mouseleave'
@@ -93,6 +94,7 @@ const TocHelper = function(selector, options = defaultOptions) {
     options = selector
   }
   this.options = Object.assign({}, defaultOptions, options)
+
   this.megre()
 
   this.winEvents()
@@ -101,7 +103,6 @@ const TocHelper = function(selector, options = defaultOptions) {
 }
 
 TocHelper.prototype = {
-  clickUse: false,
   megre: function(newOptions = {}) {
     if (!isObject(newOptions)) return
     this.options = Object.assign({}, this.options, newOptions)
@@ -131,6 +132,7 @@ TocHelper.prototype = {
     } else {
       this.options.offsetBody = body
     }
+
     this.toc = $(this.options.dom.dataset.toc) || $(`.${this.options.classNames.toc}`)
     const tocClassList = this.toc && this.toc.classList
     tocClassList && !tocClassList.contains(this.options.classNames.toc) && tocClassList.add(this.options.classNames.toc)
@@ -166,7 +168,7 @@ TocHelper.prototype = {
       // 設備大小變化後重新設置高度
       viewHeight = doc.documentElement.clientHeight
       _this.debounce(_this.setTocScroll, 200).call(_this)
-    }, true)
+    })
   },
   // 設置navbar的滾動條樣式
   setTocScroll: function() {
@@ -193,33 +195,14 @@ TocHelper.prototype = {
   },
   // 內容/文章的滾動事件處理
   offsetBodyScrollEvent: function() {
-    if (!this.clickUse) {
-      // 目錄高亮顯示
-      this.activeToc()
-      // 目錄滾動條同步
-      this.syncTocScroll()
-    }
-  },
-  /**
-   * 判斷是否已到達底部
-   * @return {boolean}
-   */
-  isBottom: function() {
-    const offsetBody = this.options.offsetBody
-    const scrollTop =
-    offsetBody.scrollTop || document.documentElement.scrollTop || document.body.scrollTop
-    const offsetHeight =
-    offsetBody.offsetHeight || document.documentElement.clientHeight || document.body.clientHeight
-    const scrollHeight =
-    offsetBody.scrollHeight || document.documentElement.scrollHeight || document.body.scrollHeight
-    if (scrollTop + offsetHeight === scrollHeight) {
-      return true
-    }
-    return false
+    // 目錄高亮顯示
+    this.activeToc()
+    // 目錄滾動條同步
+    this.syncTocScroll()
   },
   addOffsetBodyScrollEvent: function() {
     const el = this.options.offsetBody === body ? win : this.options.offsetBody
-    el.addEventListener(scrollEvent, this.events[0], true)
+    el.addEventListener(scrollEvent, this.events[0])
   },
   removeOffsetBodyScrollEvent: function() {
     const el = this.options.offsetBody === body ? win : this.options.offsetBody
@@ -232,6 +215,7 @@ TocHelper.prototype = {
   },
   reset: function() {
     this.clear()
+
     const frag = doc.createDocumentFragment()
     const elements = this.elements = this.loadHeadings()
     const targets = elements.targets
@@ -338,7 +322,9 @@ TocHelper.prototype = {
     const top = _this.getOffsetBodyScrollTop()
     // 判斷當前滾動條在那個區間
     const index = offsets.findIndex(el => Number(el) > top)
-    const tocLink = _this.isBottom() ? targets[targets.length - 1] : targets[index]
+
+    const tocLink = targets[index]
+
     tocLink && (this.setActive(tocLink))
   },
   getOffsetY: function(el, stopParent = body) {
@@ -412,7 +398,7 @@ TocHelper.prototype = {
      */
 
     const setId = function(heading) {
-      if (!heading.id || $$(`#${heading.id}`).length !== 1) {
+      if (!heading.id || $$(`#${CSS.escape(heading.id)}`).length !== 1) {
         heading.id = GID_GENERATE.next().value
       }
       return heading
@@ -435,11 +421,11 @@ TocHelper.prototype = {
      */
     const loadTocLink = function(heading, level) {
       if (!heading.textContent.replace(/\s/g, '')) return false
-      let tocLink = _this.toc.querySelector(`a[href="#${heading.id}"]`)
+      let tocLink = _this.toc.querySelector(`a[href="#${CSS.escape(heading.id)}"]`)
       if (!tocLink) {
         // 不存在就創建一個
         tocLink = doc.createElement('a')
-        tocLink.href = `#${heading.id}`
+        tocLink.href = `#${CSS.escape(heading.id)}`
         tocLink.classList.add(_this.options.classNames.link)
         if (level >= 2) {
           tocLink.classList.add(`${_this.options.classNames[`marginLeft${level - 1}`]}`)
@@ -499,7 +485,6 @@ TocHelper.prototype = {
 
     // 設置高亮
     this.setHightlight(active)
-    this.clickUse = false
   },
   setHightlight: function(active) {
     if (!this.hightlight) return
@@ -518,7 +503,6 @@ TocHelper.prototype = {
     this.setActive(this.active)
   },
   __click: function(e) {
-    this.clickUse = true
     // 防止滾動條抖動
     this.offsetBodyScrollDebounce()
     this.setActive(e.target)
@@ -530,11 +514,11 @@ TocHelper.prototype = {
     const _this = this
     Array.from($$(`.${this.options.classNames.toc} .${this.options.classNames.link}`) || []).forEach(a => {
       // 懸停事件
-      a.addEventListener(enterEvent, _this.__enter.bind(_this), true)
+      a.addEventListener(enterEvent, _this.__enter.bind(_this))
       // 離開事件
-      a.addEventListener(leaveEvent, _this.__leave.bind(_this), true)
+      a.addEventListener(leaveEvent, _this.__leave.bind(_this))
       // 點擊事件
-      a.addEventListener(clickEvent, _this.__click.bind(_this), true)
+      a.addEventListener(clickEvent, _this.__click.bind(_this))
     })
   },
   // 陰影

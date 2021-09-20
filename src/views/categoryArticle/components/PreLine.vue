@@ -1,10 +1,9 @@
 <template>
   <div id="article_pre_line">
     <div class="post-body-head post-body-title">
-      <span class="icon iconfont home" />
-      <span>首頁</span>
-      <span class="sep">/</span>
-      <span>正文</span>
+      <a-breadcrumb style="display:inline;">
+        <a-breadcrumb-item v-for="(item,key) in data" :key="key">{{ item.name }}</a-breadcrumb-item>
+      </a-breadcrumb>
       <span class="right-area">
         <span>分享到 :</span>
         <span class="icon iconfont weibo" @click="openWeiBo" />
@@ -18,6 +17,12 @@
 import blogKit from '@/utils/BlogKit'
 export default {
   name: 'PreLine',
+  props: {
+    data: {
+      type: Array,
+      required: true
+    }
+  },
   methods: {
     openWeiBo: () => {
       blogKit.shareToTsina()

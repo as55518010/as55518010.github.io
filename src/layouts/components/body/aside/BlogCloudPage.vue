@@ -2,7 +2,7 @@
   <div id="blog_cloud_page">
     <div class="menu-body-item">
       <div class="menu-body-item-title">
-        <div>标签云</div>
+        <div>標籤雲</div>
       </div>
       <div class="cloud-content cloud_label_content_clz">
         <span v-for="item in labels">

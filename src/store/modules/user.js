@@ -19,8 +19,9 @@ const state = () => ({
   permissions: []
 })
 const getters = {
-  accessToken: state =>
-    state.accessToken || getAccessToken(),
+  accessToken: state => {
+    return state.accessToken || getAccessToken()
+  },
   userInfo: state => state.userInfo || getUserInfo(),
   permissions: state => state.permissions
 }
@@ -51,6 +52,7 @@ const actions = {
     }
   },
   async getUserInfo({ commit, state }) {
+    console.log('good')
     const { result } = await getInfo()
     if (!result) {
       Vue.prototype.$baseMessage('驗證失敗，請重新登錄...', 'error')

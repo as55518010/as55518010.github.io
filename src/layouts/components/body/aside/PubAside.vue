@@ -53,7 +53,6 @@
         </div>
       </div>
       <div v-show="selectItem==3" class="pub-body-menulist">
-        <BlogCloudAd />
         <BlogNavicatPage />
       </div>
     </div>
@@ -67,12 +66,11 @@ import blogKit from '@/utils/BlogKit'
 import AsideInfoPage from './AsideInfoPage'
 import BlogCloudPage from './BlogCloudPage'
 import BlogNavicatPage from './BlogNavicatPage'
-import BlogCloudAd from './BlogCloudAd'
 import BlogContext from '@/context/BlogContext'
 
 export default {
   name: 'BodyAside',
-  components: { BlogCloudAd, BlogNavicatPage, BlogCloudPage, AsideInfoPage },
+  components: { BlogNavicatPage, BlogCloudPage, AsideInfoPage },
   data: () => {
     return {
       selectItem: 1,

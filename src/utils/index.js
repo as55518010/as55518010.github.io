@@ -123,3 +123,4 @@ export function param2Obj(url) {
 export function checkNullObj(obj) {
   return Object.keys(obj).length !== 0
 }
+

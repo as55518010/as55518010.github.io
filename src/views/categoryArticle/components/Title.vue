@@ -29,11 +29,11 @@
           <span>{{ article.articleDetil?article.articleDetil.view:0 }}</span>
           <span>字數</span>
         </span>
-        <span>
+        <span v-for="(item, index) in article.articleDetil.tag" :key="index">
           <span class="icon iconfont label" />
-          <span>
+          <span v-if="article.articleDetil">
             <span class="label-item">
-              <span class="">{{ article.articleDetil?article.articleDetil.tag:'' }}</span>
+              <span>{{ item }}</span>
             </span>
           </span>
         </span>
