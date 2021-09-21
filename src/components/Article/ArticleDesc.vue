@@ -7,7 +7,7 @@
         <div class="body-wrap-bottom"><span class="icon iconfont ios-shijian" />
           最後修改時間：{{ parseTime(article.updatedAt, '{y}-{m}-{d} {h}:{i}' ) }}</div>
       </div>
-      <div class="post-body-bottom">
+      <!-- <div class="post-body-bottom">
         <span class="post-bottom-item" @click="diggAction()">
           <span class="icon iconfont zan" />
           <span v-show="!isDigg">已推薦</span>
@@ -23,11 +23,11 @@
         </span>
       </div>
       <div class="post-article-right">
-        <!-- <div @click="openEdit">
+        <div @click="openEdit">
           <span class="icon iconfont pen" />
           <span>編輯</span>
-        </div> -->
-      </div>
+        </div>
+      </div> -->
     </div>
   </div>
 </template>

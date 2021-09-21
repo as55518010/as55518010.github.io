@@ -10,7 +10,6 @@
             :list="article.list"
             :pagination="article.pagination"
             :total="article.total"
-            :category-id="categoryId"
             @handlePageChange="articleHandlePageChange"
             @routerLinkTo="routerLinkTo"
           />

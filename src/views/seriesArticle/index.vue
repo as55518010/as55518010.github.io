@@ -3,7 +3,7 @@
     <Title :article="articleData" @openFullScreenEven="openFullScreenEven" />
     <PreLine :data="preLineCategoryMenuNav" />
     <ArticleDesc :article="articleData" class="article-body-item" />
-    <PrePos :article="articleData" class="article-body-margin" target="category" />
+    <PrePos :article="articleData" class="article-body-margin" target="series" :series-article="seriesArticleData.list" :series="series" />
     <!-- <Comment ref="articleComment" class="article-body-item" :article-id="articleId" /> -->
     <!-- <Message class="article-body-item" :article-id="articleId" @noticeReplayEvent="noticeReplayEvent" @noticeQuoteEvent="noticeQuoteEvent" @noticeUpdateEvent="noticeUpdateEvent" /> -->
   </div>
@@ -16,7 +16,7 @@ import ArticleDesc from '@/components/Article/ArticleDesc'
 import Comment from '@/components/Article/Comment'
 import Message from '@/components/Article/Message'
 import PrePos from '@/components/Article/PrePos'
-import { getArticleDetail } from '@/api/article'
+import { showSeriesArticle } from '@/api/article'
 import { parseTime } from '@/utils/index'
 import { isEmpty } from 'lodash-es'
 
@@ -27,7 +27,7 @@ export default {
   data: () => {
     return {
       articleData: {},
-      categoryArticleData: {
+      seriesArticleData: {
         // 總文章數
         total: 0,
         // 文章列表
@@ -41,27 +41,27 @@ export default {
         },
         // 篩選條件
         where: {}
-      }
+      },
+      series: {}
     }
   },
   computed: {
-    categoryId() {
-      return Number(this.$route.params.categoryId)
+    serieId() {
+      return Number(this.$route.params.serieId)
     },
     articleId() {
       return Number(this.$route.params.articleId)
     },
     params() {
       return {
-        category: {
-          id: this.categoryId,
-          pagination: this.categoryArticleData.pagination,
-          where: this.categoryArticleData.where
+        series: {
+          pagination: this.seriesArticleData.pagination,
+          where: this.seriesArticleData.where
         }
       }
     },
     preLineCategoryMenuNav() {
-      return reverse(this.getAllParentArr(this.$store.getters['category/getCategoryMenuNav'], this.categoryId))
+      return reverse(this.getAllParentArr(this.$store.getters['series/getSeriesMenuNav'], this.serieId))
     }
   },
   watch: {
@@ -78,7 +78,7 @@ export default {
   },
   methods: {
     eventBus() {
-      this.$baseEventBus.$emit('onRouteActive', `/subject/category/${this.categoryId}`)
+      this.$baseEventBus.$emit('onRouteActive', `/subject/series/${this.serieId}`)
     },
     openFullScreenEven() {
       this.$baseEventBus.$emit('openFullScreenEven', {
@@ -97,13 +97,14 @@ export default {
     },
     /* 獲取文章詳情 */
     async articleInit() {
-      const { articleData, categoryArticleData } = await getArticleDetail(this.articleId, this.params)
+      const { articleData, seriesArticleData, series } = await showSeriesArticle(this.articleId, this.serieId, this.params)
       this.articleData = articleData
-      this.categoryArticleDataRes(categoryArticleData)
+      this.series = series
+      this.seriesArticleDataRes(seriesArticleData)
     },
-    categoryArticleDataRes(res) {
-      this.categoryArticleData.list = res.list
-      this.categoryArticleData.total = res.pagination.total
+    seriesArticleDataRes(res) {
+      this.seriesArticleData.list = res.list
+      this.seriesArticleData.total = res.pagination.total
     },
     parseTime(time, cFormat) {
       return parseTime(time, cFormat)

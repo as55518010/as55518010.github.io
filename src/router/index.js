@@ -6,6 +6,7 @@ import Layout from '@/layouts'
 import CategoryBody from '@/views/category/index.vue'
 import SeriesBody from '@/views/series/index.vue'
 import CategoryArticleBody from '@/views/categoryArticle/index.vue'
+import SeriesArticleBody from '@/views/seriesArticle/index.vue'
 import SubjectBody from '@/layouts/components/body/SubjectBody'
 // import BlogAuthorBody from '@/components/body/author/BlogAuthorBody'
 
@@ -22,7 +23,8 @@ export const constantRoutes = [
         children: [
           { path: 'category/:categorieId', component: CategoryBody },
           { path: 'category/:categoryId/article/:articleId', component: CategoryArticleBody },
-          { path: 'series/:serieId', component: SeriesBody }
+          { path: 'series/:serieId', component: SeriesBody },
+          { path: 'series/:serieId/article/:articleId', component: SeriesArticleBody }
           // { path: 'archive/:archiveYear/:archiveMonth', component: CategoryBody },
           // { path: 'tag/:tagId/', component: CategoryBody },
           // { path: 'p/:articleId', component: ArticleBody }

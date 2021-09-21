@@ -14,3 +14,10 @@ export function getArticleDetail(id, params) {
     params
   })
 }
+export function showSeriesArticle(id, serieId, params) {
+  return request({
+    url: `/article/${id}/serie/${serieId}`,
+    method: 'get',
+    params
+  })
+}

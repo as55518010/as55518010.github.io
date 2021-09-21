@@ -4,12 +4,13 @@
       <div class="head-title">
         <div class="title-font">{{ title }}</div>
       </div>
-      <SeriesCard :data="serieData" :show-more="false" :show-title="false" />
+      <SeriesCard v-if="!isEmpty(serieData)" :data="serieData" :show-more="false" :show-title="false" />
       <ArticleList
         :list="article.list"
         :pagination="article.pagination"
         :total="article.total"
         @handlePageChange="handlePageChange"
+        @routerLinkTo="routerLinkTo"
       />
     </div>
   </div>
@@ -19,6 +20,7 @@ import { getSeriesDetail } from '@/api/series'
 import ArticleList from '@/components/ArticleList'
 import SeriesCard from '@/components/SeriesCard'
 import VditorPreview from 'vditor/dist/method.min'
+import { isEmpty } from 'lodash-es'
 
 export default {
   name: 'Category',
@@ -86,6 +88,12 @@ export default {
         serieData.description
       )
       this.title = `系列分類 - ${serieData.name}`
+    },
+    routerLinkTo(id) {
+      return this.$router.push(`/subject/series/${this.serieId}/article/${id}`)
+    },
+    isEmpty(val) {
+      return isEmpty(val)
     }
   }
 }

@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import { parseTime } from '@/utils/index'
 import SeriesCard from '@/components/SeriesCard'
 
 export default {
@@ -46,9 +45,6 @@ export default {
     }
   },
   methods: {
-    parseTime(time, cFormat) {
-      return parseTime(time, cFormat)
-    },
     handlePageChange(page) {
       this.$emit('handlePageChange', page)
     }
