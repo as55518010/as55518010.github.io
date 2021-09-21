@@ -1,14 +1,14 @@
 <template>
   <div>
     <template v-for="menu in menuList">
-      <el-submenu v-if="menu.children" :key="menu.name" :index="indexPrefix+menu.id">
+      <el-submenu v-if="menu.children" :key="menu.name" :index="menu.url?menu.url:indexPrefix+menu.id">
         <template slot="title">
           <i :class="menu.icon" />
           <span slot="title">{{ menu.name }}</span>
         </template>
         <menu-tree :menu-list="menu.children" :index-prefix="indexPrefix" />
       </el-submenu>
-      <el-menu-item v-else :key="menu.name" :index="indexPrefix+menu.id">
+      <el-menu-item v-else :key="menu.name" :index="menu.url?menu.url:indexPrefix+menu.id">
         <i :class="menu.icon" />
         <span slot="title">{{ menu.name }}</span>
       </el-menu-item>

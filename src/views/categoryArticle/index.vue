@@ -3,7 +3,7 @@
     <Title :article="articleData" @openFullScreenEven="openFullScreenEven" />
     <PreLine :data="preLineCategoryMenuNav" />
     <ArticleDesc :article="articleData" class="article-body-item" />
-    <PrePos :article="articleData" class="article-body-margin" target="category" />
+    <PrePos :article="articleData" class="article-body-margin" target="category" :article-nearby="categoryArticleData.list" :upper-category="categorie" />
     <!-- <Comment ref="articleComment" class="article-body-item" :article-id="articleId" /> -->
     <!-- <Message class="article-body-item" :article-id="articleId" @noticeReplayEvent="noticeReplayEvent" @noticeQuoteEvent="noticeQuoteEvent" @noticeUpdateEvent="noticeUpdateEvent" /> -->
   </div>
@@ -16,7 +16,7 @@ import ArticleDesc from '@/components/Article/ArticleDesc'
 import Comment from '@/components/Article/Comment'
 import Message from '@/components/Article/Message'
 import PrePos from '@/components/Article/PrePos'
-import { getArticleDetail } from '@/api/article'
+import { showCategoryArticle } from '@/api/article'
 import { parseTime } from '@/utils/index'
 import { isEmpty } from 'lodash-es'
 
@@ -27,6 +27,7 @@ export default {
   data: () => {
     return {
       articleData: {},
+      categorie: {},
       categoryArticleData: {
         // 總文章數
         total: 0,
@@ -54,7 +55,6 @@ export default {
     params() {
       return {
         category: {
-          id: this.categoryId,
           pagination: this.categoryArticleData.pagination,
           where: this.categoryArticleData.where
         }
@@ -72,9 +72,6 @@ export default {
       },
       immediate: true
     }
-  },
-  beforeDestroy() {
-    this.$baseEventBus.$emit('articleInitedClose')
   },
   methods: {
     eventBus() {
@@ -97,8 +94,9 @@ export default {
     },
     /* 獲取文章詳情 */
     async articleInit() {
-      const { articleData, categoryArticleData } = await getArticleDetail(this.articleId, this.params)
+      const { articleData, categoryArticleData, categorie } = await showCategoryArticle(this.articleId, this.categoryId, this.params)
       this.articleData = articleData
+      this.categorie = categorie
       this.categoryArticleDataRes(categoryArticleData)
     },
     categoryArticleDataRes(res) {

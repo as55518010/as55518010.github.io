@@ -26,8 +26,8 @@
           系列文
         </div>
         <div class="article-series-catalog__topic">
-          <router-link :to="routerLinkTo()" class="article-series-catalog__topic-link">{{ series.name }}</router-link>
-          共 <span class="article-series-catalog__num">{{ toLength(series.serieHasArticle.length) }}</span> 篇
+          <router-link :to="routerLinkTo()" class="article-series-catalog__topic-link">{{ upperCategory.name }}</router-link>
+          共 <span class="article-series-catalog__num">{{ toLength(upperCategory.serieHasArticle.length) }}</span> 篇
         </div>
         <div class="clearfix">
           <div>
@@ -51,8 +51,70 @@
             </div> -->
           </div>
           <ol class="article-series-catalog__lists">
-            <li v-for="item in seriesArticle" :key="item.id" class="article-series-catalog__list">
+            <li v-for="item in articleNearby" :key="item.id" class="article-series-catalog__list">
               <div class="article-series-catalog__list-num">{{ item.pivot.page+1 }}</div>
+              <router-link :to="articleLinkTo(item.id)" class="article-series-catalog__link">{{ item.title }}
+              </router-link>
+            </li>
+          </ol>
+          <router-link :to="routerLinkTo()"><i class="fa fa-fw fa-chevron-circle-right" aria-hidden="true" />完整目錄
+          </router-link>
+        </div>
+      </div>
+    </div>
+    <div v-if="target==='category'" class="article-series">
+
+      <div class="clearfix article-series-page">
+        <div class="article-series-page__line" />
+        <div class="article-series-page__wrapper">
+          <router-link v-if="getLast" :to="getLastTo()" class="article-series-page__link">
+            <div class="article-series-page__content">
+              <div class="article-series-page__text">上一篇</div>
+              <div class="article-series-page__title">{{ getLast.title }}</div>
+            </div>
+          </router-link>
+        </div>
+        <div class="article-series-page__wrapper text-right">
+          <router-link v-if="getNext" :to="getNextTo()" class="article-series-page__link">
+            <div class="article-series-page__content">
+              <div class="article-series-page__text">下一篇</div>
+              <div class="article-series-page__title">{{ getNext.title }}</div>
+            </div>
+          </router-link>
+        </div>
+      </div>
+      <div class="article-series-catalog">
+        <div class="article-series-catalog__badge">
+          分類文
+        </div>
+        <div class="article-series-catalog__topic">
+          <router-link :to="routerLinkTo()" class="article-series-catalog__topic-link">{{ upperCategory.name }}</router-link>
+          共 <span class="article-series-catalog__num">{{ toLength(upperCategory.articleTotle) }}</span> 篇
+        </div>
+        <div class="clearfix">
+          <div>
+            <div class="article-series-catalog__title">目錄</div>
+
+            <!-- <div class="pull-right subscription-group">
+              <a href="https://ithelp.ithome.com.tw/rss/series/4018" class="rss-icon" target="_blank">
+                <i class="fa fa-rss fa-fw" aria-hidden="true" />RSS系列文
+              </a>
+              <button
+                class="article-series-catalog__subscription active subscription-btn"
+                data-type="series"
+                data-id="4018"
+              >
+                <i class="fa fa-bookmark fa-fw" aria-hidden="true" /><span class="subscription-text">已訂閱系列文</span>
+              </button>
+
+              <div class="article-series-catalog__subscription-num">
+                <span class="subscription-amount">3</span> 人訂閱
+              </div>
+            </div> -->
+          </div>
+          <ol class="article-series-catalog__lists">
+            <li v-for="item in articleNearby" :key="item.id" class="article-series-catalog__list">
+              <div class="article-series-catalog__list-num">{{ item.id }}</div>
               <router-link :to="articleLinkTo(item.id)" class="article-series-catalog__link">{{ item.title }}
               </router-link>
             </li>
@@ -83,7 +145,7 @@ export default {
         return {}
       }
     },
-    seriesArticle: {
+    articleNearby: {
       type: Array,
       required: false,
       default() {
@@ -94,7 +156,7 @@ export default {
       type: String,
       required: true
     },
-    series: {
+    upperCategory: {
       type: Object,
       required: false,
       default() {

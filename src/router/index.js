@@ -3,10 +3,12 @@ import VueRouter from 'vue-router'
 import { publicPath, routerMode } from '@/config'
 import store from '@/store/index'
 import Layout from '@/layouts'
+import HomeBody from '@/views/home/index.vue'
 import CategoryBody from '@/views/category/index.vue'
 import SeriesBody from '@/views/series/index.vue'
 import CategoryArticleBody from '@/views/categoryArticle/index.vue'
 import SeriesArticleBody from '@/views/seriesArticle/index.vue'
+import ArticleBody from '@/views/article/index.vue'
 import SubjectBody from '@/layouts/components/body/SubjectBody'
 // import BlogAuthorBody from '@/components/body/author/BlogAuthorBody'
 
@@ -15,16 +17,20 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
+    redirect: '/subject/home',
     children: [
       {
         path: 'subject',
         name: 'SubjectBody',
         component: SubjectBody,
+        redirect: '/subject/home',
         children: [
+          { path: 'home', component: HomeBody },
           { path: 'category/:categorieId', component: CategoryBody },
           { path: 'category/:categoryId/article/:articleId', component: CategoryArticleBody },
           { path: 'series/:serieId', component: SeriesBody },
-          { path: 'series/:serieId/article/:articleId', component: SeriesArticleBody }
+          { path: 'series/:serieId/article/:articleId', component: SeriesArticleBody },
+          { path: 'article/:articleId', component: ArticleBody }
           // { path: 'archive/:archiveYear/:archiveMonth', component: CategoryBody },
           // { path: 'tag/:tagId/', component: CategoryBody },
           // { path: 'p/:articleId', component: ArticleBody }

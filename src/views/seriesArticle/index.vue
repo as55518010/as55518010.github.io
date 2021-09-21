@@ -3,7 +3,7 @@
     <Title :article="articleData" @openFullScreenEven="openFullScreenEven" />
     <PreLine :data="preLineCategoryMenuNav" />
     <ArticleDesc :article="articleData" class="article-body-item" />
-    <PrePos :article="articleData" class="article-body-margin" target="series" :series-article="seriesArticleData.list" :series="series" />
+    <PrePos :article="articleData" class="article-body-margin" target="series" :article-nearby="seriesArticleData.list" :upper-category="series" />
     <!-- <Comment ref="articleComment" class="article-body-item" :article-id="articleId" /> -->
     <!-- <Message class="article-body-item" :article-id="articleId" @noticeReplayEvent="noticeReplayEvent" @noticeQuoteEvent="noticeQuoteEvent" @noticeUpdateEvent="noticeUpdateEvent" /> -->
   </div>

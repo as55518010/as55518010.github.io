@@ -2,7 +2,12 @@
   <div id="panel_aside" class="panel-aside-back-color">
     <div class="panel-aside-wrap none-base-scroll">
       <AvatarArea />
-      <MenuItems menu-title="導航" :menu-list="mainExtNav" />
+      <MenuItems
+        menu-title="導航"
+        :menu-list="mainExtNav"
+        :router="true"
+        :default-active="routeActive"
+      />
       <MenuItems
         menu-title="組成"
         :menu-list="categoryMenuNav"
@@ -51,7 +56,7 @@ export default {
     return {
       routeActive: '',
       mainExtNav: [
-        { name: '首頁', url: '/subject/category/default.html', icon: 'home' },
+        { name: '首頁', url: '/subject/home', icon: 'home' },
         {
           name: '博主簡歷',
           url: 'https://www.cnblogs.com/cjunn/',
