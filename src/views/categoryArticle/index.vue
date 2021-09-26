@@ -1,11 +1,9 @@
 <template>
   <div v-if="!isEmpty(articleData)" id="article_body">
-    <Title :article="articleData" @openFullScreenEven="openFullScreenEven" />
+    <Title :article="articleData" />
     <PreLine :data="preLineCategoryMenuNav" />
     <ArticleDesc :article="articleData" class="article-body-item" />
     <PrePos :article="articleData" class="article-body-margin" target="category" :article-nearby="categoryArticleData.list" :upper-category="categorie" />
-    <!-- <Comment ref="articleComment" class="article-body-item" :article-id="articleId" /> -->
-    <!-- <Message class="article-body-item" :article-id="articleId" @noticeReplayEvent="noticeReplayEvent" @noticeQuoteEvent="noticeQuoteEvent" @noticeUpdateEvent="noticeUpdateEvent" /> -->
   </div>
 </template>
 
@@ -13,17 +11,15 @@
 import Title from '@/components/Article/Title'
 import PreLine from '@/components/Article/PreLine'
 import ArticleDesc from '@/components/Article/ArticleDesc'
-import Comment from '@/components/Article/Comment'
-import Message from '@/components/Article/Message'
 import PrePos from '@/components/Article/PrePos'
-import { showCategoryArticle } from '@/api/article'
+import { showCategoryArticle, patchArticleDetail } from '@/api/article'
 import { parseTime } from '@/utils/index'
 import { isEmpty } from 'lodash-es'
 
 import { reverse } from 'lodash-es'
 
 export default {
-  components: { PrePos, Message, Comment, ArticleDesc, Title, PreLine },
+  components: { PrePos, ArticleDesc, Title, PreLine },
   data: () => {
     return {
       articleData: {},
@@ -73,15 +69,13 @@ export default {
       immediate: true
     }
   },
+  beforeDestroy() {
+    this.$baseEventBus.$emit('articleInitedClose')
+  },
   methods: {
     eventBus() {
       this.$baseEventBus.$emit('onRouteActive', `/subject/category/${this.categoryId}`)
-    },
-    openFullScreenEven() {
-      this.$baseEventBus.$emit('openFullScreenEven', {
-        title: this.articleInfo.title,
-        body: this.article.body
-      })
+      this.$baseEventBus.$emit('upHotArticleList')
     },
     noticeUpdateEvent(commentId) {
       this.$refs.articleComment.setUpdateCommentId(commentId)
@@ -95,6 +89,7 @@ export default {
     /* 獲取文章詳情 */
     async articleInit() {
       const { articleData, categoryArticleData, categorie } = await showCategoryArticle(this.articleId, this.categoryId, this.params)
+      this.upView(articleData)
       this.articleData = articleData
       this.categorie = categorie
       this.categoryArticleDataRes(categoryArticleData)
@@ -102,6 +97,12 @@ export default {
     categoryArticleDataRes(res) {
       this.categoryArticleData.list = res.list
       this.categoryArticleData.total = res.pagination.total
+    },
+    async upView(articleData) { // 更新觀看次數
+      articleData.articleDetil.view += 1
+      const from = { view: articleData.articleDetil.view }
+      await patchArticleDetail(this.articleId, from)
+      this.$baseEventBus.$emit('upHotArticleList')
     },
     parseTime(time, cFormat) {
       return parseTime(time, cFormat)

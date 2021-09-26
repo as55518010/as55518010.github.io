@@ -1,13 +1,13 @@
 <template>
   <div id="route_body">
     <router-view ref="routeView" class="inner-route-body" />
-    <pub-aside ref="pubAside" class="pub-aside" />
+    <PubAside ref="pubAside" class="pub-aside" />
   </div>
 
 </template>
 
 <script>
-import PubAside from './aside/PubAside'
+import PubAside from './aside/index.vue'
 
 export default {
   name: 'SubjectBody',

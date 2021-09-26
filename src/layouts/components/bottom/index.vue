@@ -1,41 +1,19 @@
 <template>
   <div id="blog_bottom">
-    <div class="copyright">{{ copyright }}
-      <span class="author-clz" @click="page">
-        <span>{{ detail() }}</span>
-      </span>
+    <div class="copyright">{{ blogCopyright }}
     </div>
-    <div class="technology">{{ technology }}</div>
+    <div class="technology">{{ blogBottomNarrate }}</div>
   </div>
 </template>
 
 <script>
-import BlogContext from '@/context/BlogContext'
-
-console.log(
-  BlogContext.outPrint[0],
-  BlogContext.outPrint[1],
-  BlogContext.outPrint[2]
-)
-const page = BlogContext.myPage
-const detail = BlogContext.myUrl
 export default {
-  name: 'BlogBottom',
-  data: () => {
-    // 建议这里改为 copyright 2020 博主名 theme 主题名（你博客链接）
-    return {
-      copyright: 'Copyright © ' + new Date().getFullYear() + ' ' + BlogContext.blogName,
-      plugName: 'c_blog',
-      author: 'cjunn',
-      technology: 'Powered by vue on cnblogs'
-    }
-  },
-  methods: {
-    page: () => {
-      window.open(page)
+  computed: {
+    blogCopyright() {
+      return this.$store.getters['bloginfo/blogCopyright']
     },
-    detail: () => {
-      return detail
+    blogBottomNarrate() {
+      return this.$store.state.bloginfo.blogBottomNarrate
     }
   }
 }
@@ -81,7 +59,7 @@ export default {
     .technology {
       font-weight: 600;
       font-size: 28px;
-      font-family: "黑体";
+      font-family: "黑體";
       color: #8c888b;
       background: -webkit-linear-gradient(45deg, #FF0000, #FF9900, #FFCC00, #66CC00, #00FFCC);
       color: transparent;

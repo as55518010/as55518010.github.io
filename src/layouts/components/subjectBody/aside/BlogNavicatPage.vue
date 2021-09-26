@@ -12,19 +12,18 @@ import TocHelper from '@/utils/toc/toc-helper.js'
 import blogUtils from '@/utils/BlogUtils'
 
 export default {
-  name: 'BlogNavicatPage',
   data: () => {
     return {
       isOpenFullScreen: false
     }
   },
-  beforeRouterEnter: function() {
+  beforeRouterEnter() {
     $('#toc_page').empty()
   },
 
-  created: function() {
+  created() {
     const self = this
-    this.$baseEventBus.$on('articleDestroy', (dom) => {
+    this.$baseEventBus.$on('articleDestroy', () => {
       $('#toc_page').empty()
     })
     /* 監聽生成目錄*/

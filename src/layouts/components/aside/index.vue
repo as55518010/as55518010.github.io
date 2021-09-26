@@ -22,10 +22,9 @@
         :default-active="routeActive"
       />
 
-      <!-- <MenuItems :menu-list="funcMenuNav" index-prefix="category/" :router="true" /> -->
     </div>
     <div class="panel-aside-bottom">
-      <div class="blog-menu-bar panel-aside-color">
+      <!-- <div class="blog-menu-bar panel-aside-color">
         <div @click="openManage">
           <div class="icon iconfont cogs" />
           <div>管理</div>
@@ -38,7 +37,7 @@
           <div class="icon iconfont talk" />
           <div>聯繫</div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -47,10 +46,8 @@
 /* 面板側邊控件*/
 import AvatarArea from './AvatarArea'
 import MenuItems from './MenuItems'
-import BlogContext from '@/context/BlogContext'
 
 export default {
-  name: 'PanelAside',
   components: { MenuItems, AvatarArea },
   data: () => {
     return {
@@ -73,7 +70,7 @@ export default {
       return this.$store.getters['series/getSeriesMenuNav']
     }
   },
-  created: function() {
+  created() {
     this.getCategorys()
     this.getSeries()
     this.eventBus()
@@ -91,15 +88,6 @@ export default {
     // 獲取系列
     async getSeries() {
       this.$store.dispatch('series/setSeries')
-    },
-    openManage: () => {
-      window.open(BlogContext.manPage)
-    },
-    openRss: () => {
-      window.open(BlogContext.subPage)
-    },
-    openMail: () => {
-      window.open(BlogContext.sendPage)
     }
   }
 }

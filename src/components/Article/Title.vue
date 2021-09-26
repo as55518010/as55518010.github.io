@@ -3,7 +3,7 @@
     <div class="article-page-head-wrap">
       <div class="author-title">
         <span>{{ article.title }}</span>
-        <span class="fangdabtn icon iconfont fangda" @click="$emit('openFullScreenEven')" />
+        <span class="fangdabtn icon iconfont fangda" />
       </div>
       <div class="author-sign">
         <span>
@@ -24,11 +24,6 @@
           <span>{{ article.articleDetil?article.articleDetil.view:0 }}</span>
           <span>條評論</span>
         </span>
-        <span>
-          <span class="icon iconfont pen" />
-          <span>{{ article.articleDetil?article.articleDetil.view:0 }}</span>
-          <span>字數</span>
-        </span>
         <span v-for="(item, index) in article.articleDetil.tag" :key="index">
           <span class="icon iconfont label" />
           <span v-if="article.articleDetil">
@@ -44,7 +39,6 @@
 </template>
 
 <script>
-import BlogContext from '@/context/BlogContext'
 import { parseTime } from '@/utils/index'
 
 export default {
@@ -56,9 +50,6 @@ export default {
         return {}
       }
     }
-  },
-  data: () => {
-    return { articleName: BlogContext.blogName }
   },
   methods: {
     parseTime(time, cFormat) {

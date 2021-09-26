@@ -7,35 +7,11 @@
         <div class="body-wrap-bottom"><span class="icon iconfont ios-shijian" />
           最後修改時間：{{ parseTime(article.updatedAt, '{y}-{m}-{d} {h}:{i}' ) }}</div>
       </div>
-      <!-- <div class="post-body-bottom">
-        <span class="post-bottom-item" @click="diggAction()">
-          <span class="icon iconfont zan" />
-          <span v-show="!isDigg">已推薦</span>
-          <span v-show="isDigg">點擊推薦</span>
-        </span>
-        <span class="post-bottom-item" @click="fucusAction()">
-          <span class="icon iconfont heart" />
-          <span v-show="!isFucus">已關注</span>
-          <span v-show="isFucus">點擊關注</span>
-        </span>
-        <span class="post-bottom-item" @click="addToWz()">
-          <span class="icon iconfont star" />收藏該文
-        </span>
-      </div>
-      <div class="post-article-right">
-        <div @click="openEdit">
-          <span class="icon iconfont pen" />
-          <span>編輯</span>
-        </div>
-      </div> -->
     </div>
   </div>
 </template>
 
 <script>
-import blogApi from '@/utils/BlogApi'
-import blogUtils from '@/utils/BlogUtils'
-import blogKit from '@/utils/BlogKit'
 import { parseTime } from '@/utils/index'
 import VditorMethod from 'vditor/dist/method.min'
 
@@ -67,34 +43,13 @@ export default {
     this.$baseEventBus.$emit('articleDestroy', true)
   },
   methods: {
-    openEdit: function() {
-      window.open(this.article.editUrl)
-    },
     async initPageList() {
       await VditorMethod.preview(this.$refs.articleBody, this.article.content, {
         lang: 'zh_TW'
       })
-      // this.article.content = await VditorMethod.md2html(this.article.content)
       this.$nextTick(() => {
         this.$baseEventBus.$emit('articleInited', this.$refs.articleBody)
-        // this.article.pageId ? blogApi.loadBlogPostInfo(this.article.pageId).then((data) => {
-        //   this.isDigg = data.digg
-        //   this.isFucus = data.fucus
-        // }) : ''
       })
-    },
-    diggAction: function() {
-      blogApi.voteBlogPost(this.article.pageId, false).then(data => {
-        blogUtils.showInfoMsg(data.message)
-      })
-    },
-    fucusAction: function() {
-      blogApi.blogFollow().then(data => {
-        blogUtils.showInfoMsg(data)
-      })
-    },
-    addToWz: function() {
-      return blogKit.addToWz(this.article.pageId)
     },
     parseTime(time, cFormat) {
       return parseTime(time, cFormat)
@@ -102,6 +57,7 @@ export default {
   }
 }
 </script>
+
 <style>
 @import url(~vditor/dist/index.css);
 </style>

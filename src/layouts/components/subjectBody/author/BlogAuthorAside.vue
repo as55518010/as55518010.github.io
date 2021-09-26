@@ -1,38 +1,38 @@
 <template>
   <div id="blog_author_aside">
     <div class="blog-author-aside-wrap">
-      <div class="contact-title">联系方式</div>
+      <div class="contact-title">聯繫方式</div>
       <div class="contact-item">
         <span class="contact-png">
-          <img id="author-email-img" :src=emailImg>
+          <img id="author-email-img" :src="emailImg">
         </span>
         <span class="contact-content">
-           <div class="contact-content-top">email</div>
-           <div class="contact-content-bottom">{{email()}}</div>
+          <div class="contact-content-top">email</div>
+          <div class="contact-content-bottom">{{ email() }}</div>
         </span>
       </div>
       <div class="contact-item">
         <span class="contact-png">
-          <img id="author-qq-img" :src=qqImg>
+          <img id="author-qq-img" :src="qqImg">
         </span>
         <span class="contact-content">
           <div class="contact-content-top">QQ</div>
-          <div class="contact-content-bottom">{{qq()}}</div>
+          <div class="contact-content-bottom">{{ qq() }}</div>
         </span>
       </div>
       <div class="contact-item">
         <span class="contact-png">
-          <img id="author-github-img" :src=githubImg>
+          <img id="author-github-img" :src="githubImg">
         </span>
         <span class="contact-content">
-         <div class="contact-content-top">github</div>
-         <div class="contact-content-bottom">{{github()}}</div>
+          <div class="contact-content-top">github</div>
+          <div class="contact-content-bottom">{{ github() }}</div>
         </span>
       </div>
       <div class="about-me-wrap">
-        <div class="about-me-head">关于我</div>
+        <div class="about-me-head">關於我</div>
         <div class="about-me-body" v-html="aboutmeHtml">
-          {{aboutmeHtml}}
+          {{ aboutmeHtml }}
         </div>
       </div>
     </div>
@@ -40,31 +40,31 @@
 </template>
 
 <script>
-    import blogKit from "@/utils/BlogKit";
-    import BlogContext from "@/context/BlogContext";
+import blogKit from '@/utils/BlogKit'
+import BlogContext from '@/context/BlogContext'
 
-    export default {
-        name: "BlogAuthorAside",
-        methods: {
-            qq: () => {
-                return BlogContext.qq;
-            },
-            email: () => {
-                return BlogContext.email;
-            },
-            github: () => {
-                return BlogContext.github;
-            }
-        },
-        data: () => {
-            return {
-                emailImg: blogKit.getExtendStylePath("/img/ing/email.png"),
-                qqImg: blogKit.getExtendStylePath("/img/ing/qq.png"),
-                githubImg: blogKit.getExtendStylePath("/img/ing/github.png"),
-                aboutmeHtml: BlogContext.aboutmeHtml,
-            }
-        }
+export default {
+  name: 'BlogAuthorAside',
+  data: () => {
+    return {
+      emailImg: blogKit.getExtendStylePath('/img/ing/email.png'),
+      qqImg: blogKit.getExtendStylePath('/img/ing/qq.png'),
+      githubImg: blogKit.getExtendStylePath('/img/ing/github.png'),
+      aboutmeHtml: BlogContext.aboutmeHtml
     }
+  },
+  methods: {
+    qq: () => {
+      return BlogContext.qq
+    },
+    email: () => {
+      return BlogContext.email
+    },
+    github: () => {
+      return BlogContext.github
+    }
+  }
+}
 </script>
 
 <style lang="scss">

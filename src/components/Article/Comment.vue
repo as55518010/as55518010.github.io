@@ -2,13 +2,13 @@
   <div id="articles_comment">
     <div>
       <div class="comment-top">
-        <span class="comment-title">发表评论</span>
+        <span class="comment-title">發表評論</span>
         <span class="right-bar-wrap">
           <span title="引用" class="icon iconfont pin" @click="commentQuote()" />
           <span title="加粗" class="icon iconfont bold" @click="commentBold()" />
-          <span title="链接" class="icon iconfont link" @click="commentLink()" />
-          <span title="代码块" class="icon iconfont code" @click="commentCode()" />
-          <span title="图片" class="icon iconfont image-text" @click="commentImg()" />
+          <span title="鏈接" class="icon iconfont link" @click="commentLink()" />
+          <span title="代碼塊" class="icon iconfont code" @click="commentCode()" />
+          <span title="圖片" class="icon iconfont image-text" @click="commentImg()" />
         </span>
       </div>
       <div class="comment-textarea">
@@ -18,12 +18,12 @@
         <div class="opt-bar">
           <span class="ext-wrap">
             <span ref="faceBtn" @click="openFaceEven"><span class="icon iconfont face2" />&nbsp;表情</span>
-            <!--<span><span class="icon iconfont pen" @click="quickResponseEven"></span></span>-->
+            <span><span class="icon iconfont pen" @click="quickResponseEven" /></span>
           </span>
         </div>
         <div class="comment-btn">
-          <span v-if="commentId==''" @click="pushCommentEvent">发表评论</span>
-          <span v-if="commentId!=''" @click="pushCommentEvent">更新评论</span>
+          <span v-if="commentId==''" @click="pushCommentEvent">發表評論</span>
+          <span v-if="commentId!=''" @click="pushCommentEvent">更新評論</span>
           <span v-if="commentId!=''" class="cancel" @click="cancelCommentEvent">取消修改</span>
         </div>
       </div>
@@ -55,13 +55,13 @@ export default {
       if (!this.commentId) {
         blogApi.addComment(this.articleId, this.commentBody, this.replayCommentId).then((obj) => {
           this.BlogHeadBar.$emit('commentCommitEvent')
-          blogUtils.showInfoMsg('评论提交成功')
+          blogUtils.showInfoMsg('評論提交成功')
           this.cancelCommentEvent()
         })
       } else {
         blogApi.updateComment(this.commentId, this.commentBody).then((obj) => {
           this.BlogHeadBar.$emit('commentUpdateEvent')
-          blogUtils.showInfoMsg('评论更新成功')
+          blogUtils.showInfoMsg('評論更新成功')
           this.cancelCommentEvent()
         })
       }
@@ -99,7 +99,7 @@ export default {
       this.$refs.refTextArea.focus()
     },
     quickResponseEven: function() {
-      this.commentBody = '滴，打卡上车  ' + BlogUtils.getNowTime()
+      this.commentBody = '滴，打卡上車  ' + BlogUtils.getNowTime()
     },
     openFaceEven: function() {
       if (!this.$refs.faceBtn.isInit) {

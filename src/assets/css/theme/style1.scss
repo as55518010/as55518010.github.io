@@ -1,7 +1,4 @@
 .style1{
-/*BODY样式表*/
-.body-pic{
-}
 /*HEAD样式表*/
 .head-back-color {
   background-color: #f9f9f9;
@@ -15,8 +12,6 @@
   background-color: white;
 }
 
-.head-music-pic {
-}
 
 .panel-aside-back-color{
   background-color: #f9f9f9;
@@ -26,11 +21,6 @@
 }
 
 
-@for $i from 1 through 35
-{
-  .panel-item-pic-#{$i}{
-  }
-}
 
 .panel-item-title-color{
   color:#555;
@@ -39,7 +29,7 @@
 
 .panel-avatar-dec{
   text-align: left;
-  padding: 20px;
+  padding: 25px 10px 25px 20px;
 img{
   width: 60px;
   height: 60px;
@@ -58,10 +48,5 @@ img{
   width: 45px;
   height: 45px;
   border-radius: 5px;
-}
-@for $i from 0 through 9
-{
-  .panel-right-img-pic-#{$i}{
-  }
 }
 }

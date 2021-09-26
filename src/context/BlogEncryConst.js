@@ -9,8 +9,6 @@ const outPrint = [
   CryptoUtils.o('2g93Phx6xHtICz5p2XCfNhsSkXjYDpCZNXV7Q4rYN4ZRNHcvQwnnMz3='),
   CryptoUtils.o('2g93Phx6xgWZNU5p2XCfNhsSkXjYDpMICzt7Q4rYN4ZRNHcvQwnnMz3=')
 ]
-const myPage = CryptoUtils.o('OwuIQwM6LG9hkhQR2gjpP49bQGjqPgIS2gdvPaiS')
-const myUrl = CryptoUtils.o('k4oZPXVn21uvPTBplTBqObWRPn==')
 // "https://hm.baidu.com/hm.js?ae80cc662109a34c868ba6cbe3431c8d"
 const baiduCount = CryptoUtils.o('OwuIQwM6LG9cPTjp2XZYkTjqPgISO4IRObM/2XViM4CqCq2GMUAj2UMI2HngD4soCaCpNUMIMHrqD4t=')
-export default { myfriend, outPrint, myPage, myUrl, baiduCount }
+export default { myfriend, outPrint, baiduCount }

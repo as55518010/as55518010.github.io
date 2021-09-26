@@ -4,31 +4,16 @@
       <a-breadcrumb style="display:inline;">
         <a-breadcrumb-item v-for="(item,key) in data" :key="key">{{ item.name }}</a-breadcrumb-item>
       </a-breadcrumb>
-      <!-- <span class="right-area">
-        <span>分享到 :</span>
-        <span class="icon iconfont weibo" @click="openWeiBo" />
-        <span class="icon iconfont wechat" @click="openWechat" />
-      </span> -->
     </div>
   </div>
 </template>
 
 <script>
-import blogKit from '@/utils/BlogKit'
 export default {
-  name: 'PreLine',
   props: {
     data: {
       type: Array,
       required: true
-    }
-  },
-  methods: {
-    openWeiBo: () => {
-      blogKit.shareToTsina()
-    },
-    openWechat: () => {
-      blogKit.shareOnWechat()
     }
   }
 }

@@ -4,9 +4,9 @@
       <span class="article-menu-item" :class="selectItem==1?'article-menu-bottom':''" @click="selectItem=1">
         <span class="icon iconfont fire" />
       </span>
-      <span class="article-menu-item" :class="selectItem==2?'article-menu-bottom':''" @click="selectItem=2">
+      <!-- <span class="article-menu-item" :class="selectItem==2?'article-menu-bottom':''" @click="selectItem=2">
         <span class="icon iconfont talk" />
-      </span>
+      </span> -->
       <span v-show="isArticleInited" class="article-menu-item" :class="selectItem==3?'article-menu-bottom':''" @click="selectItem=3">
         <span class="icon iconfont menu" />
       </span>
@@ -16,26 +16,21 @@
         <div>
           <div class="pub-body-title">熱門文章</div>
           <div>
-            <div v-for="(item,key) in viewPosts" :key="key" class="pub-item" @click="clickOpenArticle(item.url)">
-              <div
-                class="pub-face panel-right-img-style"
-                :style="rightImg(id)"
-              />
+            <div v-for="(item,key) in hotArticleList" :key="key" class="pub-item">
+              <el-avatar :src="item.thumb" />
               <div class="pub-item-wrap">
-                <div class="item-title double-ellipsis" :title="item.title">{{ item.title }}</div>
+                <div class="item-title double-ellipsis" @click="clickOpenArticle(item.id)">{{ item.title }}</div>
                 <div class="item-see">
                   <span class="icon iconfont see" />
-                  <span>{{ item.num }}</span>
+                  <span>{{ item.articleDetil.view }}</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <!-- <AsideInfoPage />
-        <BlogCloudPage /> -->
-
+        <AsideInfoPage />
       </div>
-      <div v-show="selectItem==2" class="pub-body-comment">
+      <!-- <div v-show="selectItem==2" class="pub-body-comment">
         <div>
           <div class="pub-body-title">最新評論</div>
           <div>
@@ -48,10 +43,9 @@
               </div>
             </div>
           </div>
-          <!-- <AsideInfoPage />
-          <BlogCloudPage /> -->
+          <AsideInfoPage />
         </div>
-      </div>
+      </div> -->
       <div v-show="selectItem==3" class="pub-body-menulist">
         <BlogNavicatPage />
       </div>
@@ -60,59 +54,59 @@
 </template>
 
 <script>
-import emoji from '@/utils/EmojiUtils'
-import blogApi from '@/utils/BlogApi'
-import blogKit from '@/utils/BlogKit'
-import AsideInfoPage from './AsideInfoPage'
-import BlogCloudPage from './BlogCloudPage'
-import BlogNavicatPage from './BlogNavicatPage'
-import BlogContext from '@/context/BlogContext'
+import AsideInfoPage from './AsideInfoPage' // 部落格信息
+import BlogNavicatPage from './BlogNavicatPage' // 文章目錄
 
 export default {
   name: 'BodyAside',
-  components: { BlogNavicatPage, BlogCloudPage, AsideInfoPage },
-  data: () => {
+  components: { BlogNavicatPage, AsideInfoPage },
+  data() {
     return {
       selectItem: 1,
-      viewPosts: [], // 熱門文章
-      catListComment: [], // 最新評論
-      isArticleInited: false
+      isArticleInited: false,
+      query: {
+        order: {
+          articleDetils: { view: 'desc' }
+        },
+        // 分頁
+        pagination: {
+          // 每頁數量
+          size: 5,
+          // 頁數
+          page: 1
+        }
+      }
     }
   },
-  created: function() {
-    // blogApi.loadTopLists().then((data) => {
-    //   blogKit.convertSubjectUrls(data.topViewPostsBlock)
-    //   this.viewPosts = data.topViewPostsBlock
-    // })
-    // blogApi.loadSideColumn().then((data) => {
-    //   blogKit.convertSubjectUrls(data.catListComment)
-    //   data.catListComment.map((v) => {
-    //     v.body = emoji.parseText(v.body)
-    //     this.catListComment.push(v)
-    //     blogApi.loadCommitterFaceUrl(v.url, v.committer).then((picUrl) => {
-    //       v.img = picUrl
-    //     })
-    //   })
-    // })
-    this.$baseEventBus.$on('articleInited', () => {
-      this.selectItem = 3
-      this.isArticleInited = true
-    })
-    this.$baseEventBus.$on('articleInitedClose', () => {
-      this.selectItem = 1
-      this.isArticleInited = false
-    })
+  computed: {
+    hotArticleList() {
+      return this.$store.state.article.hotArticleList
+    }
+  },
+  created() {
+    this.eventBus()
+    this.getCategorys()
   },
   methods: {
-    rightImg: function(id) {
-      return {
-        background: 'url(' + BlogContext.panelRightImgPic[id] + ') no-repeat'
-      }
+    eventBus() {
+      this.$baseEventBus.$on('articleInited', () => {
+        this.selectItem = 3
+        this.isArticleInited = true
+      })
+      this.$baseEventBus.$on('articleInitedClose', () => {
+        this.selectItem = 1
+        this.isArticleInited = false
+      })
+      this.$baseEventBus.$on('upHotArticleList', () => {
+        this.$store.dispatch('article/setHotArticleList', this.query)
+      })
     },
-    clickOpenArticle: function(url) {
-      if (this.$router.currentRoute.path != url) {
-        this.$router.push(url)
-      }
+    // 獲取類別
+    async getCategorys() {
+      this.$store.dispatch('article/setHotArticleList', this.query)
+    },
+    clickOpenArticle(id) {
+      this.$router.push(`/subject/article/${id}`)
     }
   }
 }

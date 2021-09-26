@@ -62,7 +62,7 @@
         </div>
       </div>
     </div>
-    <div v-if="target==='category'" class="article-series">
+    <div v-else-if="target==='category'" class="article-series">
 
       <div class="clearfix article-series-page">
         <div class="article-series-page__line" />

@@ -43,48 +43,6 @@ const utils = {
     })
     dom.prepend(copyBtn)
   },
-  uuid() {
-    const s = []
-    const hexDigits = '0123456789abcdef'
-    for (var i = 0; i < 36; i++) {
-      s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1)
-    }
-    s[14] = '4' // bits 12-15 of the time_hi_and_version field to 0010
-    s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1) // bits 6-7 of the clock_seq_hi_and_reserved to 01
-    s[8] = s[13] = s[18] = s[23] = '-'
-
-    var uuid = s.join('')
-    return uuid
-  },
-  removeUnClick: function(el) {
-    const unClickCache = this.unClickCache || {}
-    if (unClickCache[el]) {
-      $(document).unbind('click', unClickCache[el])
-      delete unClickCache[el]
-    }
-  },
-  registerUnClick: function(el, unclickEvent) {
-    const unClickCache = this.unClickCache || {}
-    if (unClickCache[el]) {
-      $(document).unbind('click', unClickCache[el])
-      delete unClickCache[el]
-    }
-    const func = function(e) {
-      const parent = $(e.target).closest(el)
-      if (parent.length == 0) {
-        unclickEvent()
-      }
-    }
-    unClickCache[el] = func
-    $(document).bind('click', func)
-  },
-  delayPromise: (delayTime) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve()
-      }, delayTime)
-    })
-  },
 
   showInfoMsg: (msg) => {
     /* $.toast({
@@ -109,17 +67,6 @@ const utils = {
       position: 'top-center',
       loader: false
     })
-  },
-  getTextWidth: function(str, fontSize) {
-    let width = 0
-    const html = document.createElement('span')
-    html.innerText = str
-    html.className = 'getTextWidth'
-    html.style.fontSize = fontSize + 'px'
-    document.querySelector('body').appendChild(html)
-    width = document.querySelector('.getTextWidth').offsetWidth
-    document.querySelector('.getTextWidth').remove()
-    return width
   },
   getNowTime: function() {
     const dates = new Date()
@@ -163,30 +110,8 @@ const utils = {
         console.error(e)
         utils.showErrMsg('啟動圖片上傳失敗')
       }
-    },
-
-    insertUbbUrl: function(n) {
-      let res = ''
-      const i = prompt('顯示鏈接的文本.\n如果為空，那麼將只顯示超級鏈接地址', ''); let t
-      i != null && (t = prompt('http:// 超級鏈接', 'http://'),
-      t != '' && t != 'http://' && (i != '' ? res = ('[url=' + t + ']' + i + '[/url]') : res = ('[url]' + t + '[/url]')))
-      return res
-    },
-    insertUbbCode: function(callback) {
-      try {
-        const n = 450; const t = 400; const r = (screen.width - n) / 2; const u = (screen.height - t) / 2; let i
-        document.domain = 'cnblogs.' + location.hostname.substring(location.hostname.lastIndexOf('.') + 1, location.hostname.length)
-        i = window.open('/SyntaxHighlighter.htm', '_blank', 'width=' + n + ',height=' + t + ',toolbars=0,resizable=1,left=' + r + ',top=' + u)
-        i.focus()
-        window.InsertCodeToEditor = function(n) {
-          callback ? callback(n) : ''
-          i.close ? i.close() : ''
-        }
-      } catch (e) {
-        console.log(e)
-        utils.showErrMsg('啟動代碼上傳失敗')
-      }
     }
+
   },
   textAreaUtils: {
     /* 獲得光標區域*/
@@ -206,7 +131,6 @@ const utils = {
     },
     /* 設置光標區域*/
     setTextareaCursor: function(textarea, rangeData) {
-      let oR, start, end
       textarea.focus()
       if (textarea.setSelectionRange) {
         textarea.setSelectionRange(rangeData.start, rangeData.end)
@@ -215,8 +139,7 @@ const utils = {
     /* 光標區域設置文本*/
     addTextareaCursor: function(textarea, cursor, text) {
       // textarea 容器； cursor：光標位置和選中內容； text：要插入的文本
-      let oValue, nValue, oR, nStart, nEnd, st
-      const sR = ''
+      let oValue, nValue, nStart, nEnd, st
       this.setTextareaCursor(textarea, cursor) // 調用獲取位置
       if (textarea.setSelectionRange) {
         oValue = textarea.value
