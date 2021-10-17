@@ -17,6 +17,7 @@
     "ant-design-vue": "^1.7.8",
     "axios": "0.18.1",
     "core-js": "3.6.5",
+    "dayjs": "^1.10.7",
     "element-ui": "2.13.2",
     "jquery": "^3.6.0",
     "js-cookie": "2.2.0",
