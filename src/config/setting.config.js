@@ -3,7 +3,7 @@
  */
 const setting = {
   // 開發以及部署時的URL
-  publicPath: '',
+  publicPath: 'https://as55518010.github.io/vue2_blog',
   // 生產環境構建文件的目錄名
   outputDir: 'dist',
   // 放置生成的靜態資源 (js、css、img、fonts) 的 (相對於 outputDir 的) 目錄。
