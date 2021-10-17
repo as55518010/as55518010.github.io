@@ -43,7 +43,6 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    // before: require('./mock/mock-server.js'),
     proxy: {
       '/api': {
         target: 'http://laravel8.blog.com',
