@@ -19,13 +19,13 @@
 export default {
   computed: {
     blogNickname() {
-      return this.$store.state.bloginfo.blogNickname
+      return this.$store.state.bloginfo.author.blogNickname
     },
     blogAvatarSign() {
-      return this.$store.state.bloginfo.blogAvatarSign
+      return this.$store.state.bloginfo.author.blogAvatarSign
     },
     blogAvatarImg() {
-      return this.$store.state.bloginfo.blogAvatarImg
+      return this.$store.state.bloginfo.author.blogAvatarImg
     }
   }
 }

@@ -113,13 +113,13 @@ export default {
     getAllParentArr(list, id) {
       for (const i in list) {
         if (list[i].id === id) {
-          // 查询到返回该数组对象
+          // 查詢到返回該數組對象
           return [list[i]]
         }
         if (list[i].children) {
           const node = this.getAllParentArr(list[i].children, id)
           if (node !== undefined) {
-            // 查询到把父节点连起来
+            // 查詢到把父節點連起來
             return node.concat(list[i])
           }
         }

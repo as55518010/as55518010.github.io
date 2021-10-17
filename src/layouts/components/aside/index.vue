@@ -23,22 +23,6 @@
       />
 
     </div>
-    <div class="panel-aside-bottom">
-      <!-- <div class="blog-menu-bar panel-aside-color">
-        <div @click="openManage">
-          <div class="icon iconfont cogs" />
-          <div>管理</div>
-        </div>
-        <div @click="openRss">
-          <div class="icon iconfont rss" />
-          <div>文章</div>
-        </div>
-        <div @click="openMail">
-          <div class="icon iconfont talk" />
-          <div>聯繫</div>
-        </div>
-      </div> -->
-    </div>
   </div>
 </template>
 

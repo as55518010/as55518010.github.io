@@ -2,9 +2,9 @@
   <div id="article_message">
     <div class="article-message-wrap">
       <div class="message-title">
-        评论列表
+        評論列表
       </div>
-      <div v-if="!messageList||messageList.length==0" class="message-body-nocomment">暂无评论</div>
+      <div v-if="!messageList||messageList.length==0" class="message-body-nocomment">暫無評論</div>
       <div v-if="messageList&&messageList.length>0" class="message-body-warp">
         <div v-for="item in messageList" class="body-item">
           <div class="avatar-img">
@@ -24,9 +24,9 @@
           </div>
           <div class="message-btn-wrap">
             <div class="message-btn btn1">
-              <span v-if="item.delBtn" @click="delComment(item.commentId)">删除</span>
+              <span v-if="item.delBtn" @click="delComment(item.commentId)">刪除</span>
               <span v-if="item.updateBtn" @click="updateComment(item.commentId)">修改</span>
-              <span v-if="item.replayBtn" @click="replayComment(item.commentId,item.author)">回复</span>
+              <span v-if="item.replayBtn" @click="replayComment(item.commentId,item.author)">回覆</span>
               <span v-if="item.quoteBtn" @click="quoteComment(item.commentId,item.author)">引用</span>
             </div>
             <div class="message-btn btn2">
@@ -116,7 +116,7 @@ export default {
     clickPage: function(changePage) {
       this.initMyCommentList(this.articleId, changePage)
     },
-    /* 重新初始化我的评论列表*/
+    /* 重新初始化我的評論列表*/
     initMyCommentList: function(articleId, pageNum) {
       this.pageNum = pageNum
       this.BlogHeadBar.emit('barLoadingOpen')

@@ -36,29 +36,42 @@ export default {
       asideIsShow: false
     }
   },
+  created() {
+    this.eventBus()
+    this.blogInit()
+  },
   mounted() {
-    /* 監控滑到頂部事件*/
-    this.$baseEventBus.$on('panelToTop', () => {
-      document
-        .getElementById('panel_top_target')
-        .scrollIntoView({ behavior: 'smooth' })
-    })
-    /* 監控滑到底部事件*/
-    this.$baseEventBus.$on('panelToBottom', () => {
-      document
-        .getElementById('panel_bottom_target')
-        .scrollIntoView({ behavior: 'smooth' })
-    })
-    /* 小屏切換頂部設置界面*/
-    this.$baseEventBus.$on('switchPanelAside', () => {
-      this.asideIsShow = !this.asideIsShow
-    })
     this.routeMinHeight = this.$refs.routerView.clientHeight - 40
   },
   methods: {
+    eventBus() {
+      /* 監控滑到頂部事件*/
+      this.$baseEventBus.$on('panelToTop', () => {
+        document
+          .getElementById('panel_top_target')
+          .scrollIntoView({ behavior: 'smooth' })
+      })
+      /* 監控滑到底部事件*/
+      this.$baseEventBus.$on('panelToBottom', () => {
+        document
+          .getElementById('panel_bottom_target')
+          .scrollIntoView({ behavior: 'smooth' })
+      })
+      /* 小屏切換頂部設置界面*/
+      this.$baseEventBus.$on('switchPanelAside', () => {
+        this.asideIsShow = !this.asideIsShow
+      })
+    },
     // 觸發文章目錄
     panelScrollEvent(e) {
       this.$baseEventBus.$emit('panelScrollEven', e)
+    },
+    // Blog 初始化數據
+    blogInit() {
+      // 獲取文章總數
+      this.$store.dispatch('bloginfo/setBlogArticleTotal')
+      // 獲取 Blog 相關資訊
+      this.$store.dispatch('bloginfo/setBlogInfo')
     }
   }
 }

@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import BlogAuthorIng from './BlogAuthorIng'
-import BlogAuthorAside from './BlogAuthorAside'
+import BlogAuthorIng from './components/BlogAuthorIng.vue'
+import BlogAuthorAside from './components/BlogAuthorAside'
 
 export default {
   name: 'BlogAuthorBody',

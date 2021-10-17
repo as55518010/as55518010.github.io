@@ -91,10 +91,10 @@ const utils = {
     openImageUploadWindow: function(callback) {
       try {
         let tmpText = $('#imgTmp')
-        if (tmpText.length == 0) {
+        if (tmpText.length === 0) {
           tmpText = $("<textarea id='imgTmp'></textarea>")
           tmpText.focus(() => {
-            if (tmpText.val() != '') {
+            if (tmpText.val() !== '') {
               const url = tmpText.val()
               tmpText.val('')
               callback ? callback(url.replace('[img]', '![](').replace('[/img]', ')')) : ''

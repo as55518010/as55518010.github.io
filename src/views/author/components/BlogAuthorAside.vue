@@ -4,64 +4,62 @@
       <div class="contact-title">聯繫方式</div>
       <div class="contact-item">
         <span class="contact-png">
-          <img id="author-email-img" :src="emailImg">
+          <img id="author-email-img" src="https://cjunn.gitee.io/blog_theme_atum/img/ing/email.png" @click="sendEmail">
         </span>
         <span class="contact-content">
           <div class="contact-content-top">email</div>
-          <div class="contact-content-bottom">{{ email() }}</div>
+          <div class="contact-content-bottom">{{ blogAuthorEmail }}</div>
         </span>
       </div>
       <div class="contact-item">
         <span class="contact-png">
-          <img id="author-qq-img" :src="qqImg">
-        </span>
-        <span class="contact-content">
-          <div class="contact-content-top">QQ</div>
-          <div class="contact-content-bottom">{{ qq() }}</div>
-        </span>
-      </div>
-      <div class="contact-item">
-        <span class="contact-png">
-          <img id="author-github-img" :src="githubImg">
+          <img id="author-github-img" src="https://cjunn.gitee.io/blog_theme_atum/img/ing/github.png" @click="goGithub">
         </span>
         <span class="contact-content">
           <div class="contact-content-top">github</div>
-          <div class="contact-content-bottom">{{ github() }}</div>
+          <div class="contact-content-bottom">{{ blogAuthorGithub }}</div>
         </span>
       </div>
       <div class="about-me-wrap">
         <div class="about-me-head">關於我</div>
-        <div class="about-me-body" v-html="aboutmeHtml">
-          {{ aboutmeHtml }}
-        </div>
+        <a-card class="about-me-body">
+          <img
+            slot="cover"
+            alt="example"
+            src="https://images.plurk.com/2CzJcXKK82bJVb3WXilf.jpg"
+          >
+        </a-card>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import blogKit from '@/utils/BlogKit'
 import BlogContext from '@/context/BlogContext'
 
 export default {
-  name: 'BlogAuthorAside',
   data: () => {
     return {
-      emailImg: blogKit.getExtendStylePath('/img/ing/email.png'),
-      qqImg: blogKit.getExtendStylePath('/img/ing/qq.png'),
-      githubImg: blogKit.getExtendStylePath('/img/ing/github.png'),
       aboutmeHtml: BlogContext.aboutmeHtml
     }
   },
+  computed: {
+    blogGithubUrl() {
+      return this.$store.getters['bloginfo/blogGithubUrl']
+    },
+    blogAuthorGithub() {
+      return this.$store.state.bloginfo.author.blogAuthorGithub
+    },
+    blogAuthorEmail() {
+      return this.$store.state.bloginfo.author.blogAuthorEmail
+    }
+  },
   methods: {
-    qq: () => {
-      return BlogContext.qq
+    sendEmail() {
+      return window.open(`https://mail.google.com/mail/u/0/?fs=1&tf=cm&to=${this.blogAuthorEmail}`)
     },
-    email: () => {
-      return BlogContext.email
-    },
-    github: () => {
-      return BlogContext.github
+    goGithub() {
+      return window.open(this.blogGithubUrl)
     }
   }
 }

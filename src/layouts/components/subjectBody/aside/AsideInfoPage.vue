@@ -28,21 +28,13 @@
 export default {
   computed: {
     blogNickname() {
-      return this.$store.state.bloginfo.blogNickname
+      return this.$store.state.bloginfo.author.blogNickname
     },
     blogArticleTotal() {
       return this.$store.state.bloginfo.blogArticleTotal
     },
     operatingDays() {
       return this.$store.getters['bloginfo/operatingDays']
-    }
-  },
-  created() {
-    this.getArticleTotal()
-  },
-  methods: {
-    async getArticleTotal() {
-      this.$store.dispatch('bloginfo/setBlogArticleTotal')
     }
   }
 }

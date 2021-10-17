@@ -12,7 +12,6 @@ const mutations = {
 }
 const actions = {
   async setHotArticleList({ commit }, query) {
-    console.log('ads', query)
     const { list } = await getArticle(query)
     commit('setHotArticleList', list)
   }

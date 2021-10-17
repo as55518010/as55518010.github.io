@@ -9,8 +9,9 @@ import CategoryArticleBody from '@/views/categoryArticle/index.vue'
 import SeriesArticleBody from '@/views/seriesArticle/index.vue'
 import ArticleBody from '@/views/article/index.vue'
 import SubjectBody from '@/layouts/components/subjectBody/index.vue'
-
+import BlogAuthorBody from '@/views/author/index.vue'
 Vue.use(VueRouter)
+
 export const constantRoutes = [
   {
     path: '/',
@@ -36,12 +37,12 @@ export const constantRoutes = [
           },
           { path: 'article/:articleId', component: ArticleBody }
         ]
+      },
+      {
+        path: 'author',
+        name: 'AuthorBody',
+        component: BlogAuthorBody
       }
-      // {
-      //   path: 'author',
-      //   name: 'AuthorBody',
-      //   component: BlogAuthorBody
-      // }
     ]
   },
   {
