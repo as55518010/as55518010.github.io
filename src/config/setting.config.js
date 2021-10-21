@@ -3,7 +3,7 @@
  */
 const setting = {
   // 開發以及部署時的URL
-  publicPath: '',
+  publicPath: process.env.VUE_APP_PUBLICPATH,
   // 生產環境構建文件的目錄名
   outputDir: 'dist',
   // 放置生成的靜態資源 (js、css、img、fonts) 的 (相對於 outputDir 的) 目錄。
@@ -17,7 +17,7 @@ const setting = {
   // 簡寫
   abbreviation: 'vab',
   // 開發環境端口號
-  devPort: '81',
+  devPort: '9528',
   // 版本號
   version: process.env.VUE_APP_VERSION,
   // 這一項非常重要！請務必保留MIT協議下package.json及copyright作者信息 即可免費商用，不遵守此項約定你將無法使用該框架，如需自定義版權信息請聯繫QQ1204505056

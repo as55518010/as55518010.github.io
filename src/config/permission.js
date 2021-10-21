@@ -1,5 +1,5 @@
 /**
- * @description 路由守卫，目前两种模式：all模式与intelligence模式
+ * @description 路由守衛，目前兩種模式：all模式與intelligence模式
  */
 import router from '@/router'
 import store from '@/store'
@@ -33,15 +33,15 @@ router.beforeResolve(async(to, from, next) => {
       if (progressBar) VabProgress.done()
     } else {
       const hasPermissions =
-        store.getters['user/permissions'] &&
-        store.getters['user/permissions'].length > 0
+          store.getters['user/permissions'] &&
+          store.getters['user/permissions'].length > 0
       if (hasPermissions) {
         next()
       } else {
         try {
           let permissions
           if (!loginInterception) {
-            // settings.js loginInterception为false时，创建虚拟权限
+            // settings.js loginInterception為false時，創建虛擬權限
             await store.dispatch('user/setPermissions', ['admin'])
             permissions = ['admin']
           } else {
@@ -82,3 +82,4 @@ router.beforeResolve(async(to, from, next) => {
 router.afterEach(() => {
   if (progressBar) VabProgress.done()
 })
+

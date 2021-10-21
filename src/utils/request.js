@@ -70,6 +70,9 @@ instance.interceptors.request.use(
       )
       config.data = jsonToUnderline(config.data)
     }
+    if (config.params) {
+      config.params = jsonToUnderline(config.params)
+    }
     if (
       config.data &&
       config.headers['Content-Type'] ===

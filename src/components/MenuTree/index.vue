@@ -1,14 +1,14 @@
 <template>
   <div>
-    <template v-for="menu in menuData">
-      <el-submenu v-if="menu.son" :key="menu.name" :index="menu.name">
+    <template v-for="menu in menuList">
+      <el-submenu v-if="menu.children" :key="menu.name" :index="menu.url?menu.url:indexPrefix+menu.id">
         <template slot="title">
           <i :class="menu.icon" />
           <span slot="title">{{ menu.name }}</span>
         </template>
-        <menu-tree :menu-data="menu.son" />
+        <menu-tree :menu-list="menu.children" :index-prefix="indexPrefix" />
       </el-submenu>
-      <el-menu-item v-else :key="menu.name" :index="menu.name" @click="childByValue(menu.id)">
+      <el-menu-item v-else :key="menu.name" :index="menu.url?menu.url:indexPrefix+menu.id">
         <i :class="menu.icon" />
         <span slot="title">{{ menu.name }}</span>
       </el-menu-item>
@@ -20,10 +20,16 @@
 export default {
   name: 'MenuTree',
   // eslint-disable-next-line vue/require-prop-types
-  props: ['menuData'],
-  methods: {
-    childByValue(categorieId) {
-      this.$baseEventBus.$emit('eventToHandleClick', categorieId)
+  props: {
+    menuList: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+    indexPrefix: {
+      type: String,
+      default: ''
     }
   }
 }
