@@ -27,4 +27,3 @@ npm run build
 - 增加[Mock.js](https://github.com/nuysoft/Mock/wiki/Getting-Started)，方便項目快速搭建
 - 去除[jquery](https://jquery.com/)，減少JS DOM汙染
 - 升級Vue3
-
