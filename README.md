@@ -1,5 +1,5 @@
 ## 項目介紹
-### 預覽：[https://derrick-blog.tk](https://derrick-blog.tk)
+### 預覽：[https://derrick.tk/](https://derrick.tk/)
 
 ##### 本項目旨在學習Vue2，如果您覺得項目不錯，歡迎star〜
 ### 個人優雅簡約的 Blog 前台項目
