@@ -118,7 +118,6 @@ export default {
     // 獲取動態時報表
     async getNewsfeed() {
       const { list, pagination } = await getNewsfeedApi(this.query)
-      console.log(list, pagination)
       this.total = pagination.total
       this.query.pagination.size = pagination.size
       this.query.pagination.page = pagination.page

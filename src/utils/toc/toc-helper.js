@@ -5,7 +5,6 @@ const win = window
 const body = doc.body
 const $ = doc.querySelector.bind(doc)
 const $$ = doc.querySelectorAll.bind(doc)
-const animate = win.requestAnimationFrame
 const isMobile = (/Mobile|Android|iOS|iPhone|iPad|iPod|Windows Phone|KFAPWI/i.test(navigator.userAgent))
 const enterEvent = isMobile ? 'touchstart' : 'mouseenter'
 const leaveEvent = isMobile ? 'touchend' : 'mouseleave'

@@ -72,7 +72,6 @@ const actions = {
     commit('setBlogArticleTotal', result)
   },
   async setBlogInfo({ commit, state }) {
-    console.log(state.blogInfoId)
     const { result } = await getBlogInfoDetail(state.blogInfoId)
     commit('setBlogCreateTime', result.blogCreateTime)
     commit('setBlogBottomNarrate', result.blogBottomNarrate)

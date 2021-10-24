@@ -35,14 +35,8 @@
 </template>
 
 <script>
-import BlogContext from '@/context/BlogContext'
 
 export default {
-  data: () => {
-    return {
-      aboutmeHtml: BlogContext.aboutmeHtml
-    }
-  },
   computed: {
     blogGithubUrl() {
       return this.$store.getters['bloginfo/blogGithubUrl']

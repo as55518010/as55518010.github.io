@@ -2,16 +2,9 @@ import { loadingText, messageDuration, title } from '@/config'
 import * as lodash from 'lodash'
 import { Loading, Message, MessageBox, Notification } from 'element-ui'
 import store from '@/store'
-import { getAccessToken } from '@/utils/user'
-
-const accessToken = store.getters['user/accessToken']
 const layout = store.getters['settings/layout']
 
 const install = (Vue, opts = {}) => {
-  /* 全局accessToken */
-  Vue.prototype.$baseAccessToken = () => {
-    return accessToken || getAccessToken()
-  }
   /* 全局標題 */
   Vue.prototype.$baseTitle = (() => {
     return title

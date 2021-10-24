@@ -5,20 +5,17 @@
       <MenuItems
         menu-title="導航"
         :menu-list="mainExtNav"
-        :router="true"
         :default-active="routeActive"
       />
       <MenuItems
         menu-title="組成"
         :menu-list="categoryMenuNav"
         index-prefix="/subject/category/"
-        :router="true"
         :default-active="routeActive"
       />
       <MenuItems
         :menu-list="seriesMenuNav"
         index-prefix="/subject/series/"
-        :router="true"
         :default-active="routeActive"
       />
 
@@ -39,8 +36,8 @@ export default {
       mainExtNav: [
         { name: '首頁', url: '/subject/home', icon: 'home' },
         {
-          name: '博主簡歷',
-          url: 'https://www.cnblogs.com/cjunn/',
+          name: '版主履歷',
+          url: 'https://derrick-blog.tk/curriculum_vitae',
           icon: 'face2'
         }
       ]
