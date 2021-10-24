@@ -1,8 +1,8 @@
 ## 項目介紹
 ### 預覽：[https://derrick-blog.tk](https://derrick-blog.tk)
 
-##### 本項目旨在為您提供更好的學習幫助，如果您覺得項目不錯，歡迎star〜
-### 一份優雅簡約的Blog
+##### 本項目旨在學習Vue2，如果您覺得項目不錯，歡迎star〜
+### 個人優雅簡約的 Blog 前台項目
 
 - 本項目基於線上開源項目開發的VUE2版本項目
 
@@ -20,10 +20,10 @@ npm run dev
 npm run build
 ```
 ## 注意
-### 此項目需搭配後端接口使用，可參考 [git@github.com:as55518010/laravel8_blog.git](git@github.com:as55518010/laravel8_blog.git)
+### 此項目需搭配後端接口使用，可參考 [https://github.com/as55518010/laravel8_blog](https://github.com/as55518010/laravel8_blog)
 
 ## 後續開發計劃
 
-- 增加[Mock.js](https://github.com/nuysoft/Mock/wiki/Getting-Started)，方便項目快速搭建
-- 去除[jquery](https://jquery.com/)，減少JS DOM汙染
+- 增加[Mock.js](https://github.com/nuysoft/Mock/wiki/Getting-Started)，解決需要後端對應API才能Demo，達到項目快速搭建
+- 去除[jquery](https://jquery.com/)，減少JS DOM汙染，以及減少不需要用到的方法
 - 升級Vue3
