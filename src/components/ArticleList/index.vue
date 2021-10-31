@@ -5,7 +5,7 @@
         <div v-for="item in list" :key="item.id" class="item-wrap" @click="routerLinkTo(item.id)">
           <div v-if="item.articleDetil.description" class="complex-item">
             <div class="item-img">
-              <img :src="item.thumb">
+              <img :src="item.thumb?item.thumb:'https://picsum.photos/1024'">
             </div>
             <div class="item-body">
               <div class="item-title sing-ellipsis panel-item-title-color" :title="item.title">{{ item.title }}</div>
@@ -24,10 +24,10 @@
                   <span class="icon iconfont see" />
                   <span>{{ item.articleDetil.view }}條閱讀</span>
                 </div>
-                <div class="item-comment">
+                <!-- <div class="item-comment">
                   <span class="icon iconfont talk" />
                   <span>{{ item.articleDetil.view }}條評論</span>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>

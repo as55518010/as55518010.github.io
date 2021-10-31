@@ -27,6 +27,7 @@
 /* 面板側邊控件*/
 import AvatarArea from './AvatarArea'
 import MenuItems from './MenuItems'
+import { curriculumVitae } from '@/config/index.js'
 
 export default {
   components: { MenuItems, AvatarArea },
@@ -37,7 +38,7 @@ export default {
         { name: '首頁', url: '/subject/home', icon: 'home' },
         {
           name: '版主履歷',
-          url: 'https://derrick-blog.tk/curriculum_vitae',
+          url: curriculumVitae,
           icon: 'face2'
         }
       ]

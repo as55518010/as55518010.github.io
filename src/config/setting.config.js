@@ -16,6 +16,8 @@ const setting = {
   title: 'Derrick Blog',
   // 簡寫
   abbreviation: 'vab',
+  // 履歷URL
+  curriculumVitae: 'https://derrick.tk/curriculum-vitae',
   // 開發環境端口號
   devPort: '9528',
   // 版本號
