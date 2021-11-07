@@ -48,7 +48,7 @@ module.exports = {
     },
     proxy: {
       '/api': {
-        target: 'http://laravel8.blog.com',
+        target: process.env.VUE_PROXY_TARGET_API,
         ws: true,
         changeOrigin: true
       }
