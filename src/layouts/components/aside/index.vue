@@ -35,11 +35,11 @@ export default {
     return {
       routeActive: '',
       mainExtNav: [
-        { name: '首頁', url: '/subject/home', icon: 'home' },
+        { name: '首頁', url: '/subject/home', icon: 'el-icon-s-home' },
         {
           name: '版主履歷',
           url: curriculumVitae,
-          icon: 'face2'
+          icon: 'el-icon-tickets'
         }
       ]
     }

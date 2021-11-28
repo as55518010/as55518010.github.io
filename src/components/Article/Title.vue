@@ -3,7 +3,7 @@
     <div class="article-page-head-wrap">
       <div class="author-title">
         <span>{{ article.title }}</span>
-        <span class="fangdabtn icon iconfont fangda" />
+        <!-- <span class="fangdabtn icon iconfont fangda" /> -->
       </div>
       <div class="author-sign">
         <span>

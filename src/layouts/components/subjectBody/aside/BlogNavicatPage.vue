@@ -37,14 +37,7 @@ export default {
       active: 0
     }
   },
-  beforeRouterEnter() {
-    // $('#toc_page').empty()
-  },
-
   created() {
-    // this.$baseEventBus.$on('articleDestroy', () => {
-    //   // $('#toc_page').empty()
-    // })
     this.eventBus()
   },
   mounted() {
@@ -62,7 +55,6 @@ export default {
     eventBus() {
       this.$baseEventBus.$on('panelScrollEven', e => {
         this.active = onScrollAnchor(this.tocTargets, e.target.scrollTop)
-        // active
         if (isBottom(e.target)) {
           this.topBtnToDown = false
           this.active = this.tocTargets.length - 1

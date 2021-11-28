@@ -44,11 +44,13 @@ export default {
   },
   methods: {
     async initPageList() {
+      const loading = this.$baseLoading()
       await VditorMethod.preview(this.$refs.articleBody, this.article.content, {
         lang: 'zh_TW'
       })
       this.$nextTick(() => {
         this.$baseEventBus.$emit('articleInited', this.$refs.articleBody)
+        loading.close()
       })
     },
     parseTime(time, cFormat) {

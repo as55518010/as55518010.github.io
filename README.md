@@ -24,6 +24,6 @@ npm run build
 
 ## 後續開發計劃
 
-- 增加[Mock.js](https://github.com/nuysoft/Mock/wiki/Getting-Started)，解決需要後端對應API才能Demo，達到項目快速搭建
-- 去除[jquery](https://jquery.com/)，減少JS DOM汙染，以及減少不需要用到的方法
-- 升級Vue3
+- [x] 去除[jquery](https://jquery.com/)，減少JS DOM汙染，以及減少不需要用到的方法
+- [ ] 增加[Mock.js](https://github.com/nuysoft/Mock/wiki/Getting-Started)，解決需要後端對應API才能Demo，達到項目快速搭建
+- [ ] 升級Vue3
