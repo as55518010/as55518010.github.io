@@ -38,7 +38,11 @@ jobs:
 
       # 運行構建腳本
       - name: Build vue3_derrick_blog_admin site
-        run: yarn build:prod
+        run: yarn build
+
+      # 運行構建腳本
+      - name: add Custom domain
+        run: yarn add-domain
 
       # 查看 workflow 的文檔來獲取更多信息
       # @see https://github.com/crazy-max/ghaction-github-pages

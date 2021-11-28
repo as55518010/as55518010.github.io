@@ -2,6 +2,7 @@
   <div id="article_desc">
     <div class="article-page-body-wrap">
       <div class="inner-body-wrap">
+        <el-image-viewer v-if="showViewer" :on-close="closeViewer" :url-list="[imageUrl]" />
         <div ref="articleBody" data-toc="#toc_page" />
         <div ref="outline" />
         <div class="body-wrap-bottom"><span class="icon iconfont ios-shijian" />
@@ -12,11 +13,14 @@
 </template>
 
 <script>
+import ElImageViewer from 'element-ui/packages/image/src/image-viewer'
+
 import { parseTime } from '@/utils/index'
 import VditorMethod from 'vditor/dist/method.min'
 
 export default {
   name: 'ArticleDesc',
+  components: { ElImageViewer },
   props: {
     article: {
       type: Object,
@@ -25,10 +29,13 @@ export default {
       }
     }
   },
+
   data() {
     return {
       isFucus: true,
-      isDigg: true
+      isDigg: true,
+      showViewer: false, // 显示查看器
+      imageUrl: ''
     }
   },
   watch: {
@@ -49,12 +56,32 @@ export default {
         lang: 'zh_TW'
       })
       this.$nextTick(() => {
+        this.$refs.articleBody.addEventListener('click', event => {
+          if (event.target.tagName === 'IMG') {
+            this.showViewer = true
+            this.imageUrl = event.target.currentSrc
+            this.$nextTick(() => {
+              const domImageMask = document.querySelector(
+                '.el-image-viewer__mask'
+              )
+              if (!domImageMask) {
+                return
+              }
+              domImageMask.addEventListener('click', () => {
+                this.showViewer = false
+              })
+            })
+          }
+        })
         this.$baseEventBus.$emit('articleInited', this.$refs.articleBody)
         loading.close()
       })
     },
     parseTime(time, cFormat) {
       return parseTime(time, cFormat)
+    },
+    closeViewer() {
+      this.showViewer = false
     }
   }
 }

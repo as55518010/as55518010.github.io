@@ -24,8 +24,6 @@ process.env.VUE_APP_VERSION = version
 // port = 9528 npm run dev OR npm run dev --port = 9528
 const port = devPort // dev port
 
-console.log(process.env.VUE_PROXY_TARGET_API)
-
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
   css: {
@@ -50,7 +48,7 @@ module.exports = {
     },
     proxy: {
       '/api': {
-        target: 'http://laravel8.blog.com',
+        target: process.env.VUE_PROXY_TARGET_API,
         ws: true,
         changeOrigin: true
       }
