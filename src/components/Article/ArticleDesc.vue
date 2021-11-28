@@ -2,7 +2,7 @@
   <div id="article_desc">
     <div class="article-page-body-wrap">
       <div class="inner-body-wrap">
-        <div ref="articleBody" v-highlight />
+        <div ref="articleBody" data-toc="#toc_page" />
         <div ref="outline" />
         <div class="body-wrap-bottom"><span class="icon iconfont ios-shijian" />
           最後修改時間：{{ parseTime(article.updatedAt, '{y}-{m}-{d} {h}:{i}' ) }}</div>

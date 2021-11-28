@@ -1,92 +1,127 @@
 <template>
   <div id="blog_navicat_page">
-    <div class="blog-navicat-page">
-      <div id="toc_page" />
+    <div class="blog-navicat-page" :class="{'blog-fixed':blogFixed}">
+      <div id="toc_page" class="toc toc-fixed shadow" style="top: 0px; max-width: 100%; padding: 0px; margin: 0px;">
+        <div class="toc-brand">目錄<span class="icon iconfont top topBtn " :class="{'topBtnDown':topBtnToDown}" @click="scrollAnchor" /></div>
+        <div class="toc-navbar" style="max-height: inherit; overflow-y: inherit;">
+          <div class="toc-hightlight" style="top: 0px; height: 32px;" />
+          <nav class="toc-nav">
+            <span v-for="(val,key) in toc" :key="key">
+              <a href="javascript:;" class="toc-link" :class="[tocLinkLevel(val.level),tocLinkActive(key)]" @click.prevent="tocScrollToTarget(key)">{{ val.name }}</a>
+            </span>
+          </nav>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import $ from 'jquery'
-import TocHelper from '@/utils/toc/toc-helper.js'
-import blogUtils from '@/utils/BlogUtils'
+
+import '@/styles/toc-helper.min.css'
+
+import { scrollToTarget, isBottom, onScrollAnchor } from '@/utils/Scroll.js'
+
+import { replace } from 'lodash-es'
 
 export default {
   data: () => {
     return {
-      isOpenFullScreen: false
+      isOpenFullScreen: false,
+      maxDepth: 6,
+      toc: [],
+      blogFixed: false,
+      topBtnToDown: true,
+      tocTargets: { },
+      routerView: {},
+      active: 0
     }
   },
   beforeRouterEnter() {
-    $('#toc_page').empty()
+    // $('#toc_page').empty()
   },
 
   created() {
-    const self = this
-    this.$baseEventBus.$on('articleDestroy', () => {
-      $('#toc_page').empty()
+    // this.$baseEventBus.$on('articleDestroy', () => {
+    //   // $('#toc_page').empty()
+    // })
+    this.eventBus()
+  },
+  mounted() {
+    this.$baseEventBus.$on('panelScrollEvenInit', e => {
+      this.routerView = e
     })
-    /* 監聽生成目錄*/
-    this.$baseEventBus.$on('articleInited', function(dom) {
-      $(dom).attr('data-toc', '#toc_page')
-      if ($('#app div[data-toc]').length === 0) {
-        return
-      }
-      $('#toc_page').empty()
-      const tocHelper = new TocHelper({
-        dom: '#app div[data-toc]',
-        offsetBody: document.querySelector('.route-body')
-      })
-      tocHelper.reset()
-      const tocPage = $('#toc_page')
-      tocPage.css('max-width', '100%')
-      tocPage.css('top', '0')
-      tocPage.css('padding', '0')
-      tocPage.css('margin', '0')
-      $('#toc_page .toc-fixed').css('box-shadow', '0')
-      blogUtils.registerAnchorFunc(tocPage)
-      const topBtnDom = $("<span class='icon iconfont top topBtn topBtnDown'></span>")
-      topBtnDom.click(() => {
-        if (topBtnDom.hasClass('topBtnDown')) {
-          // Down
-          self.$baseEventBus.$emit('panelToBottom', {})
+  },
+  methods: {
+    tocLinkLevel(level) {
+      return level === 0 ? '' : `ml-${level}`
+    },
+    tocLinkActive(key) {
+      return key === this.active ? 'active' : ''
+    },
+    eventBus() {
+      this.$baseEventBus.$on('panelScrollEven', e => {
+        this.active = onScrollAnchor(this.tocTargets, e.target.scrollTop)
+        // active
+        if (isBottom(e.target)) {
+          this.topBtnToDown = false
+          this.active = this.tocTargets.length - 1
         } else {
-          // Up
-          self.$baseEventBus.$emit('panelToTop', {})
+          this.topBtnToDown = true
         }
-      })
-      $('#toc_page .toc-brand').append(topBtnDom)
-      $('.toc-nav').css('max-height', ($('.body-wrap').height() - 140) + 'px')
-      self.$baseEventBus.$on('panelScrollEven', (e) => {
-        const tocPage = $('.blog-navicat-page')
         if (e.target.scrollTop > 60) {
-          topBtnDom.removeClass('topBtnDown')
-          tocPage.css('position', 'fixed')
-          tocPage.css('top', '60px')
-          $('.toc-nav').css('max-height', ($('.body-wrap').height() - 100) + 'px')
+          this.blogFixed = true
         } else {
-          $('.toc-nav').css('max-height', ($('.body-wrap').height() - 140) + 'px')
-          topBtnDom.addClass('topBtnDown')
-          tocPage.css('position', '')
-          tocPage.css('top', '')
+          this.blogFixed = false
         }
       })
-    })
+      // 監聽生成目錄
+      this.$baseEventBus.$on('articleInited', dom => {
+        this.createToc(dom)
+      })
+    },
+    createToc(dom) {
+      this.tocTargets = Array.from(
+        dom.querySelectorAll(
+          ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].slice(0, this.maxDepth).join(',')
+        ) || []
+      )
+      this.toc = this.tocTargets.map(node => {
+        return {
+          level: parseInt(replace(node.nodeName, 'H', '')) - 1,
+          name: node.innerHTML,
+          node: node
+        }
+      })
+    },
+    scrollAnchor() {
+      if (this.topBtnToDown) {
+        scrollToTarget(this.routerView, this.tocTargets[this.tocTargets.length - 1])
+      } else {
+        scrollToTarget(this.routerView, this.tocTargets[0])
+      }
+    },
+    tocScrollToTarget(key) {
+      scrollToTarget(this.routerView, this.tocTargets[key], '20px')
+    }
   }
 }
 </script>
 
 <style lang="scss">
-  #blog_navicat_page {
-    .blog-navicat-page::-webkit-scrollbar {
-      display: none
-    }
-
-    .blog-navicat-page {
-      font-size: 12px;
-      position: relative;
-      width: 235px;
-    }
-
+#blog_navicat_page {
+  .blog-navicat-page::-webkit-scrollbar {
+    display: none;
   }
+
+  .blog-navicat-page {
+    font-size: 12px;
+    position: relative;
+    width: 235px;
+  }
+  .blog-fixed {
+    position: fixed;
+    top: 60px;
+  }
+}
 </style>

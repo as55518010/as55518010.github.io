@@ -52,8 +52,6 @@ const setting = {
   loginInterception: true,
   // 是否開啟登錄RSA加密
   loginRSA: true,
-  // intelligence 和 all 兩種方式，前者後端權限只控制permissions不控制view文件的import（前後端配合，減輕後端工作量），all方式完全交給後端前端只負責加載
-  authentication: 'intelligence',
   // vertical布局時是否只保持一個子菜單的展開
   uniqueOpened: true,
   // vertical布局時默認展開的菜單path，使用逗號隔開建議只展開一個

@@ -6641,11 +6641,6 @@ jest@^24.9.0:
     import-local "^2.0.0"
     jest-cli "^24.9.0"
 
-jquery@^3.6.0:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.6.0.tgz#c72a09f15c1bdce142f49dbf1170bdf8adac2470"
-  integrity sha512-JVzAR/AjBvVt2BmYhxRCSYysDsPcssdmTFnzyLEts9qNwmjmu4JTAMYubEfwVOSwpQ1I1sKKFcxhZCI2buerfw==
-
 js-base64@^2.1.9:
   version "2.6.4"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.6.4.tgz#f4e686c5de1ea1f867dbcad3d46d969428df98c4"
@@ -10515,11 +10510,6 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     extend-shallow "^3.0.2"
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
-
-toc-helper@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/toc-helper/-/toc-helper-1.1.3.tgz#7e5e96f07e37da2c6bbbe5c1a91a90cc39bb5986"
-  integrity sha512-DXuwuVHgY4lAZYplqhMM9k2/o3GtNN58H7kqn0jyVuyoNUOx1IJzqSM/Wi2CPwsnyFnK+8aVQkKxXnraCoGDiQ==
 
 toidentifier@1.0.0:
   version "1.0.0"

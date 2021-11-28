@@ -6,7 +6,7 @@ $headHeight: 50px;
 $headBackColor: #3a3f51;
 $bottomHeight: 40px;
 $commentFocusColor: rgb(184, 232, 247);
-/*是否隐藏侧边栏*/
+/*是否隱藏側邊欄*/
 @mixin hideAsideUnit {
   transform: translateX(-105%);
   width: 70% !important;
@@ -41,7 +41,7 @@ $commentFocusColor: rgb(184, 232, 247);
   }
 }
 
-/*处于小屏幕分辨率*/
+/*處於小屏幕分辨率*/
 @mixin switchHeadBar {
   @include deve3 {
     @content;
@@ -54,7 +54,7 @@ $commentFocusColor: rgb(184, 232, 247);
   }
 }
 
-/*面板宽度*/
+// /*面板寬度*/
 @mixin panelWidth {
   @include deve-width(100%, 100%, 100%, 895px, 1060px, 1200px, 1400px);
 }
@@ -87,28 +87,28 @@ $commentFocusColor: rgb(184, 232, 247);
   @include deve-width(100%, 100%, 100%, 100%, 577px, 716px, 915px);
 }
 
-/*作品集内侧边栏靠左位置*/
+/*作品集內側邊欄靠左位置*/
 @mixin worksAsideLeft {
   @include deve-left(100%, 100%, 100%, 700px, 580px, 720px, 920px);
 }
 
-/*作品集内部宽度*/
+/*作品集內部寬度*/
 @mixin worksBodyWidth {
   @include deve-width(100%, 100%, 100%, 660px, 580px, 720px, 920px);
 }
 
-/*文章简介图片宽度*/
+/*文章簡介圖片寬度*/
 @mixin categoryImgWidth {
   @include deve-width(110px, 170px, 210px, 215px, 180px, 220px, 250px);
 }
 
 
-/*文章简介剩余宽度计算*/
+/*文章簡介剩餘寬度計算*/
 @mixin categoryBodyCalWidth {
   @include deve-cal-width(110px, 170px, 210px, 215px, 180px, 220px, 250px);
 }
 
-/*文章简介高度*/
+/*文章簡介高度*/
 @mixin itemBodyHeight {
   height: 175px;
   @include deve1 {
@@ -116,7 +116,7 @@ $commentFocusColor: rgb(184, 232, 247);
   }
 }
 
-/*文章标题*/
+/*文章標題*/
 @mixin itemTilteStyle {
   font-size: 22px;
   margin-bottom: 10px;
@@ -126,7 +126,7 @@ $commentFocusColor: rgb(184, 232, 247);
   }
 }
 
-/*文章内容样式*/
+/*文章內容樣式*/
 @mixin itemContentStyle {
   @include deve1 {
     -webkit-line-clamp: 2 !important;
@@ -135,7 +135,7 @@ $commentFocusColor: rgb(184, 232, 247);
   }
 }
 
-/*右侧框架样式*/
+/*右側框架樣式*/
 @mixin itemRightFrame {
   padding: 20px 15px 25px 20px;
   @include deve1 {
@@ -144,7 +144,7 @@ $commentFocusColor: rgb(184, 232, 247);
 }
 
 
-/*标签栏*/
+/*標籤欄*/
 @mixin itemSignStyle {
   left: 20px;
   right: 15px;
@@ -154,9 +154,9 @@ $commentFocusColor: rgb(184, 232, 247);
     padding-bottom: 4px;
     padding-top: 1px;
     font-size: 10px !important;
-    overflow: hidden; //超出的文本隐藏
-    text-overflow: ellipsis; //溢出用省略号显示
-    white-space: nowrap; //溢出不换行
+    overflow: hidden; //超出的文本隱藏
+    text-overflow: ellipsis; //溢出用省略號顯示
+    white-space: nowrap; //溢出不換行
   }
 }
 
@@ -235,7 +235,7 @@ $commentFocusColor: rgb(184, 232, 247);
   }
 }
 
-//分页栏
+//分頁欄
 ul.pagination {
   display: inline-block;
   padding: 0;
@@ -362,10 +362,10 @@ li.seatClz {
   }
 }
 
-/*文章样式*/
+/*文章樣式*/
 .postBody {
 
-  font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;
+  font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微軟雅黑', Arial, sans-serif;
   video {
     width: 100%;
   }
@@ -498,7 +498,7 @@ li.seatClz {
 
 }
 
-/*Toc样式覆盖*/
+/*Toc樣式覆蓋*/
 .toc-brand {
   margin-bottom: 5px;
   color: rgb(100, 100, 100);

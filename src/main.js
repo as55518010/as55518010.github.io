@@ -13,17 +13,14 @@ import store from './store'
 import router from './router'
 
 import '@/icons' // icon
-// import '@/config/permission' // permission control
 
 import Vab from '@/utils/vab'
 
 import './assets/icon/iconfont.css'
 import './assets/css/reset.css'
-import '@/directive'
 
 Vue.use(Vab)
 
-// set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
 
 Vue.use(Antd)

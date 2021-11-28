@@ -42,6 +42,7 @@ export default {
   },
   mounted() {
     this.routeMinHeight = this.$refs.routerView.clientHeight - 40
+    this.$baseEventBus.$emit('panelScrollEvenInit', this.$refs.routerView)
   },
   methods: {
     eventBus() {
