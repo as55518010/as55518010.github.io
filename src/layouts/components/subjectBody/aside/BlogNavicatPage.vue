@@ -22,7 +22,7 @@ import '@/styles/toc-helper.min.css'
 
 import { scrollToTarget, isBottom, onScrollAnchor } from '@/utils/Scroll.js'
 
-import { replace } from 'lodash-es'
+import { replace, isEmpty } from 'lodash-es'
 
 export default {
   data: () => {
@@ -54,17 +54,19 @@ export default {
     },
     eventBus() {
       this.$baseEventBus.$on('panelScrollEven', e => {
-        this.active = onScrollAnchor(this.tocTargets, e.target.scrollTop)
-        if (isBottom(e.target)) {
-          this.topBtnToDown = false
-          this.active = this.tocTargets.length - 1
-        } else {
-          this.topBtnToDown = true
-        }
-        if (e.target.scrollTop > 60) {
-          this.blogFixed = true
-        } else {
-          this.blogFixed = false
+        if (!isEmpty(this.tocTargets)) {
+          this.active = onScrollAnchor(this.tocTargets, e.target.scrollTop)
+          if (isBottom(e.target)) {
+            this.topBtnToDown = false
+            this.active = this.tocTargets.length - 1
+          } else {
+            this.topBtnToDown = true
+          }
+          if (e.target.scrollTop > 60) {
+            this.blogFixed = true
+          } else {
+            this.blogFixed = false
+          }
         }
       })
       // 監聽生成目錄

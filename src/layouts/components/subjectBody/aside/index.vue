@@ -4,9 +4,6 @@
       <span class="article-menu-item" :class="selectItem==1?'article-menu-bottom':''" @click="selectItem=1">
         <span class="icon iconfont fire" />
       </span>
-      <!-- <span class="article-menu-item" :class="selectItem==2?'article-menu-bottom':''" @click="selectItem=2">
-        <span class="icon iconfont talk" />
-      </span> -->
       <span v-show="isArticleInited" class="article-menu-item" :class="selectItem==3?'article-menu-bottom':''" @click="selectItem=3">
         <span class="icon iconfont menu" />
       </span>
@@ -30,22 +27,6 @@
         </div>
         <AsideInfoPage />
       </div>
-      <!-- <div v-show="selectItem==2" class="pub-body-comment">
-        <div>
-          <div class="pub-body-title">最新評論</div>
-          <div>
-            <div v-for="(item,key) in catListComment" :key="key" class="pub-item" @click="clickOpenArticle(item.url)">
-              <img class="pub-face panel-right-img-style" :src="item.img">
-              <div class="pub-item-wrap">
-                <div class="item-title sing-ellipsis" :title="item.title">{{ item.title }}</div>
-                <div class="item-body double-ellipsis" :title="item.body" v-html="item.body">{{ item.body }}</div>
-                <div class="item-committer" :title="item.committer">-- {{ item.committer }}</div>
-              </div>
-            </div>
-          </div>
-          <AsideInfoPage />
-        </div>
-      </div> -->
       <div v-show="selectItem==3" class="pub-body-menulist">
         <BlogNavicatPage />
       </div>

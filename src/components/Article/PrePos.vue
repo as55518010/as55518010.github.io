@@ -32,23 +32,6 @@
         <div class="clearfix">
           <div>
             <div class="article-series-catalog__title">目錄</div>
-
-            <!-- <div class="pull-right subscription-group">
-              <a href="https://ithelp.ithome.com.tw/rss/series/4018" class="rss-icon" target="_blank">
-                <i class="fa fa-rss fa-fw" aria-hidden="true" />RSS系列文
-              </a>
-              <button
-                class="article-series-catalog__subscription active subscription-btn"
-                data-type="series"
-                data-id="4018"
-              >
-                <i class="fa fa-bookmark fa-fw" aria-hidden="true" /><span class="subscription-text">已訂閱系列文</span>
-              </button>
-
-              <div class="article-series-catalog__subscription-num">
-                <span class="subscription-amount">3</span> 人訂閱
-              </div>
-            </div> -->
           </div>
           <ol class="article-series-catalog__lists">
             <li v-for="item in articleNearby" :key="item.id" class="article-series-catalog__list">
@@ -93,30 +76,17 @@
         </div>
         <div class="clearfix">
           <div>
-            <div class="article-series-catalog__title">目錄</div>
-
-            <!-- <div class="pull-right subscription-group">
-              <a href="https://ithelp.ithome.com.tw/rss/series/4018" class="rss-icon" target="_blank">
-                <i class="fa fa-rss fa-fw" aria-hidden="true" />RSS系列文
-              </a>
-              <button
-                class="article-series-catalog__subscription active subscription-btn"
-                data-type="series"
-                data-id="4018"
-              >
-                <i class="fa fa-bookmark fa-fw" aria-hidden="true" /><span class="subscription-text">已訂閱系列文</span>
-              </button>
-
-              <div class="article-series-catalog__subscription-num">
-                <span class="subscription-amount">3</span> 人訂閱
-              </div>
-            </div> -->
+            <div class="article-series-catalog__title">目錄(下篇文章開始)</div>
           </div>
-          <ol class="article-series-catalog__lists">
+          <ol v-if="articleNearby.length >0" class="article-series-catalog__lists">
             <li v-for="item in articleNearby" :key="item.id" class="article-series-catalog__list">
-              <div class="article-series-catalog__list-num">{{ item.id }}</div>
               <router-link :to="articleLinkTo(item.id)" class="article-series-catalog__link">{{ item.title }}
               </router-link>
+            </li>
+          </ol>
+          <ol v-else class="article-series-catalog__lists">
+            <li class="article-series-catalog__list">
+              暫無下篇文章
             </li>
           </ol>
           <router-link :to="routerLinkTo()"><i class="fa fa-fw fa-chevron-circle-right" aria-hidden="true" />完整目錄

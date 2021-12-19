@@ -14,7 +14,7 @@
         @current-change="handlePageChange"
       />
     </div>
-    <a-empty v-else description="此分類暫無文章系列" />
+    <a-empty v-else description="此分類暫無系列文章" />
 
   </div>
 </template>

@@ -28,13 +28,13 @@
     <div v-for="item in newsfeed" :key="item.id" class="author-body-wrap">
       <div class="author-content-item">
         <div class="author-content-img-wrap">
-          <img src=" https://www.lingmx.com/image/avatar.jpg">
+          <img :src="blogAvatarImg">
         </div>
         <div class="author-content-body-wrap">
           <div class="author-content-arrow-back" />
           <div class="boadr-top-wrap">
             <span class="board-top-author">{{ item.user.name }}</span>
-            <span class="board-top-time">{{ parseTime(item.updatedAt, '{y}-{m}-{d} {h}:{i}:{s} {a}' ) }}</span>
+            <span class="board-top-time">{{ parseTime(item.createdAt, '{y}-{m}-{d} {h}:{i}:{s} {a}' ) }}</span>
           </div>
           <div class="board-middle-wrap">
             <div v-html="item.content" />
@@ -83,7 +83,11 @@ export default {
           page: 1
         },
         // 篩選條件
-        where: {}
+        where: {},
+        // 排序條件
+        order: {
+          createdAt: 'desc'
+        }
       }
     }
   },
@@ -102,6 +106,9 @@ export default {
     },
     blogAuthorBackImg() {
       return this.$store.state.bloginfo.author.blogAuthorBackImg
+    },
+    blogAvatarImg() {
+      return this.$store.state.bloginfo.author.blogAvatarImg
     }
   },
   created() {
