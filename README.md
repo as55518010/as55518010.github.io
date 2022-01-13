@@ -1,7 +1,6 @@
 ## 項目介紹
 ### 預覽：[https://derrick.tk/](https://derrick.tk/)
 
-##### 本項目旨在學習Vue2，如果您覺得項目不錯，歡迎star〜
 ### 個人優雅簡約的 Blog 前台項目
 
 - 本項目基於線上開源項目開發的VUE2版本項目
@@ -27,3 +26,5 @@ npm run build
 - [x] 去除[jquery](https://jquery.com/)，減少JS DOM汙染，以及減少不需要用到的方法
 - [ ] 增加[Mock.js](https://github.com/nuysoft/Mock/wiki/Getting-Started)，解決需要後端對應API才能Demo，達到項目快速搭建
 - [ ] 升級Vue3
+
+##### 本項目旨在學習Vue2，如果您覺得項目不錯，歡迎star〜
