@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "add-domain": "echo \"derrick.tk\" > dist/CNAME",
+    "add-domain": "echo \"as55518010.github.io\" > dist/CNAME",
     "preview": "node build/index.js --preview",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml",
     "lint": "eslint --ext .js,.vue src",
@@ -16,7 +16,7 @@
   "dependencies": {
     "ant-design-vue": "^1.7.8",
     "axios": "0.18.1",
-    "core-js": "3.6.5",
+    "core-js": "3",
     "dayjs": "^1.10.7",
     "element-ui": "2.13.2",
     "js-cookie": "2.2.0",
@@ -55,6 +55,9 @@
     "svgo": "1.2.2",
     "vue-happy-bus": "^1.0.2",
     "vue-template-compiler": "2.6.10"
+  },
+  "resolutions": {
+    "@achrinza/node-ipc": "10.1.9"
   },
   "browserslist": [
     "> 1%",

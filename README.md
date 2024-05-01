@@ -1,5 +1,5 @@
 ## 項目介紹
-### 預覽：[https://derrick.tk/](https://derrick.tk/)
+### 預覽：[https://as55518010.github.io/](https://as55518010.github.io/)
 
 ### 個人優雅簡約的 Blog 前台項目
 
