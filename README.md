@@ -19,7 +19,7 @@ npm run dev
 npm run build
 ```
 ## 注意
-### 此項目需搭配後端接口使用，可參考 [https://github.com/as55518010/laravel8_blog](https://github.com/as55518010/laravel8_blog)
+### 此項目需搭配後端接口使用，可參考 [https://github.com/as55518010/Back-end-blog](https://github.com/as55518010/Back-end-blog)
 
 ## 後續開發計劃
 
