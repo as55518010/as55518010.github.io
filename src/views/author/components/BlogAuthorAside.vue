@@ -2,18 +2,18 @@
   <div id="blog_author_aside">
     <div class="blog-author-aside-wrap">
       <div class="contact-title">聯繫方式</div>
-      <div class="contact-item">
+      <div class="contact-item" @click="sendEmail">
         <span class="contact-png">
-          <img id="author-email-img" src="https://cjunn.gitee.io/blog_theme_atum/img/ing/email.png" @click="sendEmail">
+          <img id="author-email-img" src="@/assets/images/email.jpg" @click="sendEmail">
         </span>
         <span class="contact-content">
           <div class="contact-content-top">email</div>
           <div class="contact-content-bottom">{{ blogAuthorEmail }}</div>
         </span>
       </div>
-      <div class="contact-item">
+      <div class="contact-item" @click="goGithub">
         <span class="contact-png">
-          <img id="author-github-img" src="https://cjunn.gitee.io/blog_theme_atum/img/ing/github.png" @click="goGithub">
+          <img id="author-github-img" src="@/assets/images/github.jpg" @click="goGithub">
         </span>
         <span class="contact-content">
           <div class="contact-content-top">github</div>
@@ -123,8 +123,8 @@ export default {
           overflow: hidden;
 
           img {
-            width: 31px;
-            height: 31px;
+            width: 24px;
+            height: 24px;
           }
         }
       }

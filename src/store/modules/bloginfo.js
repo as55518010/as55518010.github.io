@@ -1,5 +1,6 @@
 import { articleCount } from '@/api/article.js'
 import { getBlogInfoDetail } from '@/api/blogInfo.js'
+import pngtree from '@/assets/images/pngtree.jpg'
 
 const state = {
   blogInfoId: 1,
@@ -15,8 +16,7 @@ const state = {
     blogAuthorGithub: '', // 作者github
     blogAuthorEmail: '', // 作者email
     blogAvatarSign: ' ↗↗點擊頭像關注我。', // 頭像標誌
-    blogAuthorBackImg:
-      'https://cjunn.gitee.io/blog_theme_atum/img/ing/autorbimg.jpg' // 作者自介底圖
+    blogAuthorBackImg: pngtree // 作者自介底圖
   }
 }
 const getters = {
